@@ -1,0 +1,18 @@
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum SubscriptionType {
+  FREE
+  BASIC
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PENDING
+}

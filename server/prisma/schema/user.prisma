@@ -1,44 +1,76 @@
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
-  name       String
-  phone      String?
-  address    String?
-  image      String?
-  isActive   Boolean  @default(true)
-  isStaff    Boolean  @default(false)
-  isVerified Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id              String   @id @default(cuid())
+  
+  email           String   @unique
+  password        String
+  phoneNumber     String?
 
-  role   Role   @relation(fields: [roleId], references: [id])
-  roleId String
+  role            UserRole @default(USER)
 
-  student Student?
+  isVerified      Boolean  @default(false)
+  isBanned        Boolean  @default(false)
+
+  lastLoginAt     DateTime?
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile         UserProfile?
+  subscriptions   Subscription[]
+  messages        LiveChat[]
+
+  @@index([email])
+  @@index([role])
 }
 
-model Role {
-  id    String @id @default(cuid())
-  name  String @unique
-  users User[]
+
+model UserProfile {
+  id              String   @id @default(cuid())
+
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username        String   @unique
+  displayName     String?
+
+  avatar          String?
+  banner          String?
+
+  bio             String?
+
+  country         String?
+  language        String?
+
+  facebookUrl     String?
+  youtubeUrl      String?
+  discordUrl      String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([username])
 }
 
-model Student {
-  id             String    @id @default(cuid())
-  userId         String    @unique
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  grade          String?
-  class          String?
-  section        String?
-  enrollmentDate DateTime?
-  currentLevel   String?
-  gpa            Float?
-  totalCredits   Int?
-  academicStatus String    @default("ACTIVE")
-  guardianName   String?
-  guardianPhone  String?
-  guardianEmail  String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+model Subscription {
+  id              String   @id @default(cuid())
+
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan            SubscriptionType
+  status          SubscriptionStatus
+
+  price           Float
+  currency        String
+
+  startDate       DateTime
+  endDate         DateTime
+  cancelledAt     DateTime?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([endDate])
 }

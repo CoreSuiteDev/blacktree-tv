@@ -1,0 +1,119 @@
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+enum SubscriptionType {
+  FREE
+  BASIC
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PENDING
+}
+
+model LiveChat {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  message String
+
+  isDeleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([createdAt])
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id String @id @default(cuid())
+
+  email       String  @unique
+  password    String
+  phoneNumber String?
+
+  role UserRole @default(USER)
+
+  isVerified Boolean @default(false)
+  isBanned   Boolean @default(false)
+
+  lastLoginAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  profile       UserProfile?
+  subscriptions Subscription[]
+  messages      LiveChat[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model UserProfile {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username    String  @unique
+  displayName String?
+
+  avatar String?
+  banner String?
+
+  bio String?
+
+  country  String?
+  language String?
+
+  facebookUrl String?
+  youtubeUrl  String?
+  discordUrl  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan   SubscriptionType
+  status SubscriptionStatus
+
+  price    Float
+  currency String
+
+  startDate   DateTime
+  endDate     DateTime
+  cancelledAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([endDate])
+}
