@@ -8,6 +8,7 @@ import { SpotlightSlider } from "@/components/shared/home/SpotlightSlider";
 import MovieSlider from "@/components/shared/movie-slider";
 import ActorSlider from "@/components/shared/actor-slider";
 import { FEATURED_ACTORS } from "@/constants/actors";
+import SubscriptionSection from "@/components/shared/home/subscription-section";
 
 export default function Home() {
   return (
@@ -30,6 +31,7 @@ export default function Home() {
         <MovieSlider title="New Movies" movies={FEATURED_MOVIES} />
         <SpotlightSlider items={movieSpotlights} />
         <ActorSlider title="Featured Actors" actors={FEATURED_ACTORS} />
+        <SubscriptionSection />
       </div>
     </main>
   );
