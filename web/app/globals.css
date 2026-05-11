@@ -198,51 +198,5 @@
   body {
     @apply bg-background text-foreground;
   }
-  * {
-    * {
-      transition-property: background-color, border-color;
-      transition-duration: 300ms;
-    }
-  }
 }
 
-body {
-  font-family: var(--font-poppins), sans-serif;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-  mix-blend-mode: normal;
-}
-
-/* The expanding circle animation */
-::view-transition-new(root) {
-  mask: radial-gradient(circle at center, rgb(0, 0, 0) 0%, rgb(0, 0, 0) 100%)
-    content-box;
-  mask-clip: content-box;
-  animation: reveal-animation 0.7s ease-in-out;
-}
-
-.dark ::view-transition-old(root) {
-  z-index: 1;
-}
-.dark ::view-transition-new(root) {
-  z-index: 999;
-}
-
-::view-transition-old(root) {
-  z-index: 999;
-}
-::view-transition-new(root) {
-  z-index: 1;
-}
-
-@keyframes reveal-animation {
-  from {
-    clip-path: circle(0% at 50% 50%);
-  }
-  to {
-    clip-path: circle(150% at 50% 50%);
-  }
-}

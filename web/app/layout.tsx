@@ -28,7 +28,12 @@ export default function RootLayout({
     >
       <body>
         <QueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="dark">
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem={false}
+            disableTransitionOnChange
+          >
             {children}
             <Toaster />
           </ThemeProvider>
