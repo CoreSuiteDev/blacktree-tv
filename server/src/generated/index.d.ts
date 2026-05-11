@@ -14,15 +14,40 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
 /**
+ * Model Session
+ * 
+ */
+export type Session = $Result.DefaultSelection<Prisma.$SessionPayload>
+/**
  * Model LiveChat
  * 
  */
 export type LiveChat = $Result.DefaultSelection<Prisma.$LiveChatPayload>
 /**
+ * Model ChatBan
+ * 
+ */
+export type ChatBan = $Result.DefaultSelection<Prisma.$ChatBanPayload>
+/**
+ * Model ModerationLog
+ * 
+ */
+export type ModerationLog = $Result.DefaultSelection<Prisma.$ModerationLogPayload>
+/**
+ * Model PaymentHistory
+ * 
+ */
+export type PaymentHistory = $Result.DefaultSelection<Prisma.$PaymentHistoryPayload>
+/**
  * Model User
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Account
+ * 
+ */
+export type Account = $Result.DefaultSelection<Prisma.$AccountPayload>
 /**
  * Model UserProfile
  * 
@@ -47,6 +72,15 @@ export namespace $Enums {
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
 
 
+export const AuthProvider: {
+  GOOGLE: 'GOOGLE',
+  APPLE: 'APPLE',
+  EMAIL: 'EMAIL'
+};
+
+export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]
+
+
 export const SubscriptionType: {
   FREE: 'FREE',
   BASIC: 'BASIC',
@@ -65,11 +99,60 @@ export const SubscriptionStatus: {
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
 
+
+export const PaymentStatus: {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentProvider: {
+  STRIPE: 'STRIPE',
+  SSLCOMMERZ: 'SSLCOMMERZ',
+  BKASH: 'BKASH',
+  NAGAD: 'NAGAD',
+  ROCKET: 'ROCKET'
+};
+
+export type PaymentProvider = (typeof PaymentProvider)[keyof typeof PaymentProvider]
+
+
+export const ChatBanType: {
+  TIMEOUT: 'TIMEOUT',
+  TEMP_BAN: 'TEMP_BAN',
+  PERMANENT: 'PERMANENT'
+};
+
+export type ChatBanType = (typeof ChatBanType)[keyof typeof ChatBanType]
+
+
+export const ModerationAction: {
+  USER_BANNED: 'USER_BANNED',
+  USER_UNBANNED: 'USER_UNBANNED',
+  CHAT_MESSAGE_DELETED: 'CHAT_MESSAGE_DELETED',
+  CHAT_USER_MUTED: 'CHAT_USER_MUTED',
+  SUBSCRIPTION_CANCELLED: 'SUBSCRIPTION_CANCELLED',
+  MOVIE_CREATED: 'MOVIE_CREATED',
+  MOVIE_UPDATED: 'MOVIE_UPDATED',
+  MOVIE_DELETED: 'MOVIE_DELETED',
+  USER_ROLE_UPDATED: 'USER_ROLE_UPDATED'
+};
+
+export type ModerationAction = (typeof ModerationAction)[keyof typeof ModerationAction]
+
 }
 
 export type UserRole = $Enums.UserRole
 
 export const UserRole: typeof $Enums.UserRole
+
+export type AuthProvider = $Enums.AuthProvider
+
+export const AuthProvider: typeof $Enums.AuthProvider
 
 export type SubscriptionType = $Enums.SubscriptionType
 
@@ -78,6 +161,22 @@ export const SubscriptionType: typeof $Enums.SubscriptionType
 export type SubscriptionStatus = $Enums.SubscriptionStatus
 
 export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
+
+export type PaymentStatus = $Enums.PaymentStatus
+
+export const PaymentStatus: typeof $Enums.PaymentStatus
+
+export type PaymentProvider = $Enums.PaymentProvider
+
+export const PaymentProvider: typeof $Enums.PaymentProvider
+
+export type ChatBanType = $Enums.ChatBanType
+
+export const ChatBanType: typeof $Enums.ChatBanType
+
+export type ModerationAction = $Enums.ModerationAction
+
+export const ModerationAction: typeof $Enums.ModerationAction
 
 /**
  * ##  Prisma Client ʲˢ
@@ -88,8 +187,8 @@ export const SubscriptionStatus: typeof $Enums.SubscriptionStatus
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more LiveChats
- * const liveChats = await prisma.liveChat.findMany()
+ * // Fetch zero or more Sessions
+ * const sessions = await prisma.session.findMany()
  * ```
  *
  *
@@ -111,8 +210,8 @@ export class PrismaClient<
    * const prisma = new PrismaClient({
    *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
    * })
-   * // Fetch zero or more LiveChats
-   * const liveChats = await prisma.liveChat.findMany()
+   * // Fetch zero or more Sessions
+   * const sessions = await prisma.session.findMany()
    * ```
    *
    *
@@ -201,6 +300,16 @@ export class PrismaClient<
   }>>
 
       /**
+   * `prisma.session`: Exposes CRUD operations for the **Session** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sessions
+    * const sessions = await prisma.session.findMany()
+    * ```
+    */
+  get session(): Prisma.SessionDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.liveChat`: Exposes CRUD operations for the **LiveChat** model.
     * Example usage:
     * ```ts
@@ -211,6 +320,36 @@ export class PrismaClient<
   get liveChat(): Prisma.LiveChatDelegate<ExtArgs, ClientOptions>;
 
   /**
+   * `prisma.chatBan`: Exposes CRUD operations for the **ChatBan** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ChatBans
+    * const chatBans = await prisma.chatBan.findMany()
+    * ```
+    */
+  get chatBan(): Prisma.ChatBanDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.moderationLog`: Exposes CRUD operations for the **ModerationLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ModerationLogs
+    * const moderationLogs = await prisma.moderationLog.findMany()
+    * ```
+    */
+  get moderationLog(): Prisma.ModerationLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.paymentHistory`: Exposes CRUD operations for the **PaymentHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentHistories
+    * const paymentHistories = await prisma.paymentHistory.findMany()
+    * ```
+    */
+  get paymentHistory(): Prisma.PaymentHistoryDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -219,6 +358,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.account`: Exposes CRUD operations for the **Account** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Accounts
+    * const accounts = await prisma.account.findMany()
+    * ```
+    */
+  get account(): Prisma.AccountDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.userProfile`: Exposes CRUD operations for the **UserProfile** model.
@@ -673,8 +822,13 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Session: 'Session',
     LiveChat: 'LiveChat',
+    ChatBan: 'ChatBan',
+    ModerationLog: 'ModerationLog',
+    PaymentHistory: 'PaymentHistory',
     User: 'User',
+    Account: 'Account',
     UserProfile: 'UserProfile',
     Subscription: 'Subscription'
   };
@@ -692,10 +846,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "liveChat" | "user" | "userProfile" | "subscription"
+      modelProps: "session" | "liveChat" | "chatBan" | "moderationLog" | "paymentHistory" | "user" | "account" | "userProfile" | "subscription"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Session: {
+        payload: Prisma.$SessionPayload<ExtArgs>
+        fields: Prisma.SessionFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SessionFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SessionFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findFirst: {
+            args: Prisma.SessionFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SessionFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          findMany: {
+            args: Prisma.SessionFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          create: {
+            args: Prisma.SessionCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          createMany: {
+            args: Prisma.SessionCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SessionCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          delete: {
+            args: Prisma.SessionDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          update: {
+            args: Prisma.SessionUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          deleteMany: {
+            args: Prisma.SessionDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SessionUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SessionUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>[]
+          }
+          upsert: {
+            args: Prisma.SessionUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SessionPayload>
+          }
+          aggregate: {
+            args: Prisma.SessionAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSession>
+          }
+          groupBy: {
+            args: Prisma.SessionGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SessionGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SessionCountArgs<ExtArgs>
+            result: $Utils.Optional<SessionCountAggregateOutputType> | number
+          }
+        }
+      }
       LiveChat: {
         payload: Prisma.$LiveChatPayload<ExtArgs>
         fields: Prisma.LiveChatFieldRefs
@@ -770,6 +998,228 @@ export namespace Prisma {
           }
         }
       }
+      ChatBan: {
+        payload: Prisma.$ChatBanPayload<ExtArgs>
+        fields: Prisma.ChatBanFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ChatBanFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ChatBanFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          findFirst: {
+            args: Prisma.ChatBanFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ChatBanFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          findMany: {
+            args: Prisma.ChatBanFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>[]
+          }
+          create: {
+            args: Prisma.ChatBanCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          createMany: {
+            args: Prisma.ChatBanCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ChatBanCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>[]
+          }
+          delete: {
+            args: Prisma.ChatBanDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          update: {
+            args: Prisma.ChatBanUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          deleteMany: {
+            args: Prisma.ChatBanDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ChatBanUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ChatBanUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>[]
+          }
+          upsert: {
+            args: Prisma.ChatBanUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ChatBanPayload>
+          }
+          aggregate: {
+            args: Prisma.ChatBanAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateChatBan>
+          }
+          groupBy: {
+            args: Prisma.ChatBanGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ChatBanGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ChatBanCountArgs<ExtArgs>
+            result: $Utils.Optional<ChatBanCountAggregateOutputType> | number
+          }
+        }
+      }
+      ModerationLog: {
+        payload: Prisma.$ModerationLogPayload<ExtArgs>
+        fields: Prisma.ModerationLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ModerationLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ModerationLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          findFirst: {
+            args: Prisma.ModerationLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ModerationLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          findMany: {
+            args: Prisma.ModerationLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          create: {
+            args: Prisma.ModerationLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          createMany: {
+            args: Prisma.ModerationLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ModerationLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          delete: {
+            args: Prisma.ModerationLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          update: {
+            args: Prisma.ModerationLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.ModerationLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ModerationLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ModerationLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.ModerationLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ModerationLogPayload>
+          }
+          aggregate: {
+            args: Prisma.ModerationLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateModerationLog>
+          }
+          groupBy: {
+            args: Prisma.ModerationLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ModerationLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ModerationLogCountArgs<ExtArgs>
+            result: $Utils.Optional<ModerationLogCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaymentHistory: {
+        payload: Prisma.$PaymentHistoryPayload<ExtArgs>
+        fields: Prisma.PaymentHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaymentHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.PaymentHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          update: {
+            args: Prisma.PaymentHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaymentHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.PaymentHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentHistory>
+          }
+          groupBy: {
+            args: Prisma.PaymentHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
       User: {
         payload: Prisma.$UserPayload<ExtArgs>
         fields: Prisma.UserFieldRefs
@@ -841,6 +1291,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      Account: {
+        payload: Prisma.$AccountPayload<ExtArgs>
+        fields: Prisma.AccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findFirst: {
+            args: Prisma.AccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          findMany: {
+            args: Prisma.AccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          create: {
+            args: Prisma.AccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          createMany: {
+            args: Prisma.AccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          delete: {
+            args: Prisma.AccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          update: {
+            args: Prisma.AccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.AccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.AccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AccountPayload>
+          }
+          aggregate: {
+            args: Prisma.AccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAccount>
+          }
+          groupBy: {
+            args: Prisma.AccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AccountCountArgs<ExtArgs>
+            result: $Utils.Optional<AccountCountAggregateOutputType> | number
           }
         }
       }
@@ -1100,8 +1624,13 @@ export namespace Prisma {
     comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
+    session?: SessionOmit
     liveChat?: LiveChatOmit
+    chatBan?: ChatBanOmit
+    moderationLog?: ModerationLogOmit
+    paymentHistory?: PaymentHistoryOmit
     user?: UserOmit
+    account?: AccountOmit
     userProfile?: UserProfileOmit
     subscription?: SubscriptionOmit
   }
@@ -1184,13 +1713,27 @@ export namespace Prisma {
    */
 
   export type UserCountOutputType = {
+    accounts: number
+    sessions: number
     subscriptions: number
     messages: number
+    chatBans: number
+    bannedByUsers: number
+    moderatorLogs: number
+    targetUserLogs: number
+    payments: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    accounts?: boolean | UserCountOutputTypeCountAccountsArgs
+    sessions?: boolean | UserCountOutputTypeCountSessionsArgs
     subscriptions?: boolean | UserCountOutputTypeCountSubscriptionsArgs
     messages?: boolean | UserCountOutputTypeCountMessagesArgs
+    chatBans?: boolean | UserCountOutputTypeCountChatBansArgs
+    bannedByUsers?: boolean | UserCountOutputTypeCountBannedByUsersArgs
+    moderatorLogs?: boolean | UserCountOutputTypeCountModeratorLogsArgs
+    targetUserLogs?: boolean | UserCountOutputTypeCountTargetUserLogsArgs
+    payments?: boolean | UserCountOutputTypeCountPaymentsArgs
   }
 
   // Custom InputTypes
@@ -1207,6 +1750,20 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountAccountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountSessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountSubscriptionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: SubscriptionWhereInput
   }
@@ -1218,10 +1775,1165 @@ export namespace Prisma {
     where?: LiveChatWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountChatBansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatBanWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountBannedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatBanWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountModeratorLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountTargetUserLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationLogWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentHistoryWhereInput
+  }
+
+
+  /**
+   * Count Type SubscriptionCountOutputType
+   */
+
+  export type SubscriptionCountOutputType = {
+    payments: number
+  }
+
+  export type SubscriptionCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payments?: boolean | SubscriptionCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SubscriptionCountOutputType without action
+   */
+  export type SubscriptionCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SubscriptionCountOutputType
+     */
+    select?: SubscriptionCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SubscriptionCountOutputType without action
+   */
+  export type SubscriptionCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentHistoryWhereInput
+  }
+
 
   /**
    * Models
    */
+
+  /**
+   * Model Session
+   */
+
+  export type AggregateSession = {
+    _count: SessionCountAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  export type SessionMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    refreshToken: string | null
+    userAgent: string | null
+    ipAddress: string | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SessionMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    refreshToken: string | null
+    userAgent: string | null
+    ipAddress: string | null
+    expiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type SessionCountAggregateOutputType = {
+    id: number
+    userId: number
+    refreshToken: number
+    userAgent: number
+    ipAddress: number
+    expiresAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SessionMinAggregateInputType = {
+    id?: true
+    userId?: true
+    refreshToken?: true
+    userAgent?: true
+    ipAddress?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type SessionMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    refreshToken?: true
+    userAgent?: true
+    ipAddress?: true
+    expiresAt?: true
+    createdAt?: true
+  }
+
+  export type SessionCountAggregateInputType = {
+    id?: true
+    userId?: true
+    refreshToken?: true
+    userAgent?: true
+    ipAddress?: true
+    expiresAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SessionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Session to aggregate.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sessions
+    **/
+    _count?: true | SessionCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SessionMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type GetSessionAggregateType<T extends SessionAggregateArgs> = {
+        [P in keyof T & keyof AggregateSession]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSession[P]>
+      : GetScalarType<T[P], AggregateSession[P]>
+  }
+
+
+
+
+  export type SessionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithAggregationInput | SessionOrderByWithAggregationInput[]
+    by: SessionScalarFieldEnum[] | SessionScalarFieldEnum
+    having?: SessionScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SessionCountAggregateInputType | true
+    _min?: SessionMinAggregateInputType
+    _max?: SessionMaxAggregateInputType
+  }
+
+  export type SessionGroupByOutputType = {
+    id: string
+    userId: string
+    refreshToken: string
+    userAgent: string | null
+    ipAddress: string | null
+    expiresAt: Date
+    createdAt: Date
+    _count: SessionCountAggregateOutputType | null
+    _min: SessionMinAggregateOutputType | null
+    _max: SessionMaxAggregateOutputType | null
+  }
+
+  type GetSessionGroupByPayload<T extends SessionGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SessionGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SessionGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SessionGroupByOutputType[P]>
+            : GetScalarType<T[P], SessionGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SessionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    refreshToken?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    refreshToken?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    refreshToken?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["session"]>
+
+  export type SessionSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    refreshToken?: boolean
+    userAgent?: boolean
+    ipAddress?: boolean
+    expiresAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type SessionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "refreshToken" | "userAgent" | "ipAddress" | "expiresAt" | "createdAt", ExtArgs["result"]["session"]>
+  export type SessionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type SessionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $SessionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Session"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      refreshToken: string
+      userAgent: string | null
+      ipAddress: string | null
+      expiresAt: Date
+      createdAt: Date
+    }, ExtArgs["result"]["session"]>
+    composites: {}
+  }
+
+  type SessionGetPayload<S extends boolean | null | undefined | SessionDefaultArgs> = $Result.GetResult<Prisma.$SessionPayload, S>
+
+  type SessionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SessionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SessionCountAggregateInputType | true
+    }
+
+  export interface SessionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Session'], meta: { name: 'Session' } }
+    /**
+     * Find zero or one Session that matches the filter.
+     * @param {SessionFindUniqueArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SessionFindUniqueArgs>(args: SelectSubset<T, SessionFindUniqueArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Session that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SessionFindUniqueOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SessionFindUniqueOrThrowArgs>(args: SelectSubset<T, SessionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SessionFindFirstArgs>(args?: SelectSubset<T, SessionFindFirstArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Session that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindFirstOrThrowArgs} args - Arguments to find a Session
+     * @example
+     * // Get one Session
+     * const session = await prisma.session.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SessionFindFirstOrThrowArgs>(args?: SelectSubset<T, SessionFindFirstOrThrowArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sessions that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sessions
+     * const sessions = await prisma.session.findMany()
+     * 
+     * // Get first 10 Sessions
+     * const sessions = await prisma.session.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const sessionWithIdOnly = await prisma.session.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SessionFindManyArgs>(args?: SelectSubset<T, SessionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Session.
+     * @param {SessionCreateArgs} args - Arguments to create a Session.
+     * @example
+     * // Create one Session
+     * const Session = await prisma.session.create({
+     *   data: {
+     *     // ... data to create a Session
+     *   }
+     * })
+     * 
+     */
+    create<T extends SessionCreateArgs>(args: SelectSubset<T, SessionCreateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sessions.
+     * @param {SessionCreateManyArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SessionCreateManyArgs>(args?: SelectSubset<T, SessionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sessions and returns the data saved in the database.
+     * @param {SessionCreateManyAndReturnArgs} args - Arguments to create many Sessions.
+     * @example
+     * // Create many Sessions
+     * const session = await prisma.session.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SessionCreateManyAndReturnArgs>(args?: SelectSubset<T, SessionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Session.
+     * @param {SessionDeleteArgs} args - Arguments to delete one Session.
+     * @example
+     * // Delete one Session
+     * const Session = await prisma.session.delete({
+     *   where: {
+     *     // ... filter to delete one Session
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SessionDeleteArgs>(args: SelectSubset<T, SessionDeleteArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Session.
+     * @param {SessionUpdateArgs} args - Arguments to update one Session.
+     * @example
+     * // Update one Session
+     * const session = await prisma.session.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SessionUpdateArgs>(args: SelectSubset<T, SessionUpdateArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sessions.
+     * @param {SessionDeleteManyArgs} args - Arguments to filter Sessions to delete.
+     * @example
+     * // Delete a few Sessions
+     * const { count } = await prisma.session.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SessionDeleteManyArgs>(args?: SelectSubset<T, SessionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SessionUpdateManyArgs>(args: SelectSubset<T, SessionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sessions and returns the data updated in the database.
+     * @param {SessionUpdateManyAndReturnArgs} args - Arguments to update many Sessions.
+     * @example
+     * // Update many Sessions
+     * const session = await prisma.session.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sessions and only return the `id`
+     * const sessionWithIdOnly = await prisma.session.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SessionUpdateManyAndReturnArgs>(args: SelectSubset<T, SessionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Session.
+     * @param {SessionUpsertArgs} args - Arguments to update or create a Session.
+     * @example
+     * // Update or create a Session
+     * const session = await prisma.session.upsert({
+     *   create: {
+     *     // ... data to create a Session
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Session we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SessionUpsertArgs>(args: SelectSubset<T, SessionUpsertArgs<ExtArgs>>): Prisma__SessionClient<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sessions.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionCountArgs} args - Arguments to filter Sessions to count.
+     * @example
+     * // Count the number of Sessions
+     * const count = await prisma.session.count({
+     *   where: {
+     *     // ... the filter for the Sessions we want to count
+     *   }
+     * })
+    **/
+    count<T extends SessionCountArgs>(
+      args?: Subset<T, SessionCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SessionCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SessionAggregateArgs>(args: Subset<T, SessionAggregateArgs>): Prisma.PrismaPromise<GetSessionAggregateType<T>>
+
+    /**
+     * Group by Session.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SessionGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SessionGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SessionGroupByArgs['orderBy'] }
+        : { orderBy?: SessionGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SessionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSessionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Session model
+   */
+  readonly fields: SessionFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Session.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SessionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Session model
+   */
+  interface SessionFieldRefs {
+    readonly id: FieldRef<"Session", 'String'>
+    readonly userId: FieldRef<"Session", 'String'>
+    readonly refreshToken: FieldRef<"Session", 'String'>
+    readonly userAgent: FieldRef<"Session", 'String'>
+    readonly ipAddress: FieldRef<"Session", 'String'>
+    readonly expiresAt: FieldRef<"Session", 'DateTime'>
+    readonly createdAt: FieldRef<"Session", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Session findUnique
+   */
+  export type SessionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findUniqueOrThrow
+   */
+  export type SessionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session findFirst
+   */
+  export type SessionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findFirstOrThrow
+   */
+  export type SessionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Session to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session findMany
+   */
+  export type SessionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter, which Sessions to fetch.
+     */
+    where?: SessionWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sessions to fetch.
+     */
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sessions.
+     */
+    cursor?: SessionWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sessions from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sessions.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sessions.
+     */
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
+   * Session create
+   */
+  export type SessionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Session.
+     */
+    data: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+  }
+
+  /**
+   * Session createMany
+   */
+  export type SessionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Session createManyAndReturn
+   */
+  export type SessionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sessions.
+     */
+    data: SessionCreateManyInput | SessionCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session update
+   */
+  export type SessionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Session.
+     */
+    data: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+    /**
+     * Choose, which Session to update.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session updateMany
+   */
+  export type SessionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session updateManyAndReturn
+   */
+  export type SessionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * The data used to update Sessions.
+     */
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyInput>
+    /**
+     * Filter which Sessions to update
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Session upsert
+   */
+  export type SessionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Session to update in case it exists.
+     */
+    where: SessionWhereUniqueInput
+    /**
+     * In case the Session found by the `where` argument doesn't exist, create a new Session with this data.
+     */
+    create: XOR<SessionCreateInput, SessionUncheckedCreateInput>
+    /**
+     * In case the Session was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SessionUpdateInput, SessionUncheckedUpdateInput>
+  }
+
+  /**
+   * Session delete
+   */
+  export type SessionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    /**
+     * Filter which Session to delete.
+     */
+    where: SessionWhereUniqueInput
+  }
+
+  /**
+   * Session deleteMany
+   */
+  export type SessionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sessions to delete
+     */
+    where?: SessionWhereInput
+    /**
+     * Limit how many Sessions to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Session without action
+   */
+  export type SessionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+  }
+
 
   /**
    * Model LiveChat
@@ -2300,6 +4012,3456 @@ export namespace Prisma {
 
 
   /**
+   * Model ChatBan
+   */
+
+  export type AggregateChatBan = {
+    _count: ChatBanCountAggregateOutputType | null
+    _min: ChatBanMinAggregateOutputType | null
+    _max: ChatBanMaxAggregateOutputType | null
+  }
+
+  export type ChatBanMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    bannedById: string | null
+    type: $Enums.ChatBanType | null
+    reason: string | null
+    expiresAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ChatBanMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    bannedById: string | null
+    type: $Enums.ChatBanType | null
+    reason: string | null
+    expiresAt: Date | null
+    isActive: boolean | null
+    createdAt: Date | null
+  }
+
+  export type ChatBanCountAggregateOutputType = {
+    id: number
+    userId: number
+    bannedById: number
+    type: number
+    reason: number
+    expiresAt: number
+    isActive: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ChatBanMinAggregateInputType = {
+    id?: true
+    userId?: true
+    bannedById?: true
+    type?: true
+    reason?: true
+    expiresAt?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type ChatBanMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    bannedById?: true
+    type?: true
+    reason?: true
+    expiresAt?: true
+    isActive?: true
+    createdAt?: true
+  }
+
+  export type ChatBanCountAggregateInputType = {
+    id?: true
+    userId?: true
+    bannedById?: true
+    type?: true
+    reason?: true
+    expiresAt?: true
+    isActive?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ChatBanAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatBan to aggregate.
+     */
+    where?: ChatBanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatBans to fetch.
+     */
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ChatBanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatBans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatBans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ChatBans
+    **/
+    _count?: true | ChatBanCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ChatBanMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ChatBanMaxAggregateInputType
+  }
+
+  export type GetChatBanAggregateType<T extends ChatBanAggregateArgs> = {
+        [P in keyof T & keyof AggregateChatBan]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateChatBan[P]>
+      : GetScalarType<T[P], AggregateChatBan[P]>
+  }
+
+
+
+
+  export type ChatBanGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ChatBanWhereInput
+    orderBy?: ChatBanOrderByWithAggregationInput | ChatBanOrderByWithAggregationInput[]
+    by: ChatBanScalarFieldEnum[] | ChatBanScalarFieldEnum
+    having?: ChatBanScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ChatBanCountAggregateInputType | true
+    _min?: ChatBanMinAggregateInputType
+    _max?: ChatBanMaxAggregateInputType
+  }
+
+  export type ChatBanGroupByOutputType = {
+    id: string
+    userId: string
+    bannedById: string
+    type: $Enums.ChatBanType
+    reason: string | null
+    expiresAt: Date | null
+    isActive: boolean
+    createdAt: Date
+    _count: ChatBanCountAggregateOutputType | null
+    _min: ChatBanMinAggregateOutputType | null
+    _max: ChatBanMaxAggregateOutputType | null
+  }
+
+  type GetChatBanGroupByPayload<T extends ChatBanGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ChatBanGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ChatBanGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ChatBanGroupByOutputType[P]>
+            : GetScalarType<T[P], ChatBanGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ChatBanSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bannedById?: boolean
+    type?: boolean
+    reason?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatBan"]>
+
+  export type ChatBanSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bannedById?: boolean
+    type?: boolean
+    reason?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatBan"]>
+
+  export type ChatBanSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    bannedById?: boolean
+    type?: boolean
+    reason?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["chatBan"]>
+
+  export type ChatBanSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    bannedById?: boolean
+    type?: boolean
+    reason?: boolean
+    expiresAt?: boolean
+    isActive?: boolean
+    createdAt?: boolean
+  }
+
+  export type ChatBanOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "bannedById" | "type" | "reason" | "expiresAt" | "isActive" | "createdAt", ExtArgs["result"]["chatBan"]>
+  export type ChatBanInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatBanIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ChatBanIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    bannedBy?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ChatBanPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ChatBan"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      bannedBy: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      bannedById: string
+      type: $Enums.ChatBanType
+      reason: string | null
+      expiresAt: Date | null
+      isActive: boolean
+      createdAt: Date
+    }, ExtArgs["result"]["chatBan"]>
+    composites: {}
+  }
+
+  type ChatBanGetPayload<S extends boolean | null | undefined | ChatBanDefaultArgs> = $Result.GetResult<Prisma.$ChatBanPayload, S>
+
+  type ChatBanCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ChatBanFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ChatBanCountAggregateInputType | true
+    }
+
+  export interface ChatBanDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ChatBan'], meta: { name: 'ChatBan' } }
+    /**
+     * Find zero or one ChatBan that matches the filter.
+     * @param {ChatBanFindUniqueArgs} args - Arguments to find a ChatBan
+     * @example
+     * // Get one ChatBan
+     * const chatBan = await prisma.chatBan.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ChatBanFindUniqueArgs>(args: SelectSubset<T, ChatBanFindUniqueArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ChatBan that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ChatBanFindUniqueOrThrowArgs} args - Arguments to find a ChatBan
+     * @example
+     * // Get one ChatBan
+     * const chatBan = await prisma.chatBan.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ChatBanFindUniqueOrThrowArgs>(args: SelectSubset<T, ChatBanFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatBan that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanFindFirstArgs} args - Arguments to find a ChatBan
+     * @example
+     * // Get one ChatBan
+     * const chatBan = await prisma.chatBan.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ChatBanFindFirstArgs>(args?: SelectSubset<T, ChatBanFindFirstArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ChatBan that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanFindFirstOrThrowArgs} args - Arguments to find a ChatBan
+     * @example
+     * // Get one ChatBan
+     * const chatBan = await prisma.chatBan.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ChatBanFindFirstOrThrowArgs>(args?: SelectSubset<T, ChatBanFindFirstOrThrowArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ChatBans that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ChatBans
+     * const chatBans = await prisma.chatBan.findMany()
+     * 
+     * // Get first 10 ChatBans
+     * const chatBans = await prisma.chatBan.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const chatBanWithIdOnly = await prisma.chatBan.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ChatBanFindManyArgs>(args?: SelectSubset<T, ChatBanFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ChatBan.
+     * @param {ChatBanCreateArgs} args - Arguments to create a ChatBan.
+     * @example
+     * // Create one ChatBan
+     * const ChatBan = await prisma.chatBan.create({
+     *   data: {
+     *     // ... data to create a ChatBan
+     *   }
+     * })
+     * 
+     */
+    create<T extends ChatBanCreateArgs>(args: SelectSubset<T, ChatBanCreateArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ChatBans.
+     * @param {ChatBanCreateManyArgs} args - Arguments to create many ChatBans.
+     * @example
+     * // Create many ChatBans
+     * const chatBan = await prisma.chatBan.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ChatBanCreateManyArgs>(args?: SelectSubset<T, ChatBanCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ChatBans and returns the data saved in the database.
+     * @param {ChatBanCreateManyAndReturnArgs} args - Arguments to create many ChatBans.
+     * @example
+     * // Create many ChatBans
+     * const chatBan = await prisma.chatBan.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ChatBans and only return the `id`
+     * const chatBanWithIdOnly = await prisma.chatBan.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ChatBanCreateManyAndReturnArgs>(args?: SelectSubset<T, ChatBanCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ChatBan.
+     * @param {ChatBanDeleteArgs} args - Arguments to delete one ChatBan.
+     * @example
+     * // Delete one ChatBan
+     * const ChatBan = await prisma.chatBan.delete({
+     *   where: {
+     *     // ... filter to delete one ChatBan
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ChatBanDeleteArgs>(args: SelectSubset<T, ChatBanDeleteArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ChatBan.
+     * @param {ChatBanUpdateArgs} args - Arguments to update one ChatBan.
+     * @example
+     * // Update one ChatBan
+     * const chatBan = await prisma.chatBan.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ChatBanUpdateArgs>(args: SelectSubset<T, ChatBanUpdateArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ChatBans.
+     * @param {ChatBanDeleteManyArgs} args - Arguments to filter ChatBans to delete.
+     * @example
+     * // Delete a few ChatBans
+     * const { count } = await prisma.chatBan.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ChatBanDeleteManyArgs>(args?: SelectSubset<T, ChatBanDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatBans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ChatBans
+     * const chatBan = await prisma.chatBan.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ChatBanUpdateManyArgs>(args: SelectSubset<T, ChatBanUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ChatBans and returns the data updated in the database.
+     * @param {ChatBanUpdateManyAndReturnArgs} args - Arguments to update many ChatBans.
+     * @example
+     * // Update many ChatBans
+     * const chatBan = await prisma.chatBan.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ChatBans and only return the `id`
+     * const chatBanWithIdOnly = await prisma.chatBan.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ChatBanUpdateManyAndReturnArgs>(args: SelectSubset<T, ChatBanUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ChatBan.
+     * @param {ChatBanUpsertArgs} args - Arguments to update or create a ChatBan.
+     * @example
+     * // Update or create a ChatBan
+     * const chatBan = await prisma.chatBan.upsert({
+     *   create: {
+     *     // ... data to create a ChatBan
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ChatBan we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ChatBanUpsertArgs>(args: SelectSubset<T, ChatBanUpsertArgs<ExtArgs>>): Prisma__ChatBanClient<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ChatBans.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanCountArgs} args - Arguments to filter ChatBans to count.
+     * @example
+     * // Count the number of ChatBans
+     * const count = await prisma.chatBan.count({
+     *   where: {
+     *     // ... the filter for the ChatBans we want to count
+     *   }
+     * })
+    **/
+    count<T extends ChatBanCountArgs>(
+      args?: Subset<T, ChatBanCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ChatBanCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ChatBan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ChatBanAggregateArgs>(args: Subset<T, ChatBanAggregateArgs>): Prisma.PrismaPromise<GetChatBanAggregateType<T>>
+
+    /**
+     * Group by ChatBan.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ChatBanGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ChatBanGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ChatBanGroupByArgs['orderBy'] }
+        : { orderBy?: ChatBanGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ChatBanGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetChatBanGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ChatBan model
+   */
+  readonly fields: ChatBanFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ChatBan.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ChatBanClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    bannedBy<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ChatBan model
+   */
+  interface ChatBanFieldRefs {
+    readonly id: FieldRef<"ChatBan", 'String'>
+    readonly userId: FieldRef<"ChatBan", 'String'>
+    readonly bannedById: FieldRef<"ChatBan", 'String'>
+    readonly type: FieldRef<"ChatBan", 'ChatBanType'>
+    readonly reason: FieldRef<"ChatBan", 'String'>
+    readonly expiresAt: FieldRef<"ChatBan", 'DateTime'>
+    readonly isActive: FieldRef<"ChatBan", 'Boolean'>
+    readonly createdAt: FieldRef<"ChatBan", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ChatBan findUnique
+   */
+  export type ChatBanFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatBan to fetch.
+     */
+    where: ChatBanWhereUniqueInput
+  }
+
+  /**
+   * ChatBan findUniqueOrThrow
+   */
+  export type ChatBanFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatBan to fetch.
+     */
+    where: ChatBanWhereUniqueInput
+  }
+
+  /**
+   * ChatBan findFirst
+   */
+  export type ChatBanFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatBan to fetch.
+     */
+    where?: ChatBanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatBans to fetch.
+     */
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatBans.
+     */
+    cursor?: ChatBanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatBans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatBans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatBans.
+     */
+    distinct?: ChatBanScalarFieldEnum | ChatBanScalarFieldEnum[]
+  }
+
+  /**
+   * ChatBan findFirstOrThrow
+   */
+  export type ChatBanFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatBan to fetch.
+     */
+    where?: ChatBanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatBans to fetch.
+     */
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ChatBans.
+     */
+    cursor?: ChatBanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatBans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatBans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatBans.
+     */
+    distinct?: ChatBanScalarFieldEnum | ChatBanScalarFieldEnum[]
+  }
+
+  /**
+   * ChatBan findMany
+   */
+  export type ChatBanFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter, which ChatBans to fetch.
+     */
+    where?: ChatBanWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ChatBans to fetch.
+     */
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ChatBans.
+     */
+    cursor?: ChatBanWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ChatBans from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ChatBans.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ChatBans.
+     */
+    distinct?: ChatBanScalarFieldEnum | ChatBanScalarFieldEnum[]
+  }
+
+  /**
+   * ChatBan create
+   */
+  export type ChatBanCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ChatBan.
+     */
+    data: XOR<ChatBanCreateInput, ChatBanUncheckedCreateInput>
+  }
+
+  /**
+   * ChatBan createMany
+   */
+  export type ChatBanCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ChatBans.
+     */
+    data: ChatBanCreateManyInput | ChatBanCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ChatBan createManyAndReturn
+   */
+  export type ChatBanCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * The data used to create many ChatBans.
+     */
+    data: ChatBanCreateManyInput | ChatBanCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatBan update
+   */
+  export type ChatBanUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ChatBan.
+     */
+    data: XOR<ChatBanUpdateInput, ChatBanUncheckedUpdateInput>
+    /**
+     * Choose, which ChatBan to update.
+     */
+    where: ChatBanWhereUniqueInput
+  }
+
+  /**
+   * ChatBan updateMany
+   */
+  export type ChatBanUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ChatBans.
+     */
+    data: XOR<ChatBanUpdateManyMutationInput, ChatBanUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatBans to update
+     */
+    where?: ChatBanWhereInput
+    /**
+     * Limit how many ChatBans to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatBan updateManyAndReturn
+   */
+  export type ChatBanUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * The data used to update ChatBans.
+     */
+    data: XOR<ChatBanUpdateManyMutationInput, ChatBanUncheckedUpdateManyInput>
+    /**
+     * Filter which ChatBans to update
+     */
+    where?: ChatBanWhereInput
+    /**
+     * Limit how many ChatBans to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ChatBan upsert
+   */
+  export type ChatBanUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ChatBan to update in case it exists.
+     */
+    where: ChatBanWhereUniqueInput
+    /**
+     * In case the ChatBan found by the `where` argument doesn't exist, create a new ChatBan with this data.
+     */
+    create: XOR<ChatBanCreateInput, ChatBanUncheckedCreateInput>
+    /**
+     * In case the ChatBan was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ChatBanUpdateInput, ChatBanUncheckedUpdateInput>
+  }
+
+  /**
+   * ChatBan delete
+   */
+  export type ChatBanDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    /**
+     * Filter which ChatBan to delete.
+     */
+    where: ChatBanWhereUniqueInput
+  }
+
+  /**
+   * ChatBan deleteMany
+   */
+  export type ChatBanDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ChatBans to delete
+     */
+    where?: ChatBanWhereInput
+    /**
+     * Limit how many ChatBans to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ChatBan without action
+   */
+  export type ChatBanDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ModerationLog
+   */
+
+  export type AggregateModerationLog = {
+    _count: ModerationLogCountAggregateOutputType | null
+    _min: ModerationLogMinAggregateOutputType | null
+    _max: ModerationLogMaxAggregateOutputType | null
+  }
+
+  export type ModerationLogMinAggregateOutputType = {
+    id: string | null
+    moderatorId: string | null
+    targetUserId: string | null
+    action: $Enums.ModerationAction | null
+    description: string | null
+    ipAddress: string | null
+    createdAt: Date | null
+  }
+
+  export type ModerationLogMaxAggregateOutputType = {
+    id: string | null
+    moderatorId: string | null
+    targetUserId: string | null
+    action: $Enums.ModerationAction | null
+    description: string | null
+    ipAddress: string | null
+    createdAt: Date | null
+  }
+
+  export type ModerationLogCountAggregateOutputType = {
+    id: number
+    moderatorId: number
+    targetUserId: number
+    action: number
+    description: number
+    ipAddress: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ModerationLogMinAggregateInputType = {
+    id?: true
+    moderatorId?: true
+    targetUserId?: true
+    action?: true
+    description?: true
+    ipAddress?: true
+    createdAt?: true
+  }
+
+  export type ModerationLogMaxAggregateInputType = {
+    id?: true
+    moderatorId?: true
+    targetUserId?: true
+    action?: true
+    description?: true
+    ipAddress?: true
+    createdAt?: true
+  }
+
+  export type ModerationLogCountAggregateInputType = {
+    id?: true
+    moderatorId?: true
+    targetUserId?: true
+    action?: true
+    description?: true
+    ipAddress?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ModerationLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationLog to aggregate.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ModerationLogs
+    **/
+    _count?: true | ModerationLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ModerationLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ModerationLogMaxAggregateInputType
+  }
+
+  export type GetModerationLogAggregateType<T extends ModerationLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateModerationLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateModerationLog[P]>
+      : GetScalarType<T[P], AggregateModerationLog[P]>
+  }
+
+
+
+
+  export type ModerationLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ModerationLogWhereInput
+    orderBy?: ModerationLogOrderByWithAggregationInput | ModerationLogOrderByWithAggregationInput[]
+    by: ModerationLogScalarFieldEnum[] | ModerationLogScalarFieldEnum
+    having?: ModerationLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ModerationLogCountAggregateInputType | true
+    _min?: ModerationLogMinAggregateInputType
+    _max?: ModerationLogMaxAggregateInputType
+  }
+
+  export type ModerationLogGroupByOutputType = {
+    id: string
+    moderatorId: string
+    targetUserId: string | null
+    action: $Enums.ModerationAction
+    description: string | null
+    ipAddress: string | null
+    createdAt: Date
+    _count: ModerationLogCountAggregateOutputType | null
+    _min: ModerationLogMinAggregateOutputType | null
+    _max: ModerationLogMaxAggregateOutputType | null
+  }
+
+  type GetModerationLogGroupByPayload<T extends ModerationLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ModerationLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ModerationLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ModerationLogGroupByOutputType[P]>
+            : GetScalarType<T[P], ModerationLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ModerationLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    moderatorId?: boolean
+    targetUserId?: boolean
+    action?: boolean
+    description?: boolean
+    ipAddress?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    moderatorId?: boolean
+    targetUserId?: boolean
+    action?: boolean
+    description?: boolean
+    ipAddress?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    moderatorId?: boolean
+    targetUserId?: boolean
+    action?: boolean
+    description?: boolean
+    ipAddress?: boolean
+    createdAt?: boolean
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }, ExtArgs["result"]["moderationLog"]>
+
+  export type ModerationLogSelectScalar = {
+    id?: boolean
+    moderatorId?: boolean
+    targetUserId?: boolean
+    action?: boolean
+    description?: boolean
+    ipAddress?: boolean
+    createdAt?: boolean
+  }
+
+  export type ModerationLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "moderatorId" | "targetUserId" | "action" | "description" | "ipAddress" | "createdAt", ExtArgs["result"]["moderationLog"]>
+  export type ModerationLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }
+  export type ModerationLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }
+  export type ModerationLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    moderator?: boolean | UserDefaultArgs<ExtArgs>
+    targetUser?: boolean | ModerationLog$targetUserArgs<ExtArgs>
+  }
+
+  export type $ModerationLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ModerationLog"
+    objects: {
+      moderator: Prisma.$UserPayload<ExtArgs>
+      targetUser: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      moderatorId: string
+      targetUserId: string | null
+      action: $Enums.ModerationAction
+      description: string | null
+      ipAddress: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["moderationLog"]>
+    composites: {}
+  }
+
+  type ModerationLogGetPayload<S extends boolean | null | undefined | ModerationLogDefaultArgs> = $Result.GetResult<Prisma.$ModerationLogPayload, S>
+
+  type ModerationLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ModerationLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ModerationLogCountAggregateInputType | true
+    }
+
+  export interface ModerationLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ModerationLog'], meta: { name: 'ModerationLog' } }
+    /**
+     * Find zero or one ModerationLog that matches the filter.
+     * @param {ModerationLogFindUniqueArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ModerationLogFindUniqueArgs>(args: SelectSubset<T, ModerationLogFindUniqueArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ModerationLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ModerationLogFindUniqueOrThrowArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ModerationLogFindUniqueOrThrowArgs>(args: SelectSubset<T, ModerationLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindFirstArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ModerationLogFindFirstArgs>(args?: SelectSubset<T, ModerationLogFindFirstArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ModerationLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindFirstOrThrowArgs} args - Arguments to find a ModerationLog
+     * @example
+     * // Get one ModerationLog
+     * const moderationLog = await prisma.moderationLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ModerationLogFindFirstOrThrowArgs>(args?: SelectSubset<T, ModerationLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ModerationLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ModerationLogs
+     * const moderationLogs = await prisma.moderationLog.findMany()
+     * 
+     * // Get first 10 ModerationLogs
+     * const moderationLogs = await prisma.moderationLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ModerationLogFindManyArgs>(args?: SelectSubset<T, ModerationLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ModerationLog.
+     * @param {ModerationLogCreateArgs} args - Arguments to create a ModerationLog.
+     * @example
+     * // Create one ModerationLog
+     * const ModerationLog = await prisma.moderationLog.create({
+     *   data: {
+     *     // ... data to create a ModerationLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends ModerationLogCreateArgs>(args: SelectSubset<T, ModerationLogCreateArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ModerationLogs.
+     * @param {ModerationLogCreateManyArgs} args - Arguments to create many ModerationLogs.
+     * @example
+     * // Create many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ModerationLogCreateManyArgs>(args?: SelectSubset<T, ModerationLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ModerationLogs and returns the data saved in the database.
+     * @param {ModerationLogCreateManyAndReturnArgs} args - Arguments to create many ModerationLogs.
+     * @example
+     * // Create many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ModerationLogs and only return the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ModerationLogCreateManyAndReturnArgs>(args?: SelectSubset<T, ModerationLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ModerationLog.
+     * @param {ModerationLogDeleteArgs} args - Arguments to delete one ModerationLog.
+     * @example
+     * // Delete one ModerationLog
+     * const ModerationLog = await prisma.moderationLog.delete({
+     *   where: {
+     *     // ... filter to delete one ModerationLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ModerationLogDeleteArgs>(args: SelectSubset<T, ModerationLogDeleteArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ModerationLog.
+     * @param {ModerationLogUpdateArgs} args - Arguments to update one ModerationLog.
+     * @example
+     * // Update one ModerationLog
+     * const moderationLog = await prisma.moderationLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ModerationLogUpdateArgs>(args: SelectSubset<T, ModerationLogUpdateArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ModerationLogs.
+     * @param {ModerationLogDeleteManyArgs} args - Arguments to filter ModerationLogs to delete.
+     * @example
+     * // Delete a few ModerationLogs
+     * const { count } = await prisma.moderationLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ModerationLogDeleteManyArgs>(args?: SelectSubset<T, ModerationLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ModerationLogUpdateManyArgs>(args: SelectSubset<T, ModerationLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ModerationLogs and returns the data updated in the database.
+     * @param {ModerationLogUpdateManyAndReturnArgs} args - Arguments to update many ModerationLogs.
+     * @example
+     * // Update many ModerationLogs
+     * const moderationLog = await prisma.moderationLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ModerationLogs and only return the `id`
+     * const moderationLogWithIdOnly = await prisma.moderationLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ModerationLogUpdateManyAndReturnArgs>(args: SelectSubset<T, ModerationLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ModerationLog.
+     * @param {ModerationLogUpsertArgs} args - Arguments to update or create a ModerationLog.
+     * @example
+     * // Update or create a ModerationLog
+     * const moderationLog = await prisma.moderationLog.upsert({
+     *   create: {
+     *     // ... data to create a ModerationLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ModerationLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ModerationLogUpsertArgs>(args: SelectSubset<T, ModerationLogUpsertArgs<ExtArgs>>): Prisma__ModerationLogClient<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ModerationLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogCountArgs} args - Arguments to filter ModerationLogs to count.
+     * @example
+     * // Count the number of ModerationLogs
+     * const count = await prisma.moderationLog.count({
+     *   where: {
+     *     // ... the filter for the ModerationLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ModerationLogCountArgs>(
+      args?: Subset<T, ModerationLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ModerationLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ModerationLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ModerationLogAggregateArgs>(args: Subset<T, ModerationLogAggregateArgs>): Prisma.PrismaPromise<GetModerationLogAggregateType<T>>
+
+    /**
+     * Group by ModerationLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ModerationLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ModerationLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ModerationLogGroupByArgs['orderBy'] }
+        : { orderBy?: ModerationLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ModerationLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetModerationLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ModerationLog model
+   */
+  readonly fields: ModerationLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ModerationLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ModerationLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    moderator<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    targetUser<T extends ModerationLog$targetUserArgs<ExtArgs> = {}>(args?: Subset<T, ModerationLog$targetUserArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ModerationLog model
+   */
+  interface ModerationLogFieldRefs {
+    readonly id: FieldRef<"ModerationLog", 'String'>
+    readonly moderatorId: FieldRef<"ModerationLog", 'String'>
+    readonly targetUserId: FieldRef<"ModerationLog", 'String'>
+    readonly action: FieldRef<"ModerationLog", 'ModerationAction'>
+    readonly description: FieldRef<"ModerationLog", 'String'>
+    readonly ipAddress: FieldRef<"ModerationLog", 'String'>
+    readonly createdAt: FieldRef<"ModerationLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ModerationLog findUnique
+   */
+  export type ModerationLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog findUniqueOrThrow
+   */
+  export type ModerationLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog findFirst
+   */
+  export type ModerationLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog findFirstOrThrow
+   */
+  export type ModerationLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLog to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog findMany
+   */
+  export type ModerationLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter, which ModerationLogs to fetch.
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ModerationLogs to fetch.
+     */
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ModerationLogs.
+     */
+    cursor?: ModerationLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ModerationLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ModerationLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ModerationLogs.
+     */
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * ModerationLog create
+   */
+  export type ModerationLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ModerationLog.
+     */
+    data: XOR<ModerationLogCreateInput, ModerationLogUncheckedCreateInput>
+  }
+
+  /**
+   * ModerationLog createMany
+   */
+  export type ModerationLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ModerationLogs.
+     */
+    data: ModerationLogCreateManyInput | ModerationLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ModerationLog createManyAndReturn
+   */
+  export type ModerationLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many ModerationLogs.
+     */
+    data: ModerationLogCreateManyInput | ModerationLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationLog update
+   */
+  export type ModerationLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ModerationLog.
+     */
+    data: XOR<ModerationLogUpdateInput, ModerationLogUncheckedUpdateInput>
+    /**
+     * Choose, which ModerationLog to update.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog updateMany
+   */
+  export type ModerationLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ModerationLogs.
+     */
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationLogs to update
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationLog updateManyAndReturn
+   */
+  export type ModerationLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * The data used to update ModerationLogs.
+     */
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyInput>
+    /**
+     * Filter which ModerationLogs to update
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ModerationLog upsert
+   */
+  export type ModerationLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ModerationLog to update in case it exists.
+     */
+    where: ModerationLogWhereUniqueInput
+    /**
+     * In case the ModerationLog found by the `where` argument doesn't exist, create a new ModerationLog with this data.
+     */
+    create: XOR<ModerationLogCreateInput, ModerationLogUncheckedCreateInput>
+    /**
+     * In case the ModerationLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ModerationLogUpdateInput, ModerationLogUncheckedUpdateInput>
+  }
+
+  /**
+   * ModerationLog delete
+   */
+  export type ModerationLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    /**
+     * Filter which ModerationLog to delete.
+     */
+    where: ModerationLogWhereUniqueInput
+  }
+
+  /**
+   * ModerationLog deleteMany
+   */
+  export type ModerationLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ModerationLogs to delete
+     */
+    where?: ModerationLogWhereInput
+    /**
+     * Limit how many ModerationLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ModerationLog.targetUser
+   */
+  export type ModerationLog$targetUserArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * ModerationLog without action
+   */
+  export type ModerationLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PaymentHistory
+   */
+
+  export type AggregatePaymentHistory = {
+    _count: PaymentHistoryCountAggregateOutputType | null
+    _avg: PaymentHistoryAvgAggregateOutputType | null
+    _sum: PaymentHistorySumAggregateOutputType | null
+    _min: PaymentHistoryMinAggregateOutputType | null
+    _max: PaymentHistoryMaxAggregateOutputType | null
+  }
+
+  export type PaymentHistoryAvgAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type PaymentHistorySumAggregateOutputType = {
+    amount: Decimal | null
+  }
+
+  export type PaymentHistoryMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    subscriptionId: string | null
+    provider: $Enums.PaymentProvider | null
+    transactionId: string | null
+    amount: Decimal | null
+    currency: string | null
+    status: $Enums.PaymentStatus | null
+    paymentMethod: string | null
+    paidAt: Date | null
+    failureReason: string | null
+    createdAt: Date | null
+  }
+
+  export type PaymentHistoryMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    subscriptionId: string | null
+    provider: $Enums.PaymentProvider | null
+    transactionId: string | null
+    amount: Decimal | null
+    currency: string | null
+    status: $Enums.PaymentStatus | null
+    paymentMethod: string | null
+    paidAt: Date | null
+    failureReason: string | null
+    createdAt: Date | null
+  }
+
+  export type PaymentHistoryCountAggregateOutputType = {
+    id: number
+    userId: number
+    subscriptionId: number
+    provider: number
+    transactionId: number
+    amount: number
+    currency: number
+    status: number
+    paymentMethod: number
+    paidAt: number
+    failureReason: number
+    metadata: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PaymentHistoryAvgAggregateInputType = {
+    amount?: true
+  }
+
+  export type PaymentHistorySumAggregateInputType = {
+    amount?: true
+  }
+
+  export type PaymentHistoryMinAggregateInputType = {
+    id?: true
+    userId?: true
+    subscriptionId?: true
+    provider?: true
+    transactionId?: true
+    amount?: true
+    currency?: true
+    status?: true
+    paymentMethod?: true
+    paidAt?: true
+    failureReason?: true
+    createdAt?: true
+  }
+
+  export type PaymentHistoryMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    subscriptionId?: true
+    provider?: true
+    transactionId?: true
+    amount?: true
+    currency?: true
+    status?: true
+    paymentMethod?: true
+    paidAt?: true
+    failureReason?: true
+    createdAt?: true
+  }
+
+  export type PaymentHistoryCountAggregateInputType = {
+    id?: true
+    userId?: true
+    subscriptionId?: true
+    provider?: true
+    transactionId?: true
+    amount?: true
+    currency?: true
+    status?: true
+    paymentMethod?: true
+    paidAt?: true
+    failureReason?: true
+    metadata?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PaymentHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentHistory to aggregate.
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentHistories to fetch.
+     */
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentHistories
+    **/
+    _count?: true | PaymentHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PaymentHistoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PaymentHistorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentHistoryMaxAggregateInputType
+  }
+
+  export type GetPaymentHistoryAggregateType<T extends PaymentHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentHistory[P]>
+      : GetScalarType<T[P], AggregatePaymentHistory[P]>
+  }
+
+
+
+
+  export type PaymentHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentHistoryWhereInput
+    orderBy?: PaymentHistoryOrderByWithAggregationInput | PaymentHistoryOrderByWithAggregationInput[]
+    by: PaymentHistoryScalarFieldEnum[] | PaymentHistoryScalarFieldEnum
+    having?: PaymentHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentHistoryCountAggregateInputType | true
+    _avg?: PaymentHistoryAvgAggregateInputType
+    _sum?: PaymentHistorySumAggregateInputType
+    _min?: PaymentHistoryMinAggregateInputType
+    _max?: PaymentHistoryMaxAggregateInputType
+  }
+
+  export type PaymentHistoryGroupByOutputType = {
+    id: string
+    userId: string
+    subscriptionId: string | null
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal
+    currency: string
+    status: $Enums.PaymentStatus
+    paymentMethod: string | null
+    paidAt: Date | null
+    failureReason: string | null
+    metadata: JsonValue | null
+    createdAt: Date
+    _count: PaymentHistoryCountAggregateOutputType | null
+    _avg: PaymentHistoryAvgAggregateOutputType | null
+    _sum: PaymentHistorySumAggregateOutputType | null
+    _min: PaymentHistoryMinAggregateOutputType | null
+    _max: PaymentHistoryMaxAggregateOutputType | null
+  }
+
+  type GetPaymentHistoryGroupByPayload<T extends PaymentHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    subscriptionId?: boolean
+    provider?: boolean
+    transactionId?: boolean
+    amount?: boolean
+    currency?: boolean
+    status?: boolean
+    paymentMethod?: boolean
+    paidAt?: boolean
+    failureReason?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentHistory"]>
+
+  export type PaymentHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    subscriptionId?: boolean
+    provider?: boolean
+    transactionId?: boolean
+    amount?: boolean
+    currency?: boolean
+    status?: boolean
+    paymentMethod?: boolean
+    paidAt?: boolean
+    failureReason?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentHistory"]>
+
+  export type PaymentHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    subscriptionId?: boolean
+    provider?: boolean
+    transactionId?: boolean
+    amount?: boolean
+    currency?: boolean
+    status?: boolean
+    paymentMethod?: boolean
+    paidAt?: boolean
+    failureReason?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentHistory"]>
+
+  export type PaymentHistorySelectScalar = {
+    id?: boolean
+    userId?: boolean
+    subscriptionId?: boolean
+    provider?: boolean
+    transactionId?: boolean
+    amount?: boolean
+    currency?: boolean
+    status?: boolean
+    paymentMethod?: boolean
+    paidAt?: boolean
+    failureReason?: boolean
+    metadata?: boolean
+    createdAt?: boolean
+  }
+
+  export type PaymentHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "subscriptionId" | "provider" | "transactionId" | "amount" | "currency" | "status" | "paymentMethod" | "paidAt" | "failureReason" | "metadata" | "createdAt", ExtArgs["result"]["paymentHistory"]>
+  export type PaymentHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }
+  export type PaymentHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }
+  export type PaymentHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    subscription?: boolean | PaymentHistory$subscriptionArgs<ExtArgs>
+  }
+
+  export type $PaymentHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentHistory"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      subscriptionId: string | null
+      provider: $Enums.PaymentProvider
+      transactionId: string
+      amount: Prisma.Decimal
+      currency: string
+      status: $Enums.PaymentStatus
+      paymentMethod: string | null
+      paidAt: Date | null
+      failureReason: string | null
+      metadata: Prisma.JsonValue | null
+      createdAt: Date
+    }, ExtArgs["result"]["paymentHistory"]>
+    composites: {}
+  }
+
+  type PaymentHistoryGetPayload<S extends boolean | null | undefined | PaymentHistoryDefaultArgs> = $Result.GetResult<Prisma.$PaymentHistoryPayload, S>
+
+  type PaymentHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentHistoryCountAggregateInputType | true
+    }
+
+  export interface PaymentHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentHistory'], meta: { name: 'PaymentHistory' } }
+    /**
+     * Find zero or one PaymentHistory that matches the filter.
+     * @param {PaymentHistoryFindUniqueArgs} args - Arguments to find a PaymentHistory
+     * @example
+     * // Get one PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentHistoryFindUniqueArgs>(args: SelectSubset<T, PaymentHistoryFindUniqueArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentHistoryFindUniqueOrThrowArgs} args - Arguments to find a PaymentHistory
+     * @example
+     * // Get one PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryFindFirstArgs} args - Arguments to find a PaymentHistory
+     * @example
+     * // Get one PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentHistoryFindFirstArgs>(args?: SelectSubset<T, PaymentHistoryFindFirstArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryFindFirstOrThrowArgs} args - Arguments to find a PaymentHistory
+     * @example
+     * // Get one PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentHistories
+     * const paymentHistories = await prisma.paymentHistory.findMany()
+     * 
+     * // Get first 10 PaymentHistories
+     * const paymentHistories = await prisma.paymentHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentHistoryWithIdOnly = await prisma.paymentHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentHistoryFindManyArgs>(args?: SelectSubset<T, PaymentHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentHistory.
+     * @param {PaymentHistoryCreateArgs} args - Arguments to create a PaymentHistory.
+     * @example
+     * // Create one PaymentHistory
+     * const PaymentHistory = await prisma.paymentHistory.create({
+     *   data: {
+     *     // ... data to create a PaymentHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentHistoryCreateArgs>(args: SelectSubset<T, PaymentHistoryCreateArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentHistories.
+     * @param {PaymentHistoryCreateManyArgs} args - Arguments to create many PaymentHistories.
+     * @example
+     * // Create many PaymentHistories
+     * const paymentHistory = await prisma.paymentHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentHistoryCreateManyArgs>(args?: SelectSubset<T, PaymentHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaymentHistories and returns the data saved in the database.
+     * @param {PaymentHistoryCreateManyAndReturnArgs} args - Arguments to create many PaymentHistories.
+     * @example
+     * // Create many PaymentHistories
+     * const paymentHistory = await prisma.paymentHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaymentHistories and only return the `id`
+     * const paymentHistoryWithIdOnly = await prisma.paymentHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaymentHistory.
+     * @param {PaymentHistoryDeleteArgs} args - Arguments to delete one PaymentHistory.
+     * @example
+     * // Delete one PaymentHistory
+     * const PaymentHistory = await prisma.paymentHistory.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentHistoryDeleteArgs>(args: SelectSubset<T, PaymentHistoryDeleteArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentHistory.
+     * @param {PaymentHistoryUpdateArgs} args - Arguments to update one PaymentHistory.
+     * @example
+     * // Update one PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentHistoryUpdateArgs>(args: SelectSubset<T, PaymentHistoryUpdateArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentHistories.
+     * @param {PaymentHistoryDeleteManyArgs} args - Arguments to filter PaymentHistories to delete.
+     * @example
+     * // Delete a few PaymentHistories
+     * const { count } = await prisma.paymentHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentHistoryDeleteManyArgs>(args?: SelectSubset<T, PaymentHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentHistories
+     * const paymentHistory = await prisma.paymentHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentHistoryUpdateManyArgs>(args: SelectSubset<T, PaymentHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentHistories and returns the data updated in the database.
+     * @param {PaymentHistoryUpdateManyAndReturnArgs} args - Arguments to update many PaymentHistories.
+     * @example
+     * // Update many PaymentHistories
+     * const paymentHistory = await prisma.paymentHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaymentHistories and only return the `id`
+     * const paymentHistoryWithIdOnly = await prisma.paymentHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaymentHistory.
+     * @param {PaymentHistoryUpsertArgs} args - Arguments to update or create a PaymentHistory.
+     * @example
+     * // Update or create a PaymentHistory
+     * const paymentHistory = await prisma.paymentHistory.upsert({
+     *   create: {
+     *     // ... data to create a PaymentHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentHistoryUpsertArgs>(args: SelectSubset<T, PaymentHistoryUpsertArgs<ExtArgs>>): Prisma__PaymentHistoryClient<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryCountArgs} args - Arguments to filter PaymentHistories to count.
+     * @example
+     * // Count the number of PaymentHistories
+     * const count = await prisma.paymentHistory.count({
+     *   where: {
+     *     // ... the filter for the PaymentHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentHistoryCountArgs>(
+      args?: Subset<T, PaymentHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentHistoryAggregateArgs>(args: Subset<T, PaymentHistoryAggregateArgs>): Prisma.PrismaPromise<GetPaymentHistoryAggregateType<T>>
+
+    /**
+     * Group by PaymentHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentHistory model
+   */
+  readonly fields: PaymentHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    subscription<T extends PaymentHistory$subscriptionArgs<ExtArgs> = {}>(args?: Subset<T, PaymentHistory$subscriptionArgs<ExtArgs>>): Prisma__SubscriptionClient<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentHistory model
+   */
+  interface PaymentHistoryFieldRefs {
+    readonly id: FieldRef<"PaymentHistory", 'String'>
+    readonly userId: FieldRef<"PaymentHistory", 'String'>
+    readonly subscriptionId: FieldRef<"PaymentHistory", 'String'>
+    readonly provider: FieldRef<"PaymentHistory", 'PaymentProvider'>
+    readonly transactionId: FieldRef<"PaymentHistory", 'String'>
+    readonly amount: FieldRef<"PaymentHistory", 'Decimal'>
+    readonly currency: FieldRef<"PaymentHistory", 'String'>
+    readonly status: FieldRef<"PaymentHistory", 'PaymentStatus'>
+    readonly paymentMethod: FieldRef<"PaymentHistory", 'String'>
+    readonly paidAt: FieldRef<"PaymentHistory", 'DateTime'>
+    readonly failureReason: FieldRef<"PaymentHistory", 'String'>
+    readonly metadata: FieldRef<"PaymentHistory", 'Json'>
+    readonly createdAt: FieldRef<"PaymentHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentHistory findUnique
+   */
+  export type PaymentHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentHistory to fetch.
+     */
+    where: PaymentHistoryWhereUniqueInput
+  }
+
+  /**
+   * PaymentHistory findUniqueOrThrow
+   */
+  export type PaymentHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentHistory to fetch.
+     */
+    where: PaymentHistoryWhereUniqueInput
+  }
+
+  /**
+   * PaymentHistory findFirst
+   */
+  export type PaymentHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentHistory to fetch.
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentHistories to fetch.
+     */
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentHistories.
+     */
+    cursor?: PaymentHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentHistories.
+     */
+    distinct?: PaymentHistoryScalarFieldEnum | PaymentHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentHistory findFirstOrThrow
+   */
+  export type PaymentHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentHistory to fetch.
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentHistories to fetch.
+     */
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentHistories.
+     */
+    cursor?: PaymentHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentHistories.
+     */
+    distinct?: PaymentHistoryScalarFieldEnum | PaymentHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentHistory findMany
+   */
+  export type PaymentHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentHistories to fetch.
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentHistories to fetch.
+     */
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentHistories.
+     */
+    cursor?: PaymentHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentHistories.
+     */
+    distinct?: PaymentHistoryScalarFieldEnum | PaymentHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentHistory create
+   */
+  export type PaymentHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentHistory.
+     */
+    data: XOR<PaymentHistoryCreateInput, PaymentHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentHistory createMany
+   */
+  export type PaymentHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentHistories.
+     */
+    data: PaymentHistoryCreateManyInput | PaymentHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PaymentHistory createManyAndReturn
+   */
+  export type PaymentHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaymentHistories.
+     */
+    data: PaymentHistoryCreateManyInput | PaymentHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentHistory update
+   */
+  export type PaymentHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentHistory.
+     */
+    data: XOR<PaymentHistoryUpdateInput, PaymentHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentHistory to update.
+     */
+    where: PaymentHistoryWhereUniqueInput
+  }
+
+  /**
+   * PaymentHistory updateMany
+   */
+  export type PaymentHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentHistories.
+     */
+    data: XOR<PaymentHistoryUpdateManyMutationInput, PaymentHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentHistories to update
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * Limit how many PaymentHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentHistory updateManyAndReturn
+   */
+  export type PaymentHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update PaymentHistories.
+     */
+    data: XOR<PaymentHistoryUpdateManyMutationInput, PaymentHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentHistories to update
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * Limit how many PaymentHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentHistory upsert
+   */
+  export type PaymentHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentHistory to update in case it exists.
+     */
+    where: PaymentHistoryWhereUniqueInput
+    /**
+     * In case the PaymentHistory found by the `where` argument doesn't exist, create a new PaymentHistory with this data.
+     */
+    create: XOR<PaymentHistoryCreateInput, PaymentHistoryUncheckedCreateInput>
+    /**
+     * In case the PaymentHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentHistoryUpdateInput, PaymentHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentHistory delete
+   */
+  export type PaymentHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentHistory to delete.
+     */
+    where: PaymentHistoryWhereUniqueInput
+  }
+
+  /**
+   * PaymentHistory deleteMany
+   */
+  export type PaymentHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentHistories to delete
+     */
+    where?: PaymentHistoryWhereInput
+    /**
+     * Limit how many PaymentHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentHistory.subscription
+   */
+  export type PaymentHistory$subscriptionArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Subscription
+     */
+    select?: SubscriptionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Subscription
+     */
+    omit?: SubscriptionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SubscriptionInclude<ExtArgs> | null
+    where?: SubscriptionWhereInput
+  }
+
+  /**
+   * PaymentHistory without action
+   */
+  export type PaymentHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Model User
    */
 
@@ -2503,9 +7665,16 @@ export namespace Prisma {
     lastLoginAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     profile?: boolean | User$profileArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
+    chatBans?: boolean | User$chatBansArgs<ExtArgs>
+    bannedByUsers?: boolean | User$bannedByUsersArgs<ExtArgs>
+    moderatorLogs?: boolean | User$moderatorLogsArgs<ExtArgs>
+    targetUserLogs?: boolean | User$targetUserLogsArgs<ExtArgs>
+    payments?: boolean | User$paymentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -2550,9 +7719,16 @@ export namespace Prisma {
 
   export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "email" | "password" | "phoneNumber" | "role" | "isVerified" | "isBanned" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    accounts?: boolean | User$accountsArgs<ExtArgs>
+    sessions?: boolean | User$sessionsArgs<ExtArgs>
     profile?: boolean | User$profileArgs<ExtArgs>
     subscriptions?: boolean | User$subscriptionsArgs<ExtArgs>
     messages?: boolean | User$messagesArgs<ExtArgs>
+    chatBans?: boolean | User$chatBansArgs<ExtArgs>
+    bannedByUsers?: boolean | User$bannedByUsersArgs<ExtArgs>
+    moderatorLogs?: boolean | User$moderatorLogsArgs<ExtArgs>
+    targetUserLogs?: boolean | User$targetUserLogsArgs<ExtArgs>
+    payments?: boolean | User$paymentsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2561,9 +7737,16 @@ export namespace Prisma {
   export type $UserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "User"
     objects: {
+      accounts: Prisma.$AccountPayload<ExtArgs>[]
+      sessions: Prisma.$SessionPayload<ExtArgs>[]
       profile: Prisma.$UserProfilePayload<ExtArgs> | null
       subscriptions: Prisma.$SubscriptionPayload<ExtArgs>[]
       messages: Prisma.$LiveChatPayload<ExtArgs>[]
+      chatBans: Prisma.$ChatBanPayload<ExtArgs>[]
+      bannedByUsers: Prisma.$ChatBanPayload<ExtArgs>[]
+      moderatorLogs: Prisma.$ModerationLogPayload<ExtArgs>[]
+      targetUserLogs: Prisma.$ModerationLogPayload<ExtArgs>[]
+      payments: Prisma.$PaymentHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2970,9 +8153,16 @@ export namespace Prisma {
    */
   export interface Prisma__UserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    accounts<T extends User$accountsArgs<ExtArgs> = {}>(args?: Subset<T, User$accountsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     profile<T extends User$profileArgs<ExtArgs> = {}>(args?: Subset<T, User$profileArgs<ExtArgs>>): Prisma__UserProfileClient<$Result.GetResult<Prisma.$UserProfilePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     subscriptions<T extends User$subscriptionsArgs<ExtArgs> = {}>(args?: Subset<T, User$subscriptionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     messages<T extends User$messagesArgs<ExtArgs> = {}>(args?: Subset<T, User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiveChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    chatBans<T extends User$chatBansArgs<ExtArgs> = {}>(args?: Subset<T, User$chatBansArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    bannedByUsers<T extends User$bannedByUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$bannedByUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ChatBanPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderatorLogs<T extends User$moderatorLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$moderatorLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    targetUserLogs<T extends User$targetUserLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$targetUserLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ModerationLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends User$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, User$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3405,6 +8595,54 @@ export namespace Prisma {
   }
 
   /**
+   * User.accounts
+   */
+  export type User$accountsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    cursor?: AccountWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * User.sessions
+   */
+  export type User$sessionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Session
+     */
+    select?: SessionSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Session
+     */
+    omit?: SessionOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SessionInclude<ExtArgs> | null
+    where?: SessionWhereInput
+    orderBy?: SessionOrderByWithRelationInput | SessionOrderByWithRelationInput[]
+    cursor?: SessionWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SessionScalarFieldEnum | SessionScalarFieldEnum[]
+  }
+
+  /**
    * User.profile
    */
   export type User$profileArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3472,6 +8710,126 @@ export namespace Prisma {
   }
 
   /**
+   * User.chatBans
+   */
+  export type User$chatBansArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    where?: ChatBanWhereInput
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    cursor?: ChatBanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatBanScalarFieldEnum | ChatBanScalarFieldEnum[]
+  }
+
+  /**
+   * User.bannedByUsers
+   */
+  export type User$bannedByUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ChatBan
+     */
+    select?: ChatBanSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ChatBan
+     */
+    omit?: ChatBanOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ChatBanInclude<ExtArgs> | null
+    where?: ChatBanWhereInput
+    orderBy?: ChatBanOrderByWithRelationInput | ChatBanOrderByWithRelationInput[]
+    cursor?: ChatBanWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ChatBanScalarFieldEnum | ChatBanScalarFieldEnum[]
+  }
+
+  /**
+   * User.moderatorLogs
+   */
+  export type User$moderatorLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    where?: ModerationLogWhereInput
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    cursor?: ModerationLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.targetUserLogs
+   */
+  export type User$targetUserLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ModerationLog
+     */
+    select?: ModerationLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ModerationLog
+     */
+    omit?: ModerationLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ModerationLogInclude<ExtArgs> | null
+    where?: ModerationLogWhereInput
+    orderBy?: ModerationLogOrderByWithRelationInput | ModerationLogOrderByWithRelationInput[]
+    cursor?: ModerationLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ModerationLogScalarFieldEnum | ModerationLogScalarFieldEnum[]
+  }
+
+  /**
+   * User.payments
+   */
+  export type User$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    where?: PaymentHistoryWhereInput
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    cursor?: PaymentHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentHistoryScalarFieldEnum | PaymentHistoryScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3487,6 +8845,1121 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Account
+   */
+
+  export type AggregateAccount = {
+    _count: AccountCountAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  export type AccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    provider: $Enums.AuthProvider | null
+    providerAccountId: string | null
+    password: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    tokenExpiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type AccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    provider: $Enums.AuthProvider | null
+    providerAccountId: string | null
+    password: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    tokenExpiresAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type AccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    provider: number
+    providerAccountId: number
+    password: number
+    accessToken: number
+    refreshToken: number
+    tokenExpiresAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    providerAccountId?: true
+    password?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    createdAt?: true
+  }
+
+  export type AccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    providerAccountId?: true
+    password?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    createdAt?: true
+  }
+
+  export type AccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    provider?: true
+    providerAccountId?: true
+    password?: true
+    accessToken?: true
+    refreshToken?: true
+    tokenExpiresAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Account to aggregate.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Accounts
+    **/
+    _count?: true | AccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type GetAccountAggregateType<T extends AccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAccount[P]>
+      : GetScalarType<T[P], AggregateAccount[P]>
+  }
+
+
+
+
+  export type AccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AccountWhereInput
+    orderBy?: AccountOrderByWithAggregationInput | AccountOrderByWithAggregationInput[]
+    by: AccountScalarFieldEnum[] | AccountScalarFieldEnum
+    having?: AccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AccountCountAggregateInputType | true
+    _min?: AccountMinAggregateInputType
+    _max?: AccountMaxAggregateInputType
+  }
+
+  export type AccountGroupByOutputType = {
+    id: string
+    userId: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    tokenExpiresAt: Date | null
+    createdAt: Date
+    _count: AccountCountAggregateOutputType | null
+    _min: AccountMinAggregateOutputType | null
+    _max: AccountMaxAggregateOutputType | null
+  }
+
+  type GetAccountGroupByPayload<T extends AccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AccountGroupByOutputType[P]>
+            : GetScalarType<T[P], AccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    password?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    password?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    password?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["account"]>
+
+  export type AccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    provider?: boolean
+    providerAccountId?: boolean
+    password?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    tokenExpiresAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type AccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "provider" | "providerAccountId" | "password" | "accessToken" | "refreshToken" | "tokenExpiresAt" | "createdAt", ExtArgs["result"]["account"]>
+  export type AccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Account"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      provider: $Enums.AuthProvider
+      providerAccountId: string
+      password: string | null
+      accessToken: string | null
+      refreshToken: string | null
+      tokenExpiresAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["account"]>
+    composites: {}
+  }
+
+  type AccountGetPayload<S extends boolean | null | undefined | AccountDefaultArgs> = $Result.GetResult<Prisma.$AccountPayload, S>
+
+  type AccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AccountCountAggregateInputType | true
+    }
+
+  export interface AccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Account'], meta: { name: 'Account' } }
+    /**
+     * Find zero or one Account that matches the filter.
+     * @param {AccountFindUniqueArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AccountFindUniqueArgs>(args: SelectSubset<T, AccountFindUniqueArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Account that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AccountFindUniqueOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AccountFindUniqueOrThrowArgs>(args: SelectSubset<T, AccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AccountFindFirstArgs>(args?: SelectSubset<T, AccountFindFirstArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Account that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindFirstOrThrowArgs} args - Arguments to find a Account
+     * @example
+     * // Get one Account
+     * const account = await prisma.account.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AccountFindFirstOrThrowArgs>(args?: SelectSubset<T, AccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Accounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Accounts
+     * const accounts = await prisma.account.findMany()
+     * 
+     * // Get first 10 Accounts
+     * const accounts = await prisma.account.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const accountWithIdOnly = await prisma.account.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AccountFindManyArgs>(args?: SelectSubset<T, AccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Account.
+     * @param {AccountCreateArgs} args - Arguments to create a Account.
+     * @example
+     * // Create one Account
+     * const Account = await prisma.account.create({
+     *   data: {
+     *     // ... data to create a Account
+     *   }
+     * })
+     * 
+     */
+    create<T extends AccountCreateArgs>(args: SelectSubset<T, AccountCreateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Accounts.
+     * @param {AccountCreateManyArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AccountCreateManyArgs>(args?: SelectSubset<T, AccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Accounts and returns the data saved in the database.
+     * @param {AccountCreateManyAndReturnArgs} args - Arguments to create many Accounts.
+     * @example
+     * // Create many Accounts
+     * const account = await prisma.account.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AccountCreateManyAndReturnArgs>(args?: SelectSubset<T, AccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Account.
+     * @param {AccountDeleteArgs} args - Arguments to delete one Account.
+     * @example
+     * // Delete one Account
+     * const Account = await prisma.account.delete({
+     *   where: {
+     *     // ... filter to delete one Account
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AccountDeleteArgs>(args: SelectSubset<T, AccountDeleteArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Account.
+     * @param {AccountUpdateArgs} args - Arguments to update one Account.
+     * @example
+     * // Update one Account
+     * const account = await prisma.account.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AccountUpdateArgs>(args: SelectSubset<T, AccountUpdateArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Accounts.
+     * @param {AccountDeleteManyArgs} args - Arguments to filter Accounts to delete.
+     * @example
+     * // Delete a few Accounts
+     * const { count } = await prisma.account.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AccountDeleteManyArgs>(args?: SelectSubset<T, AccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AccountUpdateManyArgs>(args: SelectSubset<T, AccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Accounts and returns the data updated in the database.
+     * @param {AccountUpdateManyAndReturnArgs} args - Arguments to update many Accounts.
+     * @example
+     * // Update many Accounts
+     * const account = await prisma.account.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Accounts and only return the `id`
+     * const accountWithIdOnly = await prisma.account.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AccountUpdateManyAndReturnArgs>(args: SelectSubset<T, AccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Account.
+     * @param {AccountUpsertArgs} args - Arguments to update or create a Account.
+     * @example
+     * // Update or create a Account
+     * const account = await prisma.account.upsert({
+     *   create: {
+     *     // ... data to create a Account
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Account we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AccountUpsertArgs>(args: SelectSubset<T, AccountUpsertArgs<ExtArgs>>): Prisma__AccountClient<$Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Accounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountCountArgs} args - Arguments to filter Accounts to count.
+     * @example
+     * // Count the number of Accounts
+     * const count = await prisma.account.count({
+     *   where: {
+     *     // ... the filter for the Accounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends AccountCountArgs>(
+      args?: Subset<T, AccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AccountAggregateArgs>(args: Subset<T, AccountAggregateArgs>): Prisma.PrismaPromise<GetAccountAggregateType<T>>
+
+    /**
+     * Group by Account.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AccountGroupByArgs['orderBy'] }
+        : { orderBy?: AccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Account model
+   */
+  readonly fields: AccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Account.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Account model
+   */
+  interface AccountFieldRefs {
+    readonly id: FieldRef<"Account", 'String'>
+    readonly userId: FieldRef<"Account", 'String'>
+    readonly provider: FieldRef<"Account", 'AuthProvider'>
+    readonly providerAccountId: FieldRef<"Account", 'String'>
+    readonly password: FieldRef<"Account", 'String'>
+    readonly accessToken: FieldRef<"Account", 'String'>
+    readonly refreshToken: FieldRef<"Account", 'String'>
+    readonly tokenExpiresAt: FieldRef<"Account", 'DateTime'>
+    readonly createdAt: FieldRef<"Account", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Account findUnique
+   */
+  export type AccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findUniqueOrThrow
+   */
+  export type AccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account findFirst
+   */
+  export type AccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findFirstOrThrow
+   */
+  export type AccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Account to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account findMany
+   */
+  export type AccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter, which Accounts to fetch.
+     */
+    where?: AccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Accounts to fetch.
+     */
+    orderBy?: AccountOrderByWithRelationInput | AccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Accounts.
+     */
+    cursor?: AccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Accounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Accounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Accounts.
+     */
+    distinct?: AccountScalarFieldEnum | AccountScalarFieldEnum[]
+  }
+
+  /**
+   * Account create
+   */
+  export type AccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Account.
+     */
+    data: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+  }
+
+  /**
+   * Account createMany
+   */
+  export type AccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Account createManyAndReturn
+   */
+  export type AccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many Accounts.
+     */
+    data: AccountCreateManyInput | AccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account update
+   */
+  export type AccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Account.
+     */
+    data: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+    /**
+     * Choose, which Account to update.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account updateMany
+   */
+  export type AccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account updateManyAndReturn
+   */
+  export type AccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * The data used to update Accounts.
+     */
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyInput>
+    /**
+     * Filter which Accounts to update
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Account upsert
+   */
+  export type AccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Account to update in case it exists.
+     */
+    where: AccountWhereUniqueInput
+    /**
+     * In case the Account found by the `where` argument doesn't exist, create a new Account with this data.
+     */
+    create: XOR<AccountCreateInput, AccountUncheckedCreateInput>
+    /**
+     * In case the Account was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AccountUpdateInput, AccountUncheckedUpdateInput>
+  }
+
+  /**
+   * Account delete
+   */
+  export type AccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
+    /**
+     * Filter which Account to delete.
+     */
+    where: AccountWhereUniqueInput
+  }
+
+  /**
+   * Account deleteMany
+   */
+  export type AccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Accounts to delete
+     */
+    where?: AccountWhereInput
+    /**
+     * Limit how many Accounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Account without action
+   */
+  export type AccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Account
+     */
+    select?: AccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Account
+     */
+    omit?: AccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AccountInclude<ExtArgs> | null
   }
 
 
@@ -4917,6 +11390,8 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
+    payments?: boolean | Subscription$paymentsArgs<ExtArgs>
+    _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["subscription"]>
 
   export type SubscriptionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -4966,6 +11441,8 @@ export namespace Prisma {
   export type SubscriptionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "plan" | "status" | "price" | "currency" | "startDate" | "endDate" | "cancelledAt" | "createdAt" | "updatedAt", ExtArgs["result"]["subscription"]>
   export type SubscriptionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
+    payments?: boolean | Subscription$paymentsArgs<ExtArgs>
+    _count?: boolean | SubscriptionCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type SubscriptionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -4978,6 +11455,7 @@ export namespace Prisma {
     name: "Subscription"
     objects: {
       user: Prisma.$UserPayload<ExtArgs>
+      payments: Prisma.$PaymentHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5386,6 +11864,7 @@ export namespace Prisma {
   export interface Prisma__SubscriptionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    payments<T extends Subscription$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Subscription$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentHistoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5827,6 +12306,30 @@ export namespace Prisma {
   }
 
   /**
+   * Subscription.payments
+   */
+  export type Subscription$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentHistory
+     */
+    select?: PaymentHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentHistory
+     */
+    omit?: PaymentHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentHistoryInclude<ExtArgs> | null
+    where?: PaymentHistoryWhereInput
+    orderBy?: PaymentHistoryOrderByWithRelationInput | PaymentHistoryOrderByWithRelationInput[]
+    cursor?: PaymentHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentHistoryScalarFieldEnum | PaymentHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Subscription without action
    */
   export type SubscriptionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -5859,6 +12362,19 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const SessionScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    refreshToken: 'refreshToken',
+    userAgent: 'userAgent',
+    ipAddress: 'ipAddress',
+    expiresAt: 'expiresAt',
+    createdAt: 'createdAt'
+  };
+
+  export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
+
+
   export const LiveChatScalarFieldEnum: {
     id: 'id',
     userId: 'userId',
@@ -5869,6 +12385,52 @@ export namespace Prisma {
   };
 
   export type LiveChatScalarFieldEnum = (typeof LiveChatScalarFieldEnum)[keyof typeof LiveChatScalarFieldEnum]
+
+
+  export const ChatBanScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    bannedById: 'bannedById',
+    type: 'type',
+    reason: 'reason',
+    expiresAt: 'expiresAt',
+    isActive: 'isActive',
+    createdAt: 'createdAt'
+  };
+
+  export type ChatBanScalarFieldEnum = (typeof ChatBanScalarFieldEnum)[keyof typeof ChatBanScalarFieldEnum]
+
+
+  export const ModerationLogScalarFieldEnum: {
+    id: 'id',
+    moderatorId: 'moderatorId',
+    targetUserId: 'targetUserId',
+    action: 'action',
+    description: 'description',
+    ipAddress: 'ipAddress',
+    createdAt: 'createdAt'
+  };
+
+  export type ModerationLogScalarFieldEnum = (typeof ModerationLogScalarFieldEnum)[keyof typeof ModerationLogScalarFieldEnum]
+
+
+  export const PaymentHistoryScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    subscriptionId: 'subscriptionId',
+    provider: 'provider',
+    transactionId: 'transactionId',
+    amount: 'amount',
+    currency: 'currency',
+    status: 'status',
+    paymentMethod: 'paymentMethod',
+    paidAt: 'paidAt',
+    failureReason: 'failureReason',
+    metadata: 'metadata',
+    createdAt: 'createdAt'
+  };
+
+  export type PaymentHistoryScalarFieldEnum = (typeof PaymentHistoryScalarFieldEnum)[keyof typeof PaymentHistoryScalarFieldEnum]
 
 
   export const UserScalarFieldEnum: {
@@ -5885,6 +12447,21 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const AccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    provider: 'provider',
+    providerAccountId: 'providerAccountId',
+    password: 'password',
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    tokenExpiresAt: 'tokenExpiresAt',
+    createdAt: 'createdAt'
+  };
+
+  export type AccountScalarFieldEnum = (typeof AccountScalarFieldEnum)[keyof typeof AccountScalarFieldEnum]
 
 
   export const UserProfileScalarFieldEnum: {
@@ -5932,6 +12509,14 @@ export namespace Prisma {
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
+
+
   export const QueryMode: {
     default: 'default',
     insensitive: 'insensitive'
@@ -5946,6 +12531,15 @@ export namespace Prisma {
   };
 
   export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+  export const JsonNullValueFilter: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull,
+    AnyNull: typeof AnyNull
+  };
+
+  export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
   /**
@@ -5968,13 +12562,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -5989,6 +12576,97 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Boolean'
+   */
+  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatBanType'
+   */
+  export type EnumChatBanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatBanType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ChatBanType[]'
+   */
+  export type ListEnumChatBanTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ChatBanType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ModerationAction'
+   */
+  export type EnumModerationActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModerationAction'>
+    
+
+
+  /**
+   * Reference to a field of type 'ModerationAction[]'
+   */
+  export type ListEnumModerationActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ModerationAction[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentProvider'
+   */
+  export type EnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentProvider[]'
+   */
+  export type ListEnumPaymentProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentProvider[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus'
+   */
+  export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'PaymentStatus[]'
+   */
+  export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Json'
+   */
+  export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+  /**
+   * Reference to a field of type 'QueryMode'
+   */
+  export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+  /**
    * Reference to a field of type 'UserRole'
    */
   export type EnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole'>
@@ -5999,6 +12677,20 @@ export namespace Prisma {
    * Reference to a field of type 'UserRole[]'
    */
   export type ListEnumUserRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'UserRole[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuthProvider'
+   */
+  export type EnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider'>
+    
+
+
+  /**
+   * Reference to a field of type 'AuthProvider[]'
+   */
+  export type ListEnumAuthProviderFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AuthProvider[]'>
     
 
 
@@ -6061,6 +12753,71 @@ export namespace Prisma {
    */
 
 
+  export type SessionWhereInput = {
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    id?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    refreshToken?: StringFilter<"Session"> | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type SessionOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    refreshToken?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type SessionWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    refreshToken?: string
+    AND?: SessionWhereInput | SessionWhereInput[]
+    OR?: SessionWhereInput[]
+    NOT?: SessionWhereInput | SessionWhereInput[]
+    userId?: StringFilter<"Session"> | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "refreshToken">
+
+  export type SessionOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    refreshToken?: SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+    _count?: SessionCountOrderByAggregateInput
+    _max?: SessionMaxOrderByAggregateInput
+    _min?: SessionMinOrderByAggregateInput
+  }
+
+  export type SessionScalarWhereWithAggregatesInput = {
+    AND?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    OR?: SessionScalarWhereWithAggregatesInput[]
+    NOT?: SessionScalarWhereWithAggregatesInput | SessionScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Session"> | string
+    userId?: StringWithAggregatesFilter<"Session"> | string
+    refreshToken?: StringWithAggregatesFilter<"Session"> | string
+    userAgent?: StringNullableWithAggregatesFilter<"Session"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"Session"> | string | null
+    expiresAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Session"> | Date | string
+  }
+
   export type LiveChatWhereInput = {
     AND?: LiveChatWhereInput | LiveChatWhereInput[]
     OR?: LiveChatWhereInput[]
@@ -6121,6 +12878,247 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"LiveChat"> | Date | string
   }
 
+  export type ChatBanWhereInput = {
+    AND?: ChatBanWhereInput | ChatBanWhereInput[]
+    OR?: ChatBanWhereInput[]
+    NOT?: ChatBanWhereInput | ChatBanWhereInput[]
+    id?: StringFilter<"ChatBan"> | string
+    userId?: StringFilter<"ChatBan"> | string
+    bannedById?: StringFilter<"ChatBan"> | string
+    type?: EnumChatBanTypeFilter<"ChatBan"> | $Enums.ChatBanType
+    reason?: StringNullableFilter<"ChatBan"> | string | null
+    expiresAt?: DateTimeNullableFilter<"ChatBan"> | Date | string | null
+    isActive?: BoolFilter<"ChatBan"> | boolean
+    createdAt?: DateTimeFilter<"ChatBan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    bannedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ChatBanOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bannedById?: SortOrder
+    type?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    bannedBy?: UserOrderByWithRelationInput
+  }
+
+  export type ChatBanWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ChatBanWhereInput | ChatBanWhereInput[]
+    OR?: ChatBanWhereInput[]
+    NOT?: ChatBanWhereInput | ChatBanWhereInput[]
+    userId?: StringFilter<"ChatBan"> | string
+    bannedById?: StringFilter<"ChatBan"> | string
+    type?: EnumChatBanTypeFilter<"ChatBan"> | $Enums.ChatBanType
+    reason?: StringNullableFilter<"ChatBan"> | string | null
+    expiresAt?: DateTimeNullableFilter<"ChatBan"> | Date | string | null
+    isActive?: BoolFilter<"ChatBan"> | boolean
+    createdAt?: DateTimeFilter<"ChatBan"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    bannedBy?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id">
+
+  export type ChatBanOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bannedById?: SortOrder
+    type?: SortOrder
+    reason?: SortOrderInput | SortOrder
+    expiresAt?: SortOrderInput | SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+    _count?: ChatBanCountOrderByAggregateInput
+    _max?: ChatBanMaxOrderByAggregateInput
+    _min?: ChatBanMinOrderByAggregateInput
+  }
+
+  export type ChatBanScalarWhereWithAggregatesInput = {
+    AND?: ChatBanScalarWhereWithAggregatesInput | ChatBanScalarWhereWithAggregatesInput[]
+    OR?: ChatBanScalarWhereWithAggregatesInput[]
+    NOT?: ChatBanScalarWhereWithAggregatesInput | ChatBanScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ChatBan"> | string
+    userId?: StringWithAggregatesFilter<"ChatBan"> | string
+    bannedById?: StringWithAggregatesFilter<"ChatBan"> | string
+    type?: EnumChatBanTypeWithAggregatesFilter<"ChatBan"> | $Enums.ChatBanType
+    reason?: StringNullableWithAggregatesFilter<"ChatBan"> | string | null
+    expiresAt?: DateTimeNullableWithAggregatesFilter<"ChatBan"> | Date | string | null
+    isActive?: BoolWithAggregatesFilter<"ChatBan"> | boolean
+    createdAt?: DateTimeWithAggregatesFilter<"ChatBan"> | Date | string
+  }
+
+  export type ModerationLogWhereInput = {
+    AND?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    OR?: ModerationLogWhereInput[]
+    NOT?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    id?: StringFilter<"ModerationLog"> | string
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetUserId?: StringNullableFilter<"ModerationLog"> | string | null
+    action?: EnumModerationActionFilter<"ModerationLog"> | $Enums.ModerationAction
+    description?: StringNullableFilter<"ModerationLog"> | string | null
+    ipAddress?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+    moderator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type ModerationLogOrderByWithRelationInput = {
+    id?: SortOrder
+    moderatorId?: SortOrder
+    targetUserId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    description?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    moderator?: UserOrderByWithRelationInput
+    targetUser?: UserOrderByWithRelationInput
+  }
+
+  export type ModerationLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    OR?: ModerationLogWhereInput[]
+    NOT?: ModerationLogWhereInput | ModerationLogWhereInput[]
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetUserId?: StringNullableFilter<"ModerationLog"> | string | null
+    action?: EnumModerationActionFilter<"ModerationLog"> | $Enums.ModerationAction
+    description?: StringNullableFilter<"ModerationLog"> | string | null
+    ipAddress?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+    moderator?: XOR<UserScalarRelationFilter, UserWhereInput>
+    targetUser?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type ModerationLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    moderatorId?: SortOrder
+    targetUserId?: SortOrderInput | SortOrder
+    action?: SortOrder
+    description?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ModerationLogCountOrderByAggregateInput
+    _max?: ModerationLogMaxOrderByAggregateInput
+    _min?: ModerationLogMinOrderByAggregateInput
+  }
+
+  export type ModerationLogScalarWhereWithAggregatesInput = {
+    AND?: ModerationLogScalarWhereWithAggregatesInput | ModerationLogScalarWhereWithAggregatesInput[]
+    OR?: ModerationLogScalarWhereWithAggregatesInput[]
+    NOT?: ModerationLogScalarWhereWithAggregatesInput | ModerationLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ModerationLog"> | string
+    moderatorId?: StringWithAggregatesFilter<"ModerationLog"> | string
+    targetUserId?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    action?: EnumModerationActionWithAggregatesFilter<"ModerationLog"> | $Enums.ModerationAction
+    description?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ModerationLog"> | Date | string
+  }
+
+  export type PaymentHistoryWhereInput = {
+    AND?: PaymentHistoryWhereInput | PaymentHistoryWhereInput[]
+    OR?: PaymentHistoryWhereInput[]
+    NOT?: PaymentHistoryWhereInput | PaymentHistoryWhereInput[]
+    id?: StringFilter<"PaymentHistory"> | string
+    userId?: StringFilter<"PaymentHistory"> | string
+    subscriptionId?: StringNullableFilter<"PaymentHistory"> | string | null
+    provider?: EnumPaymentProviderFilter<"PaymentHistory"> | $Enums.PaymentProvider
+    transactionId?: StringFilter<"PaymentHistory"> | string
+    amount?: DecimalFilter<"PaymentHistory"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"PaymentHistory"> | string
+    status?: EnumPaymentStatusFilter<"PaymentHistory"> | $Enums.PaymentStatus
+    paymentMethod?: StringNullableFilter<"PaymentHistory"> | string | null
+    paidAt?: DateTimeNullableFilter<"PaymentHistory"> | Date | string | null
+    failureReason?: StringNullableFilter<"PaymentHistory"> | string | null
+    metadata?: JsonNullableFilter<"PaymentHistory">
+    createdAt?: DateTimeFilter<"PaymentHistory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+  }
+
+  export type PaymentHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    subscriptionId?: SortOrderInput | SortOrder
+    provider?: SortOrder
+    transactionId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    subscription?: SubscriptionOrderByWithRelationInput
+  }
+
+  export type PaymentHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    transactionId?: string
+    AND?: PaymentHistoryWhereInput | PaymentHistoryWhereInput[]
+    OR?: PaymentHistoryWhereInput[]
+    NOT?: PaymentHistoryWhereInput | PaymentHistoryWhereInput[]
+    userId?: StringFilter<"PaymentHistory"> | string
+    subscriptionId?: StringNullableFilter<"PaymentHistory"> | string | null
+    provider?: EnumPaymentProviderFilter<"PaymentHistory"> | $Enums.PaymentProvider
+    amount?: DecimalFilter<"PaymentHistory"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"PaymentHistory"> | string
+    status?: EnumPaymentStatusFilter<"PaymentHistory"> | $Enums.PaymentStatus
+    paymentMethod?: StringNullableFilter<"PaymentHistory"> | string | null
+    paidAt?: DateTimeNullableFilter<"PaymentHistory"> | Date | string | null
+    failureReason?: StringNullableFilter<"PaymentHistory"> | string | null
+    metadata?: JsonNullableFilter<"PaymentHistory">
+    createdAt?: DateTimeFilter<"PaymentHistory"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    subscription?: XOR<SubscriptionNullableScalarRelationFilter, SubscriptionWhereInput> | null
+  }, "id" | "transactionId">
+
+  export type PaymentHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    subscriptionId?: SortOrderInput | SortOrder
+    provider?: SortOrder
+    transactionId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paymentMethod?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    failureReason?: SortOrderInput | SortOrder
+    metadata?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PaymentHistoryCountOrderByAggregateInput
+    _avg?: PaymentHistoryAvgOrderByAggregateInput
+    _max?: PaymentHistoryMaxOrderByAggregateInput
+    _min?: PaymentHistoryMinOrderByAggregateInput
+    _sum?: PaymentHistorySumOrderByAggregateInput
+  }
+
+  export type PaymentHistoryScalarWhereWithAggregatesInput = {
+    AND?: PaymentHistoryScalarWhereWithAggregatesInput | PaymentHistoryScalarWhereWithAggregatesInput[]
+    OR?: PaymentHistoryScalarWhereWithAggregatesInput[]
+    NOT?: PaymentHistoryScalarWhereWithAggregatesInput | PaymentHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PaymentHistory"> | string
+    userId?: StringWithAggregatesFilter<"PaymentHistory"> | string
+    subscriptionId?: StringNullableWithAggregatesFilter<"PaymentHistory"> | string | null
+    provider?: EnumPaymentProviderWithAggregatesFilter<"PaymentHistory"> | $Enums.PaymentProvider
+    transactionId?: StringWithAggregatesFilter<"PaymentHistory"> | string
+    amount?: DecimalWithAggregatesFilter<"PaymentHistory"> | Decimal | DecimalJsLike | number | string
+    currency?: StringWithAggregatesFilter<"PaymentHistory"> | string
+    status?: EnumPaymentStatusWithAggregatesFilter<"PaymentHistory"> | $Enums.PaymentStatus
+    paymentMethod?: StringNullableWithAggregatesFilter<"PaymentHistory"> | string | null
+    paidAt?: DateTimeNullableWithAggregatesFilter<"PaymentHistory"> | Date | string | null
+    failureReason?: StringNullableWithAggregatesFilter<"PaymentHistory"> | string | null
+    metadata?: JsonNullableWithAggregatesFilter<"PaymentHistory">
+    createdAt?: DateTimeWithAggregatesFilter<"PaymentHistory"> | Date | string
+  }
+
   export type UserWhereInput = {
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
@@ -6135,9 +13133,16 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
     profile?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     messages?: LiveChatListRelationFilter
+    chatBans?: ChatBanListRelationFilter
+    bannedByUsers?: ChatBanListRelationFilter
+    moderatorLogs?: ModerationLogListRelationFilter
+    targetUserLogs?: ModerationLogListRelationFilter
+    payments?: PaymentHistoryListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -6151,9 +13156,16 @@ export namespace Prisma {
     lastLoginAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    accounts?: AccountOrderByRelationAggregateInput
+    sessions?: SessionOrderByRelationAggregateInput
     profile?: UserProfileOrderByWithRelationInput
     subscriptions?: SubscriptionOrderByRelationAggregateInput
     messages?: LiveChatOrderByRelationAggregateInput
+    chatBans?: ChatBanOrderByRelationAggregateInput
+    bannedByUsers?: ChatBanOrderByRelationAggregateInput
+    moderatorLogs?: ModerationLogOrderByRelationAggregateInput
+    targetUserLogs?: ModerationLogOrderByRelationAggregateInput
+    payments?: PaymentHistoryOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -6170,9 +13182,16 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
+    accounts?: AccountListRelationFilter
+    sessions?: SessionListRelationFilter
     profile?: XOR<UserProfileNullableScalarRelationFilter, UserProfileWhereInput> | null
     subscriptions?: SubscriptionListRelationFilter
     messages?: LiveChatListRelationFilter
+    chatBans?: ChatBanListRelationFilter
+    bannedByUsers?: ChatBanListRelationFilter
+    moderatorLogs?: ModerationLogListRelationFilter
+    targetUserLogs?: ModerationLogListRelationFilter
+    payments?: PaymentHistoryListRelationFilter
   }, "id" | "email">
 
   export type UserOrderByWithAggregationInput = {
@@ -6205,6 +13224,82 @@ export namespace Prisma {
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type AccountWhereInput = {
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
+    provider?: EnumAuthProviderFilter<"Account"> | $Enums.AuthProvider
+    providerAccountId?: StringFilter<"Account"> | string
+    password?: StringNullableFilter<"Account"> | string | null
+    accessToken?: StringNullableFilter<"Account"> | string | null
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    tokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+    createdAt?: DateTimeFilter<"Account"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    password?: SortOrderInput | SortOrder
+    accessToken?: SortOrderInput | SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    tokenExpiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    provider_providerAccountId?: AccountProviderProviderAccountIdCompoundUniqueInput
+    AND?: AccountWhereInput | AccountWhereInput[]
+    OR?: AccountWhereInput[]
+    NOT?: AccountWhereInput | AccountWhereInput[]
+    userId?: StringFilter<"Account"> | string
+    provider?: EnumAuthProviderFilter<"Account"> | $Enums.AuthProvider
+    providerAccountId?: StringFilter<"Account"> | string
+    password?: StringNullableFilter<"Account"> | string | null
+    accessToken?: StringNullableFilter<"Account"> | string | null
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    tokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+    createdAt?: DateTimeFilter<"Account"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "provider_providerAccountId">
+
+  export type AccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    password?: SortOrderInput | SortOrder
+    accessToken?: SortOrderInput | SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    tokenExpiresAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: AccountCountOrderByAggregateInput
+    _max?: AccountMaxOrderByAggregateInput
+    _min?: AccountMinOrderByAggregateInput
+  }
+
+  export type AccountScalarWhereWithAggregatesInput = {
+    AND?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    OR?: AccountScalarWhereWithAggregatesInput[]
+    NOT?: AccountScalarWhereWithAggregatesInput | AccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Account"> | string
+    userId?: StringWithAggregatesFilter<"Account"> | string
+    provider?: EnumAuthProviderWithAggregatesFilter<"Account"> | $Enums.AuthProvider
+    providerAccountId?: StringWithAggregatesFilter<"Account"> | string
+    password?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    accessToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    refreshToken?: StringNullableWithAggregatesFilter<"Account"> | string | null
+    tokenExpiresAt?: DateTimeNullableWithAggregatesFilter<"Account"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Account"> | Date | string
   }
 
   export type UserProfileWhereInput = {
@@ -6323,6 +13418,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payments?: PaymentHistoryListRelationFilter
   }
 
   export type SubscriptionOrderByWithRelationInput = {
@@ -6338,6 +13434,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     user?: UserOrderByWithRelationInput
+    payments?: PaymentHistoryOrderByRelationAggregateInput
   }
 
   export type SubscriptionWhereUniqueInput = Prisma.AtLeast<{
@@ -6356,6 +13453,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeFilter<"Subscription"> | Date | string
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    payments?: PaymentHistoryListRelationFilter
   }, "id">
 
   export type SubscriptionOrderByWithAggregationInput = {
@@ -6392,6 +13490,75 @@ export namespace Prisma {
     cancelledAt?: DateTimeNullableWithAggregatesFilter<"Subscription"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Subscription"> | Date | string
+  }
+
+  export type SessionCreateInput = {
+    id?: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutSessionsInput
+  }
+
+  export type SessionUncheckedCreateInput = {
+    id?: string
+    userId: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type SessionUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSessionsNestedInput
+  }
+
+  export type SessionUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionCreateManyInput = {
+    id?: string
+    userId: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type SessionUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LiveChatCreateInput = {
@@ -6456,6 +13623,259 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ChatBanCreateInput = {
+    id?: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutChatBansInput
+    bannedBy: UserCreateNestedOneWithoutBannedByUsersInput
+  }
+
+  export type ChatBanUncheckedCreateInput = {
+    id?: string
+    userId: string
+    bannedById: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatBanUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutChatBansNestedInput
+    bannedBy?: UserUpdateOneRequiredWithoutBannedByUsersNestedInput
+  }
+
+  export type ChatBanUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bannedById?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanCreateManyInput = {
+    id?: string
+    userId: string
+    bannedById: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatBanUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    bannedById?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogCreateInput = {
+    id?: string
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    moderator: UserCreateNestedOneWithoutModeratorLogsInput
+    targetUser?: UserCreateNestedOneWithoutTargetUserLogsInput
+  }
+
+  export type ModerationLogUncheckedCreateInput = {
+    id?: string
+    moderatorId: string
+    targetUserId?: string | null
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneRequiredWithoutModeratorLogsNestedInput
+    targetUser?: UserUpdateOneWithoutTargetUserLogsNestedInput
+  }
+
+  export type ModerationLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogCreateManyInput = {
+    id?: string
+    moderatorId: string
+    targetUserId?: string | null
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryCreateInput = {
+    id?: string
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPaymentsInput
+    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentHistoryUncheckedCreateInput = {
+    id?: string
+    userId: string
+    subscriptionId?: string | null
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryCreateManyInput = {
+    id?: string
+    userId: string
+    subscriptionId?: string | null
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     email: string
@@ -6467,9 +13887,16 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     profile?: UserProfileCreateNestedOneWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -6483,9 +13910,16 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -6499,9 +13933,16 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -6515,9 +13956,16 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -6557,6 +14005,89 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountCreateInput = {
+    id?: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAccountsInput
+  }
+
+  export type AccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAccountsNestedInput
+  }
+
+  export type AccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountCreateManyInput = {
+    id?: string
+    userId: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserProfileCreateInput = {
@@ -6689,6 +14220,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutSubscriptionsInput
+    payments?: PaymentHistoryCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateInput = {
@@ -6703,6 +14235,7 @@ export namespace Prisma {
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUpdateInput = {
@@ -6717,6 +14250,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateInput = {
@@ -6731,6 +14265,7 @@ export namespace Prisma {
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionCreateManyInput = {
@@ -6789,9 +14324,19 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -6808,6 +14353,96 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: UserWhereInput
     isNot?: UserWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
+  }
+
+  export type SessionCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    refreshToken?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    refreshToken?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SessionMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    refreshToken?: SortOrder
+    userAgent?: SortOrder
+    ipAddress?: SortOrder
+    expiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StringWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel>
+    in?: string[] | ListStringFieldRefInput<$PrismaModel>
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedStringFilter<$PrismaModel>
+    _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type BoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
   export type LiveChatCountOrderByAggregateInput = {
@@ -6837,24 +14472,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
-  }
-
   export type BoolWithAggregatesFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
@@ -6863,40 +14480,11 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
-  export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type EnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  export type EnumChatBanTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatBanType | EnumChatBanTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatBanTypeFilter<$PrismaModel> | $Enums.ChatBanType
   }
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
@@ -6908,6 +14496,303 @@ export namespace Prisma {
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type ChatBanCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bannedById?: SortOrder
+    type?: SortOrder
+    reason?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatBanMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bannedById?: SortOrder
+    type?: SortOrder
+    reason?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ChatBanMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    bannedById?: SortOrder
+    type?: SortOrder
+    reason?: SortOrder
+    expiresAt?: SortOrder
+    isActive?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumChatBanTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatBanType | EnumChatBanTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatBanTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChatBanType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatBanTypeFilter<$PrismaModel>
+    _max?: NestedEnumChatBanTypeFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type EnumModerationActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModerationAction | EnumModerationActionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModerationActionFilter<$PrismaModel> | $Enums.ModerationAction
+  }
+
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
+  export type ModerationLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    moderatorId?: SortOrder
+    targetUserId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    ipAddress?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModerationLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    moderatorId?: SortOrder
+    targetUserId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    ipAddress?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ModerationLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    moderatorId?: SortOrder
+    targetUserId?: SortOrder
+    action?: SortOrder
+    description?: SortOrder
+    ipAddress?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumModerationActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModerationAction | EnumModerationActionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModerationActionWithAggregatesFilter<$PrismaModel> | $Enums.ModerationAction
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumModerationActionFilter<$PrismaModel>
+    _max?: NestedEnumModerationActionFilter<$PrismaModel>
+  }
+
+  export type EnumPaymentProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentProvider | EnumPaymentProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentProviderFilter<$PrismaModel> | $Enums.PaymentProvider
+  }
+
+  export type DecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type EnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
+  }
+  export type JsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type SubscriptionNullableScalarRelationFilter = {
+    is?: SubscriptionWhereInput | null
+    isNot?: SubscriptionWhereInput | null
+  }
+
+  export type PaymentHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    subscriptionId?: SortOrder
+    provider?: SortOrder
+    transactionId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paymentMethod?: SortOrder
+    paidAt?: SortOrder
+    failureReason?: SortOrder
+    metadata?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PaymentHistoryAvgOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type PaymentHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    subscriptionId?: SortOrder
+    provider?: SortOrder
+    transactionId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paymentMethod?: SortOrder
+    paidAt?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PaymentHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    subscriptionId?: SortOrder
+    provider?: SortOrder
+    transactionId?: SortOrder
+    amount?: SortOrder
+    currency?: SortOrder
+    status?: SortOrder
+    paymentMethod?: SortOrder
+    paidAt?: SortOrder
+    failureReason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PaymentHistorySumOrderByAggregateInput = {
+    amount?: SortOrder
+  }
+
+  export type EnumPaymentProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentProvider | EnumPaymentProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentProviderWithAggregatesFilter<$PrismaModel> | $Enums.PaymentProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentProviderFilter<$PrismaModel>
+    _max?: NestedEnumPaymentProviderFilter<$PrismaModel>
+  }
+
+  export type DecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type EnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
+  }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
+
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
+  }
+
+  export type EnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  }
+
+  export type AccountListRelationFilter = {
+    every?: AccountWhereInput
+    some?: AccountWhereInput
+    none?: AccountWhereInput
+  }
+
+  export type SessionListRelationFilter = {
+    every?: SessionWhereInput
+    some?: SessionWhereInput
+    none?: SessionWhereInput
   }
 
   export type UserProfileNullableScalarRelationFilter = {
@@ -6927,9 +14812,30 @@ export namespace Prisma {
     none?: LiveChatWhereInput
   }
 
-  export type SortOrderInput = {
-    sort: SortOrder
-    nulls?: NullsOrder
+  export type ChatBanListRelationFilter = {
+    every?: ChatBanWhereInput
+    some?: ChatBanWhereInput
+    none?: ChatBanWhereInput
+  }
+
+  export type ModerationLogListRelationFilter = {
+    every?: ModerationLogWhereInput
+    some?: ModerationLogWhereInput
+    none?: ModerationLogWhereInput
+  }
+
+  export type PaymentHistoryListRelationFilter = {
+    every?: PaymentHistoryWhereInput
+    some?: PaymentHistoryWhereInput
+    none?: PaymentHistoryWhereInput
+  }
+
+  export type AccountOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SessionOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type SubscriptionOrderByRelationAggregateInput = {
@@ -6937,6 +14843,18 @@ export namespace Prisma {
   }
 
   export type LiveChatOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ChatBanOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ModerationLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -6979,24 +14897,6 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type EnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
     in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
@@ -7007,18 +14907,62 @@ export namespace Prisma {
     _max?: NestedEnumUserRoleFilter<$PrismaModel>
   }
 
-  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedDateTimeNullableFilter<$PrismaModel>
-    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  export type EnumAuthProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuthProvider | EnumAuthProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuthProviderFilter<$PrismaModel> | $Enums.AuthProvider
+  }
+
+  export type AccountProviderProviderAccountIdCompoundUniqueInput = {
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+  }
+
+  export type AccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    password?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    password?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    provider?: SortOrder
+    providerAccountId?: SortOrder
+    password?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    tokenExpiresAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type EnumAuthProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuthProvider | EnumAuthProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuthProviderWithAggregatesFilter<$PrismaModel> | $Enums.AuthProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuthProviderFilter<$PrismaModel>
+    _max?: NestedEnumAuthProviderFilter<$PrismaModel>
   }
 
   export type UserProfileCountOrderByAggregateInput = {
@@ -7183,9 +15127,9 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
-  export type UserCreateNestedOneWithoutMessagesInput = {
-    create?: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutMessagesInput
+  export type UserCreateNestedOneWithoutSessionsInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
     connect?: UserWhereUniqueInput
   }
 
@@ -7193,12 +15137,30 @@ export namespace Prisma {
     set?: string
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
+  }
+
+  export type UserUpdateOneRequiredWithoutSessionsNestedInput = {
+    create?: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutSessionsInput
+    upsert?: UserUpsertWithoutSessionsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSessionsInput, UserUpdateWithoutSessionsInput>, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type UserCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<UserCreateWithoutMessagesInput, UserUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMessagesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type UserUpdateOneRequiredWithoutMessagesNestedInput = {
@@ -7207,6 +15169,136 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutMessagesInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMessagesInput, UserUpdateWithoutMessagesInput>, UserUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type UserCreateNestedOneWithoutChatBansInput = {
+    create?: XOR<UserCreateWithoutChatBansInput, UserUncheckedCreateWithoutChatBansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatBansInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutBannedByUsersInput = {
+    create?: XOR<UserCreateWithoutBannedByUsersInput, UserUncheckedCreateWithoutBannedByUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBannedByUsersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumChatBanTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ChatBanType
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
+  export type UserUpdateOneRequiredWithoutChatBansNestedInput = {
+    create?: XOR<UserCreateWithoutChatBansInput, UserUncheckedCreateWithoutChatBansInput>
+    connectOrCreate?: UserCreateOrConnectWithoutChatBansInput
+    upsert?: UserUpsertWithoutChatBansInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutChatBansInput, UserUpdateWithoutChatBansInput>, UserUncheckedUpdateWithoutChatBansInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutBannedByUsersNestedInput = {
+    create?: XOR<UserCreateWithoutBannedByUsersInput, UserUncheckedCreateWithoutBannedByUsersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutBannedByUsersInput
+    upsert?: UserUpsertWithoutBannedByUsersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBannedByUsersInput, UserUpdateWithoutBannedByUsersInput>, UserUncheckedUpdateWithoutBannedByUsersInput>
+  }
+
+  export type UserCreateNestedOneWithoutModeratorLogsInput = {
+    create?: XOR<UserCreateWithoutModeratorLogsInput, UserUncheckedCreateWithoutModeratorLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratorLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutTargetUserLogsInput = {
+    create?: XOR<UserCreateWithoutTargetUserLogsInput, UserUncheckedCreateWithoutTargetUserLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTargetUserLogsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumModerationActionFieldUpdateOperationsInput = {
+    set?: $Enums.ModerationAction
+  }
+
+  export type UserUpdateOneRequiredWithoutModeratorLogsNestedInput = {
+    create?: XOR<UserCreateWithoutModeratorLogsInput, UserUncheckedCreateWithoutModeratorLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutModeratorLogsInput
+    upsert?: UserUpsertWithoutModeratorLogsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutModeratorLogsInput, UserUpdateWithoutModeratorLogsInput>, UserUncheckedUpdateWithoutModeratorLogsInput>
+  }
+
+  export type UserUpdateOneWithoutTargetUserLogsNestedInput = {
+    create?: XOR<UserCreateWithoutTargetUserLogsInput, UserUncheckedCreateWithoutTargetUserLogsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutTargetUserLogsInput
+    upsert?: UserUpsertWithoutTargetUserLogsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutTargetUserLogsInput, UserUpdateWithoutTargetUserLogsInput>, UserUncheckedUpdateWithoutTargetUserLogsInput>
+  }
+
+  export type UserCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type SubscriptionCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutPaymentsInput
+    connect?: SubscriptionWhereUniqueInput
+  }
+
+  export type EnumPaymentProviderFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentProvider
+  }
+
+  export type DecimalFieldUpdateOperationsInput = {
+    set?: Decimal | DecimalJsLike | number | string
+    increment?: Decimal | DecimalJsLike | number | string
+    decrement?: Decimal | DecimalJsLike | number | string
+    multiply?: Decimal | DecimalJsLike | number | string
+    divide?: Decimal | DecimalJsLike | number | string
+  }
+
+  export type EnumPaymentStatusFieldUpdateOperationsInput = {
+    set?: $Enums.PaymentStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutPaymentsInput
+    upsert?: UserUpsertWithoutPaymentsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutPaymentsInput, UserUpdateWithoutPaymentsInput>, UserUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type SubscriptionUpdateOneWithoutPaymentsNestedInput = {
+    create?: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SubscriptionCreateOrConnectWithoutPaymentsInput
+    upsert?: SubscriptionUpsertWithoutPaymentsInput
+    disconnect?: SubscriptionWhereInput | boolean
+    delete?: SubscriptionWhereInput | boolean
+    connect?: SubscriptionWhereUniqueInput
+    update?: XOR<XOR<SubscriptionUpdateToOneWithWhereWithoutPaymentsInput, SubscriptionUpdateWithoutPaymentsInput>, SubscriptionUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type AccountCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
   }
 
   export type UserProfileCreateNestedOneWithoutUserInput = {
@@ -7229,6 +15321,55 @@ export namespace Prisma {
     connect?: LiveChatWhereUniqueInput | LiveChatWhereUniqueInput[]
   }
 
+  export type ChatBanCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput> | ChatBanCreateWithoutUserInput[] | ChatBanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutUserInput | ChatBanCreateOrConnectWithoutUserInput[]
+    createMany?: ChatBanCreateManyUserInputEnvelope
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+  }
+
+  export type ChatBanCreateNestedManyWithoutBannedByInput = {
+    create?: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput> | ChatBanCreateWithoutBannedByInput[] | ChatBanUncheckedCreateWithoutBannedByInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutBannedByInput | ChatBanCreateOrConnectWithoutBannedByInput[]
+    createMany?: ChatBanCreateManyBannedByInputEnvelope
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+  }
+
+  export type ModerationLogCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
+  export type ModerationLogCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput> | ModerationLogCreateWithoutTargetUserInput[] | ModerationLogUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutTargetUserInput | ModerationLogCreateOrConnectWithoutTargetUserInput[]
+    createMany?: ModerationLogCreateManyTargetUserInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
+  export type PaymentHistoryCreateNestedManyWithoutUserInput = {
+    create?: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput> | PaymentHistoryCreateWithoutUserInput[] | PaymentHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutUserInput | PaymentHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: PaymentHistoryCreateManyUserInputEnvelope
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+  }
+
+  export type AccountUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+  }
+
+  export type SessionUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+  }
+
   export type UserProfileUncheckedCreateNestedOneWithoutUserInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -7249,16 +15390,71 @@ export namespace Prisma {
     connect?: LiveChatWhereUniqueInput | LiveChatWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
+  export type ChatBanUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput> | ChatBanCreateWithoutUserInput[] | ChatBanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutUserInput | ChatBanCreateOrConnectWithoutUserInput[]
+    createMany?: ChatBanCreateManyUserInputEnvelope
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+  }
+
+  export type ChatBanUncheckedCreateNestedManyWithoutBannedByInput = {
+    create?: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput> | ChatBanCreateWithoutBannedByInput[] | ChatBanUncheckedCreateWithoutBannedByInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutBannedByInput | ChatBanCreateOrConnectWithoutBannedByInput[]
+    createMany?: ChatBanCreateManyBannedByInputEnvelope
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+  }
+
+  export type ModerationLogUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
+  export type ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput = {
+    create?: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput> | ModerationLogCreateWithoutTargetUserInput[] | ModerationLogUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutTargetUserInput | ModerationLogCreateOrConnectWithoutTargetUserInput[]
+    createMany?: ModerationLogCreateManyTargetUserInputEnvelope
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+  }
+
+  export type PaymentHistoryUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput> | PaymentHistoryCreateWithoutUserInput[] | PaymentHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutUserInput | PaymentHistoryCreateOrConnectWithoutUserInput[]
+    createMany?: PaymentHistoryCreateManyUserInputEnvelope
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
   }
 
   export type EnumUserRoleFieldUpdateOperationsInput = {
     set?: $Enums.UserRole
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type AccountUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
   }
 
   export type UserProfileUpdateOneWithoutUserNestedInput = {
@@ -7299,6 +15495,104 @@ export namespace Prisma {
     deleteMany?: LiveChatScalarWhereInput | LiveChatScalarWhereInput[]
   }
 
+  export type ChatBanUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput> | ChatBanCreateWithoutUserInput[] | ChatBanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutUserInput | ChatBanCreateOrConnectWithoutUserInput[]
+    upsert?: ChatBanUpsertWithWhereUniqueWithoutUserInput | ChatBanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatBanCreateManyUserInputEnvelope
+    set?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    disconnect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    delete?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    update?: ChatBanUpdateWithWhereUniqueWithoutUserInput | ChatBanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatBanUpdateManyWithWhereWithoutUserInput | ChatBanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+  }
+
+  export type ChatBanUpdateManyWithoutBannedByNestedInput = {
+    create?: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput> | ChatBanCreateWithoutBannedByInput[] | ChatBanUncheckedCreateWithoutBannedByInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutBannedByInput | ChatBanCreateOrConnectWithoutBannedByInput[]
+    upsert?: ChatBanUpsertWithWhereUniqueWithoutBannedByInput | ChatBanUpsertWithWhereUniqueWithoutBannedByInput[]
+    createMany?: ChatBanCreateManyBannedByInputEnvelope
+    set?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    disconnect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    delete?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    update?: ChatBanUpdateWithWhereUniqueWithoutBannedByInput | ChatBanUpdateWithWhereUniqueWithoutBannedByInput[]
+    updateMany?: ChatBanUpdateManyWithWhereWithoutBannedByInput | ChatBanUpdateManyWithWhereWithoutBannedByInput[]
+    deleteMany?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+  }
+
+  export type ModerationLogUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutModeratorInput | ModerationLogUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutModeratorInput | ModerationLogUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutModeratorInput | ModerationLogUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
+  export type ModerationLogUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput> | ModerationLogCreateWithoutTargetUserInput[] | ModerationLogUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutTargetUserInput | ModerationLogCreateOrConnectWithoutTargetUserInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutTargetUserInput | ModerationLogUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: ModerationLogCreateManyTargetUserInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutTargetUserInput | ModerationLogUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutTargetUserInput | ModerationLogUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
+  export type PaymentHistoryUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput> | PaymentHistoryCreateWithoutUserInput[] | PaymentHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutUserInput | PaymentHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: PaymentHistoryUpsertWithWhereUniqueWithoutUserInput | PaymentHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PaymentHistoryCreateManyUserInputEnvelope
+    set?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    disconnect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    delete?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    update?: PaymentHistoryUpdateWithWhereUniqueWithoutUserInput | PaymentHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PaymentHistoryUpdateManyWithWhereWithoutUserInput | PaymentHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
+    upsert?: AccountUpsertWithWhereUniqueWithoutUserInput | AccountUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AccountCreateManyUserInputEnvelope
+    set?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    disconnect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    delete?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    connect?: AccountWhereUniqueInput | AccountWhereUniqueInput[]
+    update?: AccountUpdateWithWhereUniqueWithoutUserInput | AccountUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AccountUpdateManyWithWhereWithoutUserInput | AccountUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AccountScalarWhereInput | AccountScalarWhereInput[]
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput> | SessionCreateWithoutUserInput[] | SessionUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: SessionCreateOrConnectWithoutUserInput | SessionCreateOrConnectWithoutUserInput[]
+    upsert?: SessionUpsertWithWhereUniqueWithoutUserInput | SessionUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: SessionCreateManyUserInputEnvelope
+    set?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    disconnect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    delete?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    connect?: SessionWhereUniqueInput | SessionWhereUniqueInput[]
+    update?: SessionUpdateWithWhereUniqueWithoutUserInput | SessionUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: SessionUpdateManyWithWhereWithoutUserInput | SessionUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: SessionScalarWhereInput | SessionScalarWhereInput[]
+  }
+
   export type UserProfileUncheckedUpdateOneWithoutUserNestedInput = {
     create?: XOR<UserProfileCreateWithoutUserInput, UserProfileUncheckedCreateWithoutUserInput>
     connectOrCreate?: UserProfileCreateOrConnectWithoutUserInput
@@ -7337,6 +15631,94 @@ export namespace Prisma {
     deleteMany?: LiveChatScalarWhereInput | LiveChatScalarWhereInput[]
   }
 
+  export type ChatBanUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput> | ChatBanCreateWithoutUserInput[] | ChatBanUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutUserInput | ChatBanCreateOrConnectWithoutUserInput[]
+    upsert?: ChatBanUpsertWithWhereUniqueWithoutUserInput | ChatBanUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ChatBanCreateManyUserInputEnvelope
+    set?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    disconnect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    delete?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    update?: ChatBanUpdateWithWhereUniqueWithoutUserInput | ChatBanUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ChatBanUpdateManyWithWhereWithoutUserInput | ChatBanUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+  }
+
+  export type ChatBanUncheckedUpdateManyWithoutBannedByNestedInput = {
+    create?: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput> | ChatBanCreateWithoutBannedByInput[] | ChatBanUncheckedCreateWithoutBannedByInput[]
+    connectOrCreate?: ChatBanCreateOrConnectWithoutBannedByInput | ChatBanCreateOrConnectWithoutBannedByInput[]
+    upsert?: ChatBanUpsertWithWhereUniqueWithoutBannedByInput | ChatBanUpsertWithWhereUniqueWithoutBannedByInput[]
+    createMany?: ChatBanCreateManyBannedByInputEnvelope
+    set?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    disconnect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    delete?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    connect?: ChatBanWhereUniqueInput | ChatBanWhereUniqueInput[]
+    update?: ChatBanUpdateWithWhereUniqueWithoutBannedByInput | ChatBanUpdateWithWhereUniqueWithoutBannedByInput[]
+    updateMany?: ChatBanUpdateManyWithWhereWithoutBannedByInput | ChatBanUpdateManyWithWhereWithoutBannedByInput[]
+    deleteMany?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput> | ModerationLogCreateWithoutModeratorInput[] | ModerationLogUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutModeratorInput | ModerationLogCreateOrConnectWithoutModeratorInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutModeratorInput | ModerationLogUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: ModerationLogCreateManyModeratorInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutModeratorInput | ModerationLogUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutModeratorInput | ModerationLogUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput = {
+    create?: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput> | ModerationLogCreateWithoutTargetUserInput[] | ModerationLogUncheckedCreateWithoutTargetUserInput[]
+    connectOrCreate?: ModerationLogCreateOrConnectWithoutTargetUserInput | ModerationLogCreateOrConnectWithoutTargetUserInput[]
+    upsert?: ModerationLogUpsertWithWhereUniqueWithoutTargetUserInput | ModerationLogUpsertWithWhereUniqueWithoutTargetUserInput[]
+    createMany?: ModerationLogCreateManyTargetUserInputEnvelope
+    set?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    disconnect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    delete?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    connect?: ModerationLogWhereUniqueInput | ModerationLogWhereUniqueInput[]
+    update?: ModerationLogUpdateWithWhereUniqueWithoutTargetUserInput | ModerationLogUpdateWithWhereUniqueWithoutTargetUserInput[]
+    updateMany?: ModerationLogUpdateManyWithWhereWithoutTargetUserInput | ModerationLogUpdateManyWithWhereWithoutTargetUserInput[]
+    deleteMany?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+  }
+
+  export type PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput> | PaymentHistoryCreateWithoutUserInput[] | PaymentHistoryUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutUserInput | PaymentHistoryCreateOrConnectWithoutUserInput[]
+    upsert?: PaymentHistoryUpsertWithWhereUniqueWithoutUserInput | PaymentHistoryUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: PaymentHistoryCreateManyUserInputEnvelope
+    set?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    disconnect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    delete?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    update?: PaymentHistoryUpdateWithWhereUniqueWithoutUserInput | PaymentHistoryUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: PaymentHistoryUpdateManyWithWhereWithoutUserInput | PaymentHistoryUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAccountsInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumAuthProviderFieldUpdateOperationsInput = {
+    set?: $Enums.AuthProvider
+  }
+
+  export type UserUpdateOneRequiredWithoutAccountsNestedInput = {
+    create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
+    upsert?: UserUpsertWithoutAccountsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAccountsInput, UserUpdateWithoutAccountsInput>, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
   export type UserCreateNestedOneWithoutProfileInput = {
     create?: XOR<UserCreateWithoutProfileInput, UserUncheckedCreateWithoutProfileInput>
     connectOrCreate?: UserCreateOrConnectWithoutProfileInput
@@ -7355,6 +15737,20 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
     connectOrCreate?: UserCreateOrConnectWithoutSubscriptionsInput
     connect?: UserWhereUniqueInput
+  }
+
+  export type PaymentHistoryCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput> | PaymentHistoryCreateWithoutSubscriptionInput[] | PaymentHistoryUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutSubscriptionInput | PaymentHistoryCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: PaymentHistoryCreateManySubscriptionInputEnvelope
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+  }
+
+  export type PaymentHistoryUncheckedCreateNestedManyWithoutSubscriptionInput = {
+    create?: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput> | PaymentHistoryCreateWithoutSubscriptionInput[] | PaymentHistoryUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutSubscriptionInput | PaymentHistoryCreateOrConnectWithoutSubscriptionInput[]
+    createMany?: PaymentHistoryCreateManySubscriptionInputEnvelope
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
   }
 
   export type EnumSubscriptionTypeFieldUpdateOperationsInput = {
@@ -7381,6 +15777,34 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutSubscriptionsInput, UserUpdateWithoutSubscriptionsInput>, UserUncheckedUpdateWithoutSubscriptionsInput>
   }
 
+  export type PaymentHistoryUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput> | PaymentHistoryCreateWithoutSubscriptionInput[] | PaymentHistoryUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutSubscriptionInput | PaymentHistoryCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: PaymentHistoryUpsertWithWhereUniqueWithoutSubscriptionInput | PaymentHistoryUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: PaymentHistoryCreateManySubscriptionInputEnvelope
+    set?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    disconnect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    delete?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    update?: PaymentHistoryUpdateWithWhereUniqueWithoutSubscriptionInput | PaymentHistoryUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: PaymentHistoryUpdateManyWithWhereWithoutSubscriptionInput | PaymentHistoryUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+  }
+
+  export type PaymentHistoryUncheckedUpdateManyWithoutSubscriptionNestedInput = {
+    create?: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput> | PaymentHistoryCreateWithoutSubscriptionInput[] | PaymentHistoryUncheckedCreateWithoutSubscriptionInput[]
+    connectOrCreate?: PaymentHistoryCreateOrConnectWithoutSubscriptionInput | PaymentHistoryCreateOrConnectWithoutSubscriptionInput[]
+    upsert?: PaymentHistoryUpsertWithWhereUniqueWithoutSubscriptionInput | PaymentHistoryUpsertWithWhereUniqueWithoutSubscriptionInput[]
+    createMany?: PaymentHistoryCreateManySubscriptionInputEnvelope
+    set?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    disconnect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    delete?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    connect?: PaymentHistoryWhereUniqueInput | PaymentHistoryWhereUniqueInput[]
+    update?: PaymentHistoryUpdateWithWhereUniqueWithoutSubscriptionInput | PaymentHistoryUpdateWithWhereUniqueWithoutSubscriptionInput[]
+    updateMany?: PaymentHistoryUpdateManyWithWhereWithoutSubscriptionInput | PaymentHistoryUpdateManyWithWhereWithoutSubscriptionInput[]
+    deleteMany?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -7395,9 +15819,18 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -7439,60 +15872,6 @@ export namespace Prisma {
     not?: NestedIntFilter<$PrismaModel> | number
   }
 
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedDateTimeFilter<$PrismaModel>
-    _max?: NestedDateTimeFilter<$PrismaModel>
-  }
-
-  export type NestedStringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
-  }
-
-  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
-  }
-
-  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
-    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -7521,14 +15900,59 @@ export namespace Prisma {
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
-  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
-    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
-    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
+  export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeWithAggregatesFilter<$PrismaModel> | Date | string
     _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumUserRoleFilter<$PrismaModel>
-    _max?: NestedEnumUserRoleFilter<$PrismaModel>
+    _min?: NestedDateTimeFilter<$PrismaModel>
+    _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedBoolFilter<$PrismaModel>
+    _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedEnumChatBanTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatBanType | EnumChatBanTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatBanTypeFilter<$PrismaModel> | $Enums.ChatBanType
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumChatBanTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ChatBanType | EnumChatBanTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ChatBanType[] | ListEnumChatBanTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumChatBanTypeWithAggregatesFilter<$PrismaModel> | $Enums.ChatBanType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumChatBanTypeFilter<$PrismaModel>
+    _max?: NestedEnumChatBanTypeFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -7543,6 +15967,141 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedDateTimeNullableFilter<$PrismaModel>
     _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
+  export type NestedEnumModerationActionFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModerationAction | EnumModerationActionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModerationActionFilter<$PrismaModel> | $Enums.ModerationAction
+  }
+
+  export type NestedEnumModerationActionWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ModerationAction | EnumModerationActionFieldRefInput<$PrismaModel>
+    in?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ModerationAction[] | ListEnumModerationActionFieldRefInput<$PrismaModel>
+    not?: NestedEnumModerationActionWithAggregatesFilter<$PrismaModel> | $Enums.ModerationAction
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumModerationActionFilter<$PrismaModel>
+    _max?: NestedEnumModerationActionFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPaymentProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentProvider | EnumPaymentProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentProviderFilter<$PrismaModel> | $Enums.PaymentProvider
+  }
+
+  export type NestedDecimalFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+  }
+
+  export type NestedEnumPaymentStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusFilter<$PrismaModel> | $Enums.PaymentStatus
+  }
+
+  export type NestedEnumPaymentProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentProvider | EnumPaymentProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentProvider[] | ListEnumPaymentProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentProviderWithAggregatesFilter<$PrismaModel> | $Enums.PaymentProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentProviderFilter<$PrismaModel>
+    _max?: NestedEnumPaymentProviderFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel>
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedDecimalFilter<$PrismaModel>
+    _sum?: NestedDecimalFilter<$PrismaModel>
+    _min?: NestedDecimalFilter<$PrismaModel>
+    _max?: NestedDecimalFilter<$PrismaModel>
+  }
+
+  export type NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.PaymentStatus | EnumPaymentStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.PaymentStatus[] | ListEnumPaymentStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumPaymentStatusWithAggregatesFilter<$PrismaModel> | $Enums.PaymentStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumPaymentStatusFilter<$PrismaModel>
+    _max?: NestedEnumPaymentStatusFilter<$PrismaModel>
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> =
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    mode?: QueryMode | EnumQueryModeFieldRefInput<$PrismaModel>
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+  }
+
+  export type NestedEnumUserRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleFilter<$PrismaModel> | $Enums.UserRole
+  }
+
+  export type NestedEnumUserRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.UserRole | EnumUserRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.UserRole[] | ListEnumUserRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumUserRoleWithAggregatesFilter<$PrismaModel> | $Enums.UserRole
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumUserRoleFilter<$PrismaModel>
+    _max?: NestedEnumUserRoleFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAuthProviderFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuthProvider | EnumAuthProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuthProviderFilter<$PrismaModel> | $Enums.AuthProvider
+  }
+
+  export type NestedEnumAuthProviderWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AuthProvider | EnumAuthProviderFieldRefInput<$PrismaModel>
+    in?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AuthProvider[] | ListEnumAuthProviderFieldRefInput<$PrismaModel>
+    not?: NestedEnumAuthProviderWithAggregatesFilter<$PrismaModel> | $Enums.AuthProvider
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAuthProviderFilter<$PrismaModel>
+    _max?: NestedEnumAuthProviderFilter<$PrismaModel>
   }
 
   export type NestedEnumSubscriptionTypeFilter<$PrismaModel = never> = {
@@ -7606,6 +16165,110 @@ export namespace Prisma {
     _max?: NestedFloatFilter<$PrismaModel>
   }
 
+  export type UserCreateWithoutSessionsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutSessionsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutSessionsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+  }
+
+  export type UserUpsertWithoutSessionsInput = {
+    update: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+    create: XOR<UserCreateWithoutSessionsInput, UserUncheckedCreateWithoutSessionsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutSessionsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutSessionsInput, UserUncheckedUpdateWithoutSessionsInput>
+  }
+
+  export type UserUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutSessionsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutMessagesInput = {
     id?: string
     email: string
@@ -7617,8 +16280,15 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     profile?: UserProfileCreateNestedOneWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMessagesInput = {
@@ -7632,8 +16302,15 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMessagesInput = {
@@ -7663,8 +16340,15 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -7678,8 +16362,667 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutChatBansInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutChatBansInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutChatBansInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutChatBansInput, UserUncheckedCreateWithoutChatBansInput>
+  }
+
+  export type UserCreateWithoutBannedByUsersInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutBannedByUsersInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutBannedByUsersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutBannedByUsersInput, UserUncheckedCreateWithoutBannedByUsersInput>
+  }
+
+  export type UserUpsertWithoutChatBansInput = {
+    update: XOR<UserUpdateWithoutChatBansInput, UserUncheckedUpdateWithoutChatBansInput>
+    create: XOR<UserCreateWithoutChatBansInput, UserUncheckedCreateWithoutChatBansInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutChatBansInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutChatBansInput, UserUncheckedUpdateWithoutChatBansInput>
+  }
+
+  export type UserUpdateWithoutChatBansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutChatBansInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutBannedByUsersInput = {
+    update: XOR<UserUpdateWithoutBannedByUsersInput, UserUncheckedUpdateWithoutBannedByUsersInput>
+    create: XOR<UserCreateWithoutBannedByUsersInput, UserUncheckedCreateWithoutBannedByUsersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutBannedByUsersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutBannedByUsersInput, UserUncheckedUpdateWithoutBannedByUsersInput>
+  }
+
+  export type UserUpdateWithoutBannedByUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutBannedByUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutModeratorLogsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutModeratorLogsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutModeratorLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutModeratorLogsInput, UserUncheckedCreateWithoutModeratorLogsInput>
+  }
+
+  export type UserCreateWithoutTargetUserLogsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutTargetUserLogsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutTargetUserLogsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutTargetUserLogsInput, UserUncheckedCreateWithoutTargetUserLogsInput>
+  }
+
+  export type UserUpsertWithoutModeratorLogsInput = {
+    update: XOR<UserUpdateWithoutModeratorLogsInput, UserUncheckedUpdateWithoutModeratorLogsInput>
+    create: XOR<UserCreateWithoutModeratorLogsInput, UserUncheckedCreateWithoutModeratorLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutModeratorLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutModeratorLogsInput, UserUncheckedUpdateWithoutModeratorLogsInput>
+  }
+
+  export type UserUpdateWithoutModeratorLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutModeratorLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUpsertWithoutTargetUserLogsInput = {
+    update: XOR<UserUpdateWithoutTargetUserLogsInput, UserUncheckedUpdateWithoutTargetUserLogsInput>
+    create: XOR<UserCreateWithoutTargetUserLogsInput, UserUncheckedCreateWithoutTargetUserLogsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutTargetUserLogsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutTargetUserLogsInput, UserUncheckedUpdateWithoutTargetUserLogsInput>
+  }
+
+  export type UserUpdateWithoutTargetUserLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutTargetUserLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutPaymentsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+  }
+
+  export type UserUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+  }
+
+  export type UserCreateOrConnectWithoutPaymentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type SubscriptionCreateWithoutPaymentsInput = {
+    id?: string
+    plan: $Enums.SubscriptionType
+    status: $Enums.SubscriptionStatus
+    price: number
+    currency: string
+    startDate: Date | string
+    endDate: Date | string
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutSubscriptionsInput
+  }
+
+  export type SubscriptionUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    userId: string
+    plan: $Enums.SubscriptionType
+    status: $Enums.SubscriptionStatus
+    price: number
+    currency: string
+    startDate: Date | string
+    endDate: Date | string
+    cancelledAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SubscriptionCreateOrConnectWithoutPaymentsInput = {
+    where: SubscriptionWhereUniqueInput
+    create: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type UserUpsertWithoutPaymentsInput = {
+    update: XOR<UserUpdateWithoutPaymentsInput, UserUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<UserCreateWithoutPaymentsInput, UserUncheckedCreateWithoutPaymentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutPaymentsInput, UserUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type UserUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+  }
+
+  export type SubscriptionUpsertWithoutPaymentsInput = {
+    update: XOR<SubscriptionUpdateWithoutPaymentsInput, SubscriptionUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<SubscriptionCreateWithoutPaymentsInput, SubscriptionUncheckedCreateWithoutPaymentsInput>
+    where?: SubscriptionWhereInput
+  }
+
+  export type SubscriptionUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: SubscriptionWhereInput
+    data: XOR<SubscriptionUpdateWithoutPaymentsInput, SubscriptionUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type SubscriptionUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    plan?: EnumSubscriptionTypeFieldUpdateOperationsInput | $Enums.SubscriptionType
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutSubscriptionsNestedInput
+  }
+
+  export type SubscriptionUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    plan?: EnumSubscriptionTypeFieldUpdateOperationsInput | $Enums.SubscriptionType
+    status?: EnumSubscriptionStatusFieldUpdateOperationsInput | $Enums.SubscriptionStatus
+    price?: FloatFieldUpdateOperationsInput | number
+    currency?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountCreateWithoutUserInput = {
+    id?: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type AccountCreateOrConnectWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountCreateManyUserInputEnvelope = {
+    data: AccountCreateManyUserInput | AccountCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type SessionCreateWithoutUserInput = {
+    id?: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type SessionUncheckedCreateWithoutUserInput = {
+    id?: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
+  }
+
+  export type SessionCreateOrConnectWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionCreateManyUserInputEnvelope = {
+    data: SessionCreateManyUserInput | SessionCreateManyUserInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserProfileCreateWithoutUserInput = {
@@ -7730,6 +17073,7 @@ export namespace Prisma {
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: PaymentHistoryCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionUncheckedCreateWithoutUserInput = {
@@ -7743,6 +17087,7 @@ export namespace Prisma {
     cancelledAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutSubscriptionInput
   }
 
   export type SubscriptionCreateOrConnectWithoutUserInput = {
@@ -7779,6 +17124,222 @@ export namespace Prisma {
   export type LiveChatCreateManyUserInputEnvelope = {
     data: LiveChatCreateManyUserInput | LiveChatCreateManyUserInput[]
     skipDuplicates?: boolean
+  }
+
+  export type ChatBanCreateWithoutUserInput = {
+    id?: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    bannedBy: UserCreateNestedOneWithoutBannedByUsersInput
+  }
+
+  export type ChatBanUncheckedCreateWithoutUserInput = {
+    id?: string
+    bannedById: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatBanCreateOrConnectWithoutUserInput = {
+    where: ChatBanWhereUniqueInput
+    create: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatBanCreateManyUserInputEnvelope = {
+    data: ChatBanCreateManyUserInput | ChatBanCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ChatBanCreateWithoutBannedByInput = {
+    id?: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutChatBansInput
+  }
+
+  export type ChatBanUncheckedCreateWithoutBannedByInput = {
+    id?: string
+    userId: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatBanCreateOrConnectWithoutBannedByInput = {
+    where: ChatBanWhereUniqueInput
+    create: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput>
+  }
+
+  export type ChatBanCreateManyBannedByInputEnvelope = {
+    data: ChatBanCreateManyBannedByInput | ChatBanCreateManyBannedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ModerationLogCreateWithoutModeratorInput = {
+    id?: string
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    targetUser?: UserCreateNestedOneWithoutTargetUserLogsInput
+  }
+
+  export type ModerationLogUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    targetUserId?: string | null
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogCreateOrConnectWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    create: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ModerationLogCreateManyModeratorInputEnvelope = {
+    data: ModerationLogCreateManyModeratorInput | ModerationLogCreateManyModeratorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ModerationLogCreateWithoutTargetUserInput = {
+    id?: string
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+    moderator: UserCreateNestedOneWithoutModeratorLogsInput
+  }
+
+  export type ModerationLogUncheckedCreateWithoutTargetUserInput = {
+    id?: string
+    moderatorId: string
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogCreateOrConnectWithoutTargetUserInput = {
+    where: ModerationLogWhereUniqueInput
+    create: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput>
+  }
+
+  export type ModerationLogCreateManyTargetUserInputEnvelope = {
+    data: ModerationLogCreateManyTargetUserInput | ModerationLogCreateManyTargetUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PaymentHistoryCreateWithoutUserInput = {
+    id?: string
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    subscription?: SubscriptionCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentHistoryUncheckedCreateWithoutUserInput = {
+    id?: string
+    subscriptionId?: string | null
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryCreateOrConnectWithoutUserInput = {
+    where: PaymentHistoryWhereUniqueInput
+    create: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type PaymentHistoryCreateManyUserInputEnvelope = {
+    data: PaymentHistoryCreateManyUserInput | PaymentHistoryCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AccountUpsertWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+    create: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput>
+  }
+
+  export type AccountUpdateWithWhereUniqueWithoutUserInput = {
+    where: AccountWhereUniqueInput
+    data: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AccountUpdateManyWithWhereWithoutUserInput = {
+    where: AccountScalarWhereInput
+    data: XOR<AccountUpdateManyMutationInput, AccountUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AccountScalarWhereInput = {
+    AND?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    OR?: AccountScalarWhereInput[]
+    NOT?: AccountScalarWhereInput | AccountScalarWhereInput[]
+    id?: StringFilter<"Account"> | string
+    userId?: StringFilter<"Account"> | string
+    provider?: EnumAuthProviderFilter<"Account"> | $Enums.AuthProvider
+    providerAccountId?: StringFilter<"Account"> | string
+    password?: StringNullableFilter<"Account"> | string | null
+    accessToken?: StringNullableFilter<"Account"> | string | null
+    refreshToken?: StringNullableFilter<"Account"> | string | null
+    tokenExpiresAt?: DateTimeNullableFilter<"Account"> | Date | string | null
+    createdAt?: DateTimeFilter<"Account"> | Date | string
+  }
+
+  export type SessionUpsertWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    update: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+    create: XOR<SessionCreateWithoutUserInput, SessionUncheckedCreateWithoutUserInput>
+  }
+
+  export type SessionUpdateWithWhereUniqueWithoutUserInput = {
+    where: SessionWhereUniqueInput
+    data: XOR<SessionUpdateWithoutUserInput, SessionUncheckedUpdateWithoutUserInput>
+  }
+
+  export type SessionUpdateManyWithWhereWithoutUserInput = {
+    where: SessionScalarWhereInput
+    data: XOR<SessionUpdateManyMutationInput, SessionUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type SessionScalarWhereInput = {
+    AND?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    OR?: SessionScalarWhereInput[]
+    NOT?: SessionScalarWhereInput | SessionScalarWhereInput[]
+    id?: StringFilter<"Session"> | string
+    userId?: StringFilter<"Session"> | string
+    refreshToken?: StringFilter<"Session"> | string
+    userAgent?: StringNullableFilter<"Session"> | string | null
+    ipAddress?: StringNullableFilter<"Session"> | string | null
+    expiresAt?: DateTimeFilter<"Session"> | Date | string
+    createdAt?: DateTimeFilter<"Session"> | Date | string
   }
 
   export type UserProfileUpsertWithoutUserInput = {
@@ -7885,6 +17446,236 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"LiveChat"> | Date | string
   }
 
+  export type ChatBanUpsertWithWhereUniqueWithoutUserInput = {
+    where: ChatBanWhereUniqueInput
+    update: XOR<ChatBanUpdateWithoutUserInput, ChatBanUncheckedUpdateWithoutUserInput>
+    create: XOR<ChatBanCreateWithoutUserInput, ChatBanUncheckedCreateWithoutUserInput>
+  }
+
+  export type ChatBanUpdateWithWhereUniqueWithoutUserInput = {
+    where: ChatBanWhereUniqueInput
+    data: XOR<ChatBanUpdateWithoutUserInput, ChatBanUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ChatBanUpdateManyWithWhereWithoutUserInput = {
+    where: ChatBanScalarWhereInput
+    data: XOR<ChatBanUpdateManyMutationInput, ChatBanUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ChatBanScalarWhereInput = {
+    AND?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+    OR?: ChatBanScalarWhereInput[]
+    NOT?: ChatBanScalarWhereInput | ChatBanScalarWhereInput[]
+    id?: StringFilter<"ChatBan"> | string
+    userId?: StringFilter<"ChatBan"> | string
+    bannedById?: StringFilter<"ChatBan"> | string
+    type?: EnumChatBanTypeFilter<"ChatBan"> | $Enums.ChatBanType
+    reason?: StringNullableFilter<"ChatBan"> | string | null
+    expiresAt?: DateTimeNullableFilter<"ChatBan"> | Date | string | null
+    isActive?: BoolFilter<"ChatBan"> | boolean
+    createdAt?: DateTimeFilter<"ChatBan"> | Date | string
+  }
+
+  export type ChatBanUpsertWithWhereUniqueWithoutBannedByInput = {
+    where: ChatBanWhereUniqueInput
+    update: XOR<ChatBanUpdateWithoutBannedByInput, ChatBanUncheckedUpdateWithoutBannedByInput>
+    create: XOR<ChatBanCreateWithoutBannedByInput, ChatBanUncheckedCreateWithoutBannedByInput>
+  }
+
+  export type ChatBanUpdateWithWhereUniqueWithoutBannedByInput = {
+    where: ChatBanWhereUniqueInput
+    data: XOR<ChatBanUpdateWithoutBannedByInput, ChatBanUncheckedUpdateWithoutBannedByInput>
+  }
+
+  export type ChatBanUpdateManyWithWhereWithoutBannedByInput = {
+    where: ChatBanScalarWhereInput
+    data: XOR<ChatBanUpdateManyMutationInput, ChatBanUncheckedUpdateManyWithoutBannedByInput>
+  }
+
+  export type ModerationLogUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    update: XOR<ModerationLogUpdateWithoutModeratorInput, ModerationLogUncheckedUpdateWithoutModeratorInput>
+    create: XOR<ModerationLogCreateWithoutModeratorInput, ModerationLogUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type ModerationLogUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: ModerationLogWhereUniqueInput
+    data: XOR<ModerationLogUpdateWithoutModeratorInput, ModerationLogUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type ModerationLogUpdateManyWithWhereWithoutModeratorInput = {
+    where: ModerationLogScalarWhereInput
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyWithoutModeratorInput>
+  }
+
+  export type ModerationLogScalarWhereInput = {
+    AND?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+    OR?: ModerationLogScalarWhereInput[]
+    NOT?: ModerationLogScalarWhereInput | ModerationLogScalarWhereInput[]
+    id?: StringFilter<"ModerationLog"> | string
+    moderatorId?: StringFilter<"ModerationLog"> | string
+    targetUserId?: StringNullableFilter<"ModerationLog"> | string | null
+    action?: EnumModerationActionFilter<"ModerationLog"> | $Enums.ModerationAction
+    description?: StringNullableFilter<"ModerationLog"> | string | null
+    ipAddress?: StringNullableFilter<"ModerationLog"> | string | null
+    createdAt?: DateTimeFilter<"ModerationLog"> | Date | string
+  }
+
+  export type ModerationLogUpsertWithWhereUniqueWithoutTargetUserInput = {
+    where: ModerationLogWhereUniqueInput
+    update: XOR<ModerationLogUpdateWithoutTargetUserInput, ModerationLogUncheckedUpdateWithoutTargetUserInput>
+    create: XOR<ModerationLogCreateWithoutTargetUserInput, ModerationLogUncheckedCreateWithoutTargetUserInput>
+  }
+
+  export type ModerationLogUpdateWithWhereUniqueWithoutTargetUserInput = {
+    where: ModerationLogWhereUniqueInput
+    data: XOR<ModerationLogUpdateWithoutTargetUserInput, ModerationLogUncheckedUpdateWithoutTargetUserInput>
+  }
+
+  export type ModerationLogUpdateManyWithWhereWithoutTargetUserInput = {
+    where: ModerationLogScalarWhereInput
+    data: XOR<ModerationLogUpdateManyMutationInput, ModerationLogUncheckedUpdateManyWithoutTargetUserInput>
+  }
+
+  export type PaymentHistoryUpsertWithWhereUniqueWithoutUserInput = {
+    where: PaymentHistoryWhereUniqueInput
+    update: XOR<PaymentHistoryUpdateWithoutUserInput, PaymentHistoryUncheckedUpdateWithoutUserInput>
+    create: XOR<PaymentHistoryCreateWithoutUserInput, PaymentHistoryUncheckedCreateWithoutUserInput>
+  }
+
+  export type PaymentHistoryUpdateWithWhereUniqueWithoutUserInput = {
+    where: PaymentHistoryWhereUniqueInput
+    data: XOR<PaymentHistoryUpdateWithoutUserInput, PaymentHistoryUncheckedUpdateWithoutUserInput>
+  }
+
+  export type PaymentHistoryUpdateManyWithWhereWithoutUserInput = {
+    where: PaymentHistoryScalarWhereInput
+    data: XOR<PaymentHistoryUpdateManyMutationInput, PaymentHistoryUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type PaymentHistoryScalarWhereInput = {
+    AND?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+    OR?: PaymentHistoryScalarWhereInput[]
+    NOT?: PaymentHistoryScalarWhereInput | PaymentHistoryScalarWhereInput[]
+    id?: StringFilter<"PaymentHistory"> | string
+    userId?: StringFilter<"PaymentHistory"> | string
+    subscriptionId?: StringNullableFilter<"PaymentHistory"> | string | null
+    provider?: EnumPaymentProviderFilter<"PaymentHistory"> | $Enums.PaymentProvider
+    transactionId?: StringFilter<"PaymentHistory"> | string
+    amount?: DecimalFilter<"PaymentHistory"> | Decimal | DecimalJsLike | number | string
+    currency?: StringFilter<"PaymentHistory"> | string
+    status?: EnumPaymentStatusFilter<"PaymentHistory"> | $Enums.PaymentStatus
+    paymentMethod?: StringNullableFilter<"PaymentHistory"> | string | null
+    paidAt?: DateTimeNullableFilter<"PaymentHistory"> | Date | string | null
+    failureReason?: StringNullableFilter<"PaymentHistory"> | string | null
+    metadata?: JsonNullableFilter<"PaymentHistory">
+    createdAt?: DateTimeFilter<"PaymentHistory"> | Date | string
+  }
+
+  export type UserCreateWithoutAccountsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    profile?: UserProfileCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
+    messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAccountsInput = {
+    id?: string
+    email: string
+    password: string
+    phoneNumber?: string | null
+    role?: $Enums.UserRole
+    isVerified?: boolean
+    isBanned?: boolean
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
+    subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
+    messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAccountsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+  }
+
+  export type UserUpsertWithoutAccountsInput = {
+    update: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+    create: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAccountsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAccountsInput, UserUncheckedUpdateWithoutAccountsInput>
+  }
+
+  export type UserUpdateWithoutAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAccountsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    isVerified?: BoolFieldUpdateOperationsInput | boolean
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
+    subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
+    messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
   export type UserCreateWithoutProfileInput = {
     id?: string
     email: string
@@ -7896,8 +17687,15 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionCreateNestedManyWithoutUserInput
     messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProfileInput = {
@@ -7911,8 +17709,15 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     subscriptions?: SubscriptionUncheckedCreateNestedManyWithoutUserInput
     messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProfileInput = {
@@ -7942,8 +17747,15 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUpdateManyWithoutUserNestedInput
     messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProfileInput = {
@@ -7957,8 +17769,15 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     subscriptions?: SubscriptionUncheckedUpdateManyWithoutUserNestedInput
     messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubscriptionsInput = {
@@ -7972,8 +17791,15 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
     profile?: UserProfileCreateNestedOneWithoutUserInput
     messages?: LiveChatCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubscriptionsInput = {
@@ -7987,13 +17813,60 @@ export namespace Prisma {
     lastLoginAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     profile?: UserProfileUncheckedCreateNestedOneWithoutUserInput
     messages?: LiveChatUncheckedCreateNestedManyWithoutUserInput
+    chatBans?: ChatBanUncheckedCreateNestedManyWithoutUserInput
+    bannedByUsers?: ChatBanUncheckedCreateNestedManyWithoutBannedByInput
+    moderatorLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    targetUserLogs?: ModerationLogUncheckedCreateNestedManyWithoutTargetUserInput
+    payments?: PaymentHistoryUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubscriptionsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutSubscriptionsInput, UserUncheckedCreateWithoutSubscriptionsInput>
+  }
+
+  export type PaymentHistoryCreateWithoutSubscriptionInput = {
+    id?: string
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentHistoryUncheckedCreateWithoutSubscriptionInput = {
+    id?: string
+    userId: string
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryCreateOrConnectWithoutSubscriptionInput = {
+    where: PaymentHistoryWhereUniqueInput
+    create: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type PaymentHistoryCreateManySubscriptionInputEnvelope = {
+    data: PaymentHistoryCreateManySubscriptionInput | PaymentHistoryCreateManySubscriptionInput[]
+    skipDuplicates?: boolean
   }
 
   export type UserUpsertWithoutSubscriptionsInput = {
@@ -8018,8 +17891,15 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
     profile?: UserProfileUpdateOneWithoutUserNestedInput
     messages?: LiveChatUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubscriptionsInput = {
@@ -8033,8 +17913,51 @@ export namespace Prisma {
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     profile?: UserProfileUncheckedUpdateOneWithoutUserNestedInput
     messages?: LiveChatUncheckedUpdateManyWithoutUserNestedInput
+    chatBans?: ChatBanUncheckedUpdateManyWithoutUserNestedInput
+    bannedByUsers?: ChatBanUncheckedUpdateManyWithoutBannedByNestedInput
+    moderatorLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    targetUserLogs?: ModerationLogUncheckedUpdateManyWithoutTargetUserNestedInput
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type PaymentHistoryUpsertWithWhereUniqueWithoutSubscriptionInput = {
+    where: PaymentHistoryWhereUniqueInput
+    update: XOR<PaymentHistoryUpdateWithoutSubscriptionInput, PaymentHistoryUncheckedUpdateWithoutSubscriptionInput>
+    create: XOR<PaymentHistoryCreateWithoutSubscriptionInput, PaymentHistoryUncheckedCreateWithoutSubscriptionInput>
+  }
+
+  export type PaymentHistoryUpdateWithWhereUniqueWithoutSubscriptionInput = {
+    where: PaymentHistoryWhereUniqueInput
+    data: XOR<PaymentHistoryUpdateWithoutSubscriptionInput, PaymentHistoryUncheckedUpdateWithoutSubscriptionInput>
+  }
+
+  export type PaymentHistoryUpdateManyWithWhereWithoutSubscriptionInput = {
+    where: PaymentHistoryScalarWhereInput
+    data: XOR<PaymentHistoryUpdateManyMutationInput, PaymentHistoryUncheckedUpdateManyWithoutSubscriptionInput>
+  }
+
+  export type AccountCreateManyUserInput = {
+    id?: string
+    provider: $Enums.AuthProvider
+    providerAccountId: string
+    password?: string | null
+    accessToken?: string | null
+    refreshToken?: string | null
+    tokenExpiresAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type SessionCreateManyUserInput = {
+    id?: string
+    refreshToken: string
+    userAgent?: string | null
+    ipAddress?: string | null
+    expiresAt: Date | string
+    createdAt?: Date | string
   }
 
   export type SubscriptionCreateManyUserInput = {
@@ -8058,6 +17981,119 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type ChatBanCreateManyUserInput = {
+    id?: string
+    bannedById: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ChatBanCreateManyBannedByInput = {
+    id?: string
+    userId: string
+    type: $Enums.ChatBanType
+    reason?: string | null
+    expiresAt?: Date | string | null
+    isActive?: boolean
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogCreateManyModeratorInput = {
+    id?: string
+    targetUserId?: string | null
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type ModerationLogCreateManyTargetUserInput = {
+    id?: string
+    moderatorId: string
+    action: $Enums.ModerationAction
+    description?: string | null
+    ipAddress?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryCreateManyUserInput = {
+    id?: string
+    subscriptionId?: string | null
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type AccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AccountUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumAuthProviderFieldUpdateOperationsInput | $Enums.AuthProvider
+    providerAccountId?: StringFieldUpdateOperationsInput | string
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    tokenExpiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SessionUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    refreshToken?: StringFieldUpdateOperationsInput | string
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SubscriptionUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     plan?: EnumSubscriptionTypeFieldUpdateOperationsInput | $Enums.SubscriptionType
@@ -8069,6 +18105,7 @@ export namespace Prisma {
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentHistoryUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateWithoutUserInput = {
@@ -8082,6 +18119,7 @@ export namespace Prisma {
     cancelledAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentHistoryUncheckedUpdateManyWithoutSubscriptionNestedInput
   }
 
   export type SubscriptionUncheckedUpdateManyWithoutUserInput = {
@@ -8119,6 +18157,225 @@ export namespace Prisma {
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    bannedBy?: UserUpdateOneRequiredWithoutBannedByUsersNestedInput
+  }
+
+  export type ChatBanUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bannedById?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    bannedById?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanUpdateWithoutBannedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutChatBansNestedInput
+  }
+
+  export type ChatBanUncheckedUpdateWithoutBannedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ChatBanUncheckedUpdateManyWithoutBannedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: EnumChatBanTypeFieldUpdateOperationsInput | $Enums.ChatBanType
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    expiresAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    targetUser?: UserUpdateOneWithoutTargetUserLogsNestedInput
+  }
+
+  export type ModerationLogUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    targetUserId?: NullableStringFieldUpdateOperationsInput | string | null
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUpdateWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneRequiredWithoutModeratorLogsNestedInput
+  }
+
+  export type ModerationLogUncheckedUpdateWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ModerationLogUncheckedUpdateManyWithoutTargetUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: StringFieldUpdateOperationsInput | string
+    action?: EnumModerationActionFieldUpdateOperationsInput | $Enums.ModerationAction
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    subscription?: SubscriptionUpdateOneWithoutPaymentsNestedInput
+  }
+
+  export type PaymentHistoryUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    subscriptionId?: NullableStringFieldUpdateOperationsInput | string | null
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryCreateManySubscriptionInput = {
+    id?: string
+    userId: string
+    provider: $Enums.PaymentProvider
+    transactionId: string
+    amount: Decimal | DecimalJsLike | number | string
+    currency?: string
+    status: $Enums.PaymentStatus
+    paymentMethod?: string | null
+    paidAt?: Date | string | null
+    failureReason?: string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: Date | string
+  }
+
+  export type PaymentHistoryUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type PaymentHistoryUncheckedUpdateWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentHistoryUncheckedUpdateManyWithoutSubscriptionInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    provider?: EnumPaymentProviderFieldUpdateOperationsInput | $Enums.PaymentProvider
+    transactionId?: StringFieldUpdateOperationsInput | string
+    amount?: DecimalFieldUpdateOperationsInput | Decimal | DecimalJsLike | number | string
+    currency?: StringFieldUpdateOperationsInput | string
+    status?: EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+    paymentMethod?: NullableStringFieldUpdateOperationsInput | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    failureReason?: NullableStringFieldUpdateOperationsInput | string | null
+    metadata?: NullableJsonNullValueInput | InputJsonValue
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

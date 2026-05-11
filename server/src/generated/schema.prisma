@@ -1,7 +1,31 @@
+model Session {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  refreshToken String @unique
+
+  userAgent String?
+  ipAddress String?
+
+  expiresAt DateTime
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
 enum UserRole {
   ADMIN
   MODERATOR
   USER
+}
+
+enum AuthProvider {
+  GOOGLE
+  APPLE
+  EMAIL
 }
 
 enum SubscriptionType {
@@ -15,6 +39,39 @@ enum SubscriptionStatus {
   EXPIRED
   CANCELLED
   PENDING
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+  BKASH
+  NAGAD
+  ROCKET
+}
+
+enum ChatBanType {
+  TIMEOUT
+  TEMP_BAN
+  PERMANENT
+}
+
+enum ModerationAction {
+  USER_BANNED
+  USER_UNBANNED
+  CHAT_MESSAGE_DELETED
+  CHAT_USER_MUTED
+  SUBSCRIPTION_CANCELLED
+  MOVIE_CREATED
+  MOVIE_UPDATED
+  MOVIE_DELETED
+  USER_ROLE_UPDATED
 }
 
 model LiveChat {
@@ -31,6 +88,85 @@ model LiveChat {
   updatedAt DateTime @updatedAt
 
   @@index([createdAt])
+}
+
+model ChatBan {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bannedById String
+  bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
+
+  type ChatBanType
+
+  reason String?
+
+  expiresAt DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isActive])
+}
+
+model ModerationLog {
+  id String @id @default(cuid())
+
+  moderatorId String
+  moderator   User   @relation("ModeratorLogs", fields: [moderatorId], references: [id])
+
+  targetUserId String?
+  targetUser   User?   @relation("TargetUserLogs", fields: [targetUserId], references: [id])
+
+  action ModerationAction
+
+  description String?
+
+  ipAddress String?
+
+  createdAt DateTime @default(now())
+
+  @@index([moderatorId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+model PaymentHistory {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  provider PaymentProvider
+
+  transactionId String @unique
+
+  amount Decimal @db.Decimal(10, 2)
+
+  currency String @default("BDT")
+
+  status PaymentStatus
+
+  paymentMethod String?
+
+  paidAt DateTime?
+
+  failureReason String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([transactionId])
+  @@index([status])
 }
 
 generator client {
@@ -59,12 +195,51 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  profile       UserProfile?
+  // authentication
+  accounts Account[]
+  sessions Session[]
+
+  // profile
+  profile UserProfile?
+
+  // subscription
   subscriptions Subscription[]
-  messages      LiveChat[]
+
+  // live chat
+  messages       LiveChat[]
+  chatBans       ChatBan[]
+  bannedByUsers  ChatBan[]       @relation("BannedBy")
+  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
+
+  // payment
+  payments PaymentHistory[]
 
   @@index([email])
   @@index([role])
+}
+
+model Account {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider AuthProvider
+
+  providerAccountId String
+
+  password String?
+
+  accessToken  String?
+  refreshToken String?
+
+  tokenExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model UserProfile {
@@ -109,6 +284,8 @@ model Subscription {
   startDate   DateTime
   endDate     DateTime
   cancelledAt DateTime?
+
+  payments PaymentHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

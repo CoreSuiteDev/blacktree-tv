@@ -4,6 +4,12 @@ enum UserRole {
   USER
 }
 
+enum AuthProvider {
+  GOOGLE
+  APPLE
+  EMAIL
+}
+
 enum SubscriptionType {
   FREE
   BASIC
@@ -15,4 +21,37 @@ enum SubscriptionStatus {
   EXPIRED
   CANCELLED
   PENDING
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+  BKASH
+  NAGAD
+  ROCKET
+}
+
+enum ChatBanType {
+  TIMEOUT
+  TEMP_BAN
+  PERMANENT
+}
+
+enum ModerationAction {
+  USER_BANNED
+  USER_UNBANNED
+  CHAT_MESSAGE_DELETED
+  CHAT_USER_MUTED
+  SUBSCRIPTION_CANCELLED
+  MOVIE_CREATED
+  MOVIE_UPDATED
+  MOVIE_DELETED
+  USER_ROLE_UPDATED
 }

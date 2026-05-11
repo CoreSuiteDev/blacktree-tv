@@ -120,6 +120,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.SessionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  refreshToken: 'refreshToken',
+  userAgent: 'userAgent',
+  ipAddress: 'ipAddress',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.LiveChatScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -127,6 +137,43 @@ exports.Prisma.LiveChatScalarFieldEnum = {
   isDeleted: 'isDeleted',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatBanScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  bannedById: 'bannedById',
+  type: 'type',
+  reason: 'reason',
+  expiresAt: 'expiresAt',
+  isActive: 'isActive',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ModerationLogScalarFieldEnum = {
+  id: 'id',
+  moderatorId: 'moderatorId',
+  targetUserId: 'targetUserId',
+  action: 'action',
+  description: 'description',
+  ipAddress: 'ipAddress',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PaymentHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subscriptionId: 'subscriptionId',
+  provider: 'provider',
+  transactionId: 'transactionId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  paymentMethod: 'paymentMethod',
+  paidAt: 'paidAt',
+  failureReason: 'failureReason',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.UserScalarFieldEnum = {
@@ -140,6 +187,18 @@ exports.Prisma.UserScalarFieldEnum = {
   lastLoginAt: 'lastLoginAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  password: 'password',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.UserProfileScalarFieldEnum = {
@@ -178,6 +237,11 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
+};
+
 exports.Prisma.QueryMode = {
   default: 'default',
   insensitive: 'insensitive'
@@ -187,10 +251,55 @@ exports.Prisma.NullsOrder = {
   first: 'first',
   last: 'last'
 };
+
+exports.Prisma.JsonNullValueFilter = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull,
+  AnyNull: Prisma.AnyNull
+};
+exports.ChatBanType = exports.$Enums.ChatBanType = {
+  TIMEOUT: 'TIMEOUT',
+  TEMP_BAN: 'TEMP_BAN',
+  PERMANENT: 'PERMANENT'
+};
+
+exports.ModerationAction = exports.$Enums.ModerationAction = {
+  USER_BANNED: 'USER_BANNED',
+  USER_UNBANNED: 'USER_UNBANNED',
+  CHAT_MESSAGE_DELETED: 'CHAT_MESSAGE_DELETED',
+  CHAT_USER_MUTED: 'CHAT_USER_MUTED',
+  SUBSCRIPTION_CANCELLED: 'SUBSCRIPTION_CANCELLED',
+  MOVIE_CREATED: 'MOVIE_CREATED',
+  MOVIE_UPDATED: 'MOVIE_UPDATED',
+  MOVIE_DELETED: 'MOVIE_DELETED',
+  USER_ROLE_UPDATED: 'USER_ROLE_UPDATED'
+};
+
+exports.PaymentProvider = exports.$Enums.PaymentProvider = {
+  STRIPE: 'STRIPE',
+  SSLCOMMERZ: 'SSLCOMMERZ',
+  BKASH: 'BKASH',
+  NAGAD: 'NAGAD',
+  ROCKET: 'ROCKET'
+};
+
+exports.PaymentStatus = exports.$Enums.PaymentStatus = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
 exports.UserRole = exports.$Enums.UserRole = {
   ADMIN: 'ADMIN',
   MODERATOR: 'MODERATOR',
   USER: 'USER'
+};
+
+exports.AuthProvider = exports.$Enums.AuthProvider = {
+  GOOGLE: 'GOOGLE',
+  APPLE: 'APPLE',
+  EMAIL: 'EMAIL'
 };
 
 exports.SubscriptionType = exports.$Enums.SubscriptionType = {
@@ -207,8 +316,13 @@ exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
 };
 
 exports.Prisma.ModelName = {
+  Session: 'Session',
   LiveChat: 'LiveChat',
+  ChatBan: 'ChatBan',
+  ModerationLog: 'ModerationLog',
+  PaymentHistory: 'PaymentHistory',
   User: 'User',
+  Account: 'Account',
   UserProfile: 'UserProfile',
   Subscription: 'Subscription'
 };
