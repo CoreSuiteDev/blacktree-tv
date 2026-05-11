@@ -1,0 +1,44 @@
+model User {
+  id         String   @id @default(cuid())
+  email      String   @unique
+  password   String
+  name       String
+  phone      String?
+  address    String?
+  image      String?
+  isActive   Boolean  @default(true)
+  isStaff    Boolean  @default(false)
+  isVerified Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  role   Role   @relation(fields: [roleId], references: [id])
+  roleId String
+
+  student Student?
+}
+
+model Role {
+  id    String @id @default(cuid())
+  name  String @unique
+  users User[]
+}
+
+model Student {
+  id             String    @id @default(cuid())
+  userId         String    @unique
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  grade          String?
+  class          String?
+  section        String?
+  enrollmentDate DateTime?
+  currentLevel   String?
+  gpa            Float?
+  totalCredits   Int?
+  academicStatus String    @default("ACTIVE")
+  guardianName   String?
+  guardianPhone  String?
+  guardianEmail  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
