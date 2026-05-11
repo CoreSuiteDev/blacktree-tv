@@ -4,7 +4,10 @@ import heroBg from "../../public/assets/images/hero-bg.png";
 
 import { FEATURED_MOVIES, movieSpotlights } from "@/constants/movies";
 import { SpotlightSlider } from "@/components/shared/home/SpotlightSlider";
-import DynamicSlider from "@/components/shared/dynamic-slider";
+
+import MovieSlider from "@/components/shared/movie-slider";
+import ActorSlider from "@/components/shared/actor-slider";
+import { FEATURED_ACTORS } from "@/constants/actors";
 
 export default function Home() {
   return (
@@ -23,10 +26,10 @@ export default function Home() {
       </div>
 
       <div className="bg-popover">
-        <DynamicSlider title="Featured Movies" movies={FEATURED_MOVIES} />
-        <DynamicSlider title="New Movies" movies={FEATURED_MOVIES} />
+        <MovieSlider title="Featured Movies" movies={FEATURED_MOVIES} />
+        <MovieSlider title="New Movies" movies={FEATURED_MOVIES} />
         <SpotlightSlider items={movieSpotlights} />
-        <DynamicSlider title="Featured Actors" movies={FEATURED_MOVIES} />
+        <ActorSlider title="Featured Actors" actors={FEATURED_ACTORS} />
       </div>
     </main>
   );
