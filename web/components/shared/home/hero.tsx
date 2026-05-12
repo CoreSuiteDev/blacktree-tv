@@ -1,14 +1,20 @@
 "use client";
 
 import { useHeroStore } from "@/store/public/use-hero-store";
-import { Send } from "lucide-react";
+import {
+  MoreVertical,
+  Send,
+  Shield,
+  Smile,
+  X,
+  ToggleRight,
+  CircleDollarSign,
+} from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 
 // Shadcn UI Components
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import VidPlayer from "@/features/player/components/vid-player";
@@ -16,7 +22,7 @@ import { usePlayerStore } from "@/features/player/store/player.store";
 
 export function HeroSection() {
   const { messages, addMessage } = useHeroStore();
-  const { isChatOpen } = usePlayerStore();
+  const { isChatOpen, toggleChat } = usePlayerStore();
   const [input, setInput] = useState("");
 
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -57,45 +63,80 @@ export function HeroSection() {
                 : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 translate-y-10 lg:translate-x-10 pointer-events-none"
             }`}
           >
-            <Card className="rounded-xl p-6 h-full flex flex-col min-w-full lg:min-w-[350px]">
-              <h2 className="text-2xl font-bold mb-4">Live Chat</h2>
-              <div className="flex-1 space-y-4 overflow-y-auto max-h-[400px] lg:max-h-[500px] pr-2 custom-scrollbar">
+            <Card className="rounded-xl border-none bg-[#100F0F] h-full flex flex-col min-w-full lg:min-w-[380px] shadow-2xl overflow-hidden border-b">
+              {/* Chat Header */}
+              <div className="flex items-center justify-between p-4 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <h2 className="text-lg font-bold text-white tracking-tight">Live Chat</h2>
+                  <Badge className="bg-white/10 text-white/60 hover:bg-white/20 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                    Top Chat
+                  </Badge>
+                </div>
+                  <X onClick={toggleChat} className="w-4 h-4 cursor-pointer hover:text-white transition-colors" />
+              </div>
+
+              {/* Chat Messages */}
+              <div className="flex-1 space-y-5 overflow-y-auto p-4 custom-scrollbar">
                 {messages.map((msg) => (
-                  <div key={msg.id} className="flex gap-3 animate-in fade-in slide-in-from-right-4">
-                    <Avatar className="h-8 w-8">
+                  <div
+                    key={msg.id}
+                    className={`flex gap-3 animate-in fade-in slide-in-from-right-4 ${
+                      msg.isMod ? "bg-red-950/20 border-l-2 border-red-600 p-3 rounded-r-md -mx-1" : ""
+                    }`}
+                  >
+                    <Avatar className="h-9 w-9 rounded-full ring-1 ring-white/10">
                       <AvatarImage
                         src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.user}`}
                       />
-                      <AvatarFallback>{msg.user[0]}</AvatarFallback>
+                      <AvatarFallback className="bg-white/5 text-white/40">{msg.user[0]}</AvatarFallback>
                     </Avatar>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-bold text-primary">
+                    <div className="flex-1 leading-tight">
+                      <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                        <span className="font-bold text-red-500 text-[15px] hover:underline cursor-pointer">
                           {msg.user}
                         </span>
-                        {msg.isMod && <Badge variant="secondary">Mod</Badge>}
+                        {msg.isMod && (
+                          <Shield className="w-3.5 h-3.5 text-red-500 fill-red-500/20" />
+                        )}
+                        <span className="text-white/40 text-[10px] ml-1">:</span>
                       </div>
-                      <p className="text-sm text-muted-foreground break-words">
+                      <p className="text-[14px] text-white/90 font-medium leading-relaxed break-words">
                         {msg.message}
                       </p>
                     </div>
                   </div>
                 ))}
               </div>
-              <form onSubmit={handleSubmit} className="mt-4">
-                <div className="flex gap-2">
-                  <Input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Type a message..."
-                    className="flex-1"
-                  />
-                  <Button type="submit" size="icon">
-                    <Send className="h-4 w-4" />
-                  </Button>
+
+              {/* Chat Input Area */}
+              <div className="p-4 bg-white/5 border-t border-white/5">
+                <form onSubmit={handleSubmit} className="relative group">
+                  <div className="relative flex items-center bg-zinc-900/50 rounded-lg border border-white/5 group-focus-within:border-white/20 transition-all px-3 py-2">
+                    <Input
+                      type="text"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      placeholder="Send a message..."
+                      className="bg-transparent border-none focus-visible:ring-0 text-[14px] h-9 p-0 placeholder:text-white/20"
+                    />
+                    <div className="flex items-center gap-3 ml-2">
+                      <Smile className="w-5 h-5 text-white/30 hover:text-white transition-colors cursor-pointer" />
+                      <button type="submit" disabled={!input.trim()}>
+                        <Send className={`w-5 h-5 transition-all ${input.trim() ? "text-red-500 fill-red-500/10 scale-110" : "text-white/20"}`} />
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                
+                {/* Chat Footer */}
+                <div className="flex items-center justify-between mt-3 px-1 text-[11px] font-medium tracking-wide">
+                  <div className="flex items-center gap-1.5 text-white/40 hover:text-white/60 transition-colors cursor-pointer">
+                    <CircleDollarSign className="w-3.5 h-3.5" />
+                    <span>1,240 Bits</span>
+                  </div>
+                  <span className="text-white/20 uppercase tracking-widest text-[9px]">Press Enter to send</span>
                 </div>
-              </form>
+              </div>
             </Card>
           </div>
         </div>

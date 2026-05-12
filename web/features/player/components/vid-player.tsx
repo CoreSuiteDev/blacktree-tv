@@ -19,11 +19,8 @@ import {
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
-  ClosedCaptionsIcon,
-  OdometerIcon,
   RadioButtonIcon,
   RadioButtonSelectedIcon,
-  SettingsMenuIcon,
   
 } from "@vidstack/react/icons";
 import "@vidstack/react/player/styles/default/layouts/audio.css";
