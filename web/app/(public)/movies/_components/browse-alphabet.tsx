@@ -23,7 +23,7 @@ export function BrowseAlphabet() {
           </div>
           <Button
             variant="ghost"
-            className="text-muted-foreground hover:text-muted-foreground text-[12px] uppercase "
+            className="text-muted-foreground  hover:text-primary text-[12px] uppercase "
           >
             VIEW ALL
           </Button>
