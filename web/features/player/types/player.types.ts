@@ -7,4 +7,5 @@ export interface PlayerState {
   isFullScreen: boolean;
   playbackRate: number;
   quality: 'auto' | '360p' | '480p' | '720p' | '1080p' | '4K';
+  isChatOpen: boolean;
 }
