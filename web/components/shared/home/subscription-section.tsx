@@ -12,7 +12,7 @@ import { Card, CardContent } from "@/components/ui/card";
 const SubscriptionSection = () => {
   return (
     <div className="text-foreground flex items-center py-10 md:py-20 px-4">
-      <div className="container mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-popover p-6 md:p-12 lg:p-16 rounded-[30px] md:rounded-[40px] border border-white/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+      <div className="container mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-popover p-6 md:p-12 lg:p-16 rounded-[30px] md:rounded-[40px] border border-foreground/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
         <div className="space-y-6 lg:space-y-8">
           <div className="space-y-4">
             <h2 className="text-2xl sm:text-3xl lg:text-5xl font-semibold leading-tight text-popover-foreground">
@@ -21,7 +21,7 @@ const SubscriptionSection = () => {
                 Aether Pro+
               </span>
             </h2>
-            <p className="text-muted-foreground text-base lg:text-lg max-w-lg leading-relaxed">
+            <p className="text-muted-foreground  max-w-lg leading-relaxed">
               Unlock the highest fidelity viewing experience with 8K resolution,
               zero latency streaming, and exclusive access to Lumina Cinematic
               Originals.
@@ -91,7 +91,7 @@ const SubscriptionSection = () => {
             <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent blur-3xl rounded-[50px] opacity-40"></div>
 
             <Card
-              className="relative bg-white/[0.02] backdrop-blur-3xl rounded-[30px] shadow-2xl overflow-hidden border border-white/10"
+              className="relative bg-foreground/[0.02] backdrop-blur-3xl rounded-[30px] shadow-2xl overflow-hidden border border-foreground/10"
               style={{
                 backgroundImage:
                   "radial-gradient(circle at 10% 10%, rgba(239, 68, 68, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(239, 68, 68, 0.1) 0%, transparent 50%)",
@@ -99,7 +99,7 @@ const SubscriptionSection = () => {
             >
               <CardContent className="p-6 sm:p-10 flex flex-col h-full relative z-10">
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-white/60 font-bold tracking-widest text-[10px] lg:text-sm uppercase">
+                  <span className="text-foreground/60 font-bold tracking-widest text-[10px] lg:text-sm uppercase">
                     Premium Plan
                   </span>
                   <span className="bg-primary/20 text-primary text-[9px] lg:text-[10px] font-bold px-2 lg:px-3 py-1 rounded-full border border-primary/30 uppercase">
@@ -109,10 +109,10 @@ const SubscriptionSection = () => {
 
                 <div className="mb-6 lg:mb-10">
                   <div className="flex items-baseline">
-                    <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white">
+                    <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
                       $14.99
                     </span>
-                    <span className="text-white/40 ml-2 text-sm lg:text-base">
+                    <span className="text-foreground/40 ml-2 text-sm lg:text-base">
                       / month
                     </span>
                   </div>
@@ -131,18 +131,18 @@ const SubscriptionSection = () => {
                       <div className="bg-primary rounded-full p-0.5 shadow-[0_0_15px_rgba(239,68,68,0.4)]">
                         <Check
                           size={12}
-                          className="text-white lg:w-[14px]"
+                          className="text-foreground lg:w-[14px]"
                           strokeWidth={4}
                         />
                       </div>
-                      <span className="text-white/80">{feature}</span>
+                      <span className="text-foreground/80">{feature}</span>
                     </li>
                   ))}
                 </ul>
 
                 <Button
                   variant="outline"
-                  className="w-full border-primary/40 py-6 rounded-xl text-white font-bold uppercase tracking-widest text-[10px] lg:text-sm bg-primary/5 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                  className="w-full border-primary/40 py-6 rounded-xl text-foreground font-bold uppercase tracking-widest text-[10px] lg:text-sm bg-primary/5 hover:bg-primary hover:text-foreground hover:border-primary transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
                 >
                   Start 7-Day Free Trial
                 </Button>
