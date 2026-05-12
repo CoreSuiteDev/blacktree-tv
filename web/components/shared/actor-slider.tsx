@@ -9,24 +9,26 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import MovieCard from "./movieCard";
+import ActorCard from "./actor-card";
 
-interface Movie {
+interface Actor {
   id: number | string;
-  title: string;
+  name: string;
+  role: string;
   image: string;
+  description: string;
 }
 
-interface MovieSliderProps {
+interface ActorSliderProps {
   title: string;
-  movies: Movie[];
+  actors: Actor[];
 }
 
-const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
+const ActorSlider = ({ title, actors }: ActorSliderProps) => {
   const plugins = React.useMemo(
     () => [
       Autoplay({
-        delay: 3000,
+        delay: 3500,
         stopOnInteraction: false,
         stopOnMouseEnter: true,
       }),
@@ -34,11 +36,11 @@ const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
     [],
   );
 
-  // Smooth infinite loop ensure korar jonno array doubling logic
-  const displayMovies = movies.length < 10 ? [...movies, ...movies] : movies;
+  // Smooth infinite loop logic
+  const displayActors = actors.length < 10 ? [...actors, ...actors] : actors;
 
   return (
-    <section className="w-full py-14 px-4 md:px-0  transition-colors duration-300">
+    <section className="w-full py-14 px-4 md:px-0 transition-colors duration-300">
       <div className="container mx-auto">
         <Carousel
           opts={{
@@ -53,16 +55,14 @@ const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
           {/* Header Section */}
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
-              {/* Using CSS Variable --primary for the accent bar */}
               <div className="w-1.5 h-8 bg-primary rounded-r-full" />
               <h2 className="text-2xl md:text-3xl font-bold text-foreground/90">
                 {title}
               </h2>
             </div>
 
-            {/* Navigation Buttons using Theme Variables */}
+            {/* Navigation Buttons */}
             <div className="flex gap-2 relative">
-              {/* Previous Button */}
               <CarouselPrevious
                 className="static translate-y-0 h-9 w-9 rounded-full border border-foreground/70 hover:text-primary bg-transparent hover:bg-transparent hover:border-primary transition-all duration-300 group shadow-none"
                 variant="ghost"
@@ -70,7 +70,6 @@ const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
                 <ChevronLeft className="w-5 h-5 text-foreground group-hover:text-primary transition-colors" />
               </CarouselPrevious>
 
-              {/* Next Button */}
               <CarouselNext
                 className="static translate-y-0 h-9 w-9 rounded-full border border-foreground/70 hover:text-primary bg-transparent hover:bg-transparent hover:border-primary transition-all duration-300 group shadow-none"
                 variant="ghost"
@@ -81,12 +80,12 @@ const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
           </div>
 
           <CarouselContent className="-ml-4">
-            {displayMovies.map((movie, index) => (
+            {displayActors.map((actor, index) => (
               <CarouselItem
-                key={`${movie.id}-${index}`}
+                key={`${actor.id}-${index}`}
                 className="pl-4 basis-full sm:basis-1/2 md:basis-[31%] lg:basis-[24%] xl:basis-1/5"
               >
-                <MovieCard movie={movie} />
+                <ActorCard actor={actor} />
               </CarouselItem>
             ))}
           </CarouselContent>
@@ -96,4 +95,4 @@ const DynamicSlider = ({ title, movies }: MovieSliderProps) => {
   );
 };
 
-export default DynamicSlider;
+export default ActorSlider;
