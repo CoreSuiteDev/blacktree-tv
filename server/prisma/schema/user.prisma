@@ -1,116 +1,166 @@
 model User {
-  id              String   @id @default(cuid())
-  
-  email           String   @unique
-  password        String
-  phoneNumber     String?
+  id String @id @default(cuid())
 
-  role            UserRole @default(USER)
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
 
-  isVerified      Boolean  @default(false)
-  isBanned        Boolean  @default(false)
+  avatar String?
+  banner String?
 
-  lastLoginAt     DateTime?
-  
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  passwordHash String?
 
-  // authentication
-  accounts        Account[]
-  sessions        Session[]
+  isActive   Boolean @default(true)
+  isBanned   Boolean @default(false)
+  isVerified Boolean @default(false)
+
+  lastLoginAt DateTime?
+  lastSeenAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  roles    UserRoleMapping[]
 
   // profile
-  profile         UserProfile?
+  profile UserProfile?
 
   // subscription
-  subscriptions   Subscription[]
+  subscriptions Subscription[]
 
   // live chat
-  messages        LiveChat[]
-  chatBans        ChatBan[]
-  bannedByUsers   ChatBan[]         @relation("BannedBy")
-  moderatorLogs   ModerationLog[]   @relation("ModeratorLogs")
-  targetUserLogs  ModerationLog[]   @relation("TargetUserLogs")
+  messages       LiveChat[]
+  chatBans       ChatBan[]
+  bannedByUsers  ChatBan[]       @relation("BannedBy")
+  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
 
   // payment
-  payments        PaymentHistory[]
+  payments PaymentHistory[]
 
   @@index([email])
-  @@index([role])
 }
 
 model Account {
-  id                    String          @id @default(uuid())
+  id String @id @default(cuid())
 
-  userId                String
-  user                  User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  provider              AuthProvider
+  provider AuthProvider
 
-  providerAccountId     String
+  providerAccountId String
 
-  password              String?
+  password String?
 
-  accessToken           String?
-  refreshToken          String?
+  accessToken  String?
+  refreshToken String?
 
-  tokenExpiresAt        DateTime?
+  tokenExpiresAt DateTime?
 
-  createdAt             DateTime        @default(now())
+  createdAt DateTime @default(now())
 
   @@unique([provider, providerAccountId])
-
   @@index([userId])
 }
 
+model Role {
+  id String @id @default(cuid())
+
+  name        String  @unique
+  description String?
+
+  permissions RolePermission[]
+  users       UserRoleMapping[]
+}
+
+model Permission {
+  id String @id @default(cuid())
+
+  key         String  @unique
+  description String?
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  id String @id @default(cuid())
+
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model UserRoleMapping {
+  id String @id @default(cuid())
+
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
 
 model UserProfile {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId          String   @unique
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  username        String   @unique
-  displayName     String?
+  username    String  @unique
+  displayName String?
 
-  avatar          String?
-  banner          String?
+  avatar String?
+  banner String?
 
-  bio             String?
+  bio String?
 
-  country         String?
-  language        String?
+  country  String?
+  language String?
 
-  facebookUrl     String?
-  youtubeUrl      String?
-  discordUrl      String?
+  facebookUrl String?
+  youtubeUrl  String?
+  discordUrl  String?
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([username])
 }
 
 model Subscription {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  userId          String
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  plan            SubscriptionType
-  status          SubscriptionStatus
+  plan   SubscriptionType
+  status SubscriptionStatus
 
-  price           Float
-  currency        String
+  price    Float
+  currency String
 
-  startDate       DateTime
-  endDate         DateTime
-  cancelledAt     DateTime?
+  startDate   DateTime
+  endDate     DateTime
+  cancelledAt DateTime?
 
-  payments        PaymentHistory[]
+  payments PaymentHistory[]
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
   @@index([status])

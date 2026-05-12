@@ -181,23 +181,29 @@ datasource db {
 model User {
   id String @id @default(cuid())
 
-  email       String  @unique
-  password    String
-  phoneNumber String?
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
 
-  role UserRole @default(USER)
+  avatar String?
+  banner String?
 
-  isVerified Boolean @default(false)
+  passwordHash String?
+
+  isActive   Boolean @default(true)
   isBanned   Boolean @default(false)
+  isVerified Boolean @default(false)
 
   lastLoginAt DateTime?
+  lastSeenAt  DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // authentication
   accounts Account[]
   sessions Session[]
+  roles    UserRoleMapping[]
 
   // profile
   profile UserProfile?
@@ -216,11 +222,10 @@ model User {
   payments PaymentHistory[]
 
   @@index([email])
-  @@index([role])
 }
 
 model Account {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -240,6 +245,53 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+model Role {
+  id String @id @default(cuid())
+
+  name        String  @unique
+  description String?
+
+  permissions RolePermission[]
+  users       UserRoleMapping[]
+}
+
+model Permission {
+  id String @id @default(cuid())
+
+  key         String  @unique
+  description String?
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  id String @id @default(cuid())
+
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model UserRoleMapping {
+  id String @id @default(cuid())
+
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
 }
 
 model UserProfile {

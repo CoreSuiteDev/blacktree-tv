@@ -178,13 +178,18 @@ exports.Prisma.PaymentHistoryScalarFieldEnum = {
 
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
+  name: 'name',
+  username: 'username',
   email: 'email',
-  password: 'password',
-  phoneNumber: 'phoneNumber',
-  role: 'role',
-  isVerified: 'isVerified',
+  emailVerified: 'emailVerified',
+  avatar: 'avatar',
+  banner: 'banner',
+  passwordHash: 'passwordHash',
+  isActive: 'isActive',
   isBanned: 'isBanned',
+  isVerified: 'isVerified',
   lastLoginAt: 'lastLoginAt',
+  lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -199,6 +204,30 @@ exports.Prisma.AccountScalarFieldEnum = {
   refreshToken: 'refreshToken',
   tokenExpiresAt: 'tokenExpiresAt',
   createdAt: 'createdAt'
+};
+
+exports.Prisma.RoleScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description'
+};
+
+exports.Prisma.PermissionScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  description: 'description'
+};
+
+exports.Prisma.RolePermissionScalarFieldEnum = {
+  id: 'id',
+  roleId: 'roleId',
+  permissionId: 'permissionId'
+};
+
+exports.Prisma.UserRoleMappingScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  roleId: 'roleId'
 };
 
 exports.Prisma.UserProfileScalarFieldEnum = {
@@ -290,12 +319,6 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   REFUNDED: 'REFUNDED'
 };
 
-exports.UserRole = exports.$Enums.UserRole = {
-  ADMIN: 'ADMIN',
-  MODERATOR: 'MODERATOR',
-  USER: 'USER'
-};
-
 exports.AuthProvider = exports.$Enums.AuthProvider = {
   GOOGLE: 'GOOGLE',
   APPLE: 'APPLE',
@@ -323,6 +346,10 @@ exports.Prisma.ModelName = {
   PaymentHistory: 'PaymentHistory',
   User: 'User',
   Account: 'Account',
+  Role: 'Role',
+  Permission: 'Permission',
+  RolePermission: 'RolePermission',
+  UserRoleMapping: 'UserRoleMapping',
   UserProfile: 'UserProfile',
   Subscription: 'Subscription'
 };

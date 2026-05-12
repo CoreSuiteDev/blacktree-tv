@@ -1,17 +1,17 @@
 model Session {
-  id                String      @id @default(uuid())
+  id String @id @default(uuid())
 
-  userId            String
-  user              User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  refreshToken      String      @unique
+  refreshToken String @unique
 
-  userAgent         String?
-  ipAddress         String?
+  userAgent String?
+  ipAddress String?
 
-  expiresAt         DateTime
+  expiresAt DateTime
 
-  createdAt         DateTime    @default(now())
+  createdAt DateTime @default(now())
 
   @@index([userId])
 }
