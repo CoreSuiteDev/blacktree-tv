@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import '@vidstack/react/player/styles/base.css';
 
 const poppins = Poppins({
   variable: "--font-poppins",

@@ -8,6 +8,7 @@ interface PlayerStore extends PlayerState {
   setVolume: (volume: number) => void;
   setMuted: (isMuted: boolean) => void;
   toggleFullScreen: () => void;
+  toggleChat: () => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set) => ({
@@ -18,11 +19,14 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
   isMuted: false,
   isFullScreen: false,
   playbackRate: 1,
-  quality: 'auto',
+  quality: "auto",
+  isChatOpen: true,
+  toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
   setPlaying: (isPlaying) => set({ isPlaying }),
   setCurrentTime: (currentTime) => set({ currentTime }),
   setDuration: (duration) => set({ duration }),
   setVolume: (volume) => set({ volume }),
   setMuted: (isMuted) => set({ isMuted }),
-  toggleFullScreen: () => set((state) => ({ isFullScreen: !state.isFullScreen })),
+  toggleFullScreen: () =>
+    set((state) => ({ isFullScreen: !state.isFullScreen })),
 }));

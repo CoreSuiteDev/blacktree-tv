@@ -1,44 +1,168 @@
 model User {
-  id         String   @id @default(cuid())
-  email      String   @unique
-  password   String
-  name       String
-  phone      String?
-  address    String?
-  image      String?
-  isActive   Boolean  @default(true)
-  isStaff    Boolean  @default(false)
-  isVerified Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id String @id @default(cuid())
 
-  role   Role   @relation(fields: [roleId], references: [id])
-  roleId String
+  name          String?
+  username      String?   @unique
+  email         String?   @unique
+  emailVerified DateTime?
 
-  student Student?
+  avatar String?
+  banner String?
+
+  passwordHash String?
+
+  isActive   Boolean @default(true)
+  isBanned   Boolean @default(false)
+  isVerified Boolean @default(false)
+
+  lastLoginAt DateTime?
+  lastSeenAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  roles    UserRoleMapping[]
+
+  // profile
+  profile UserProfile?
+
+  // subscription
+  subscriptions Subscription[]
+
+  // live chat
+  messages       LiveChat[]
+  chatBans       ChatBan[]
+  bannedByUsers  ChatBan[]       @relation("BannedBy")
+  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
+
+  // payment
+  payments PaymentHistory[]
+
+  @@index([email])
+}
+
+model Account {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  provider AuthProvider
+
+  providerAccountId String
+
+  password String?
+
+  accessToken  String?
+  refreshToken String?
+
+  tokenExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
 }
 
 model Role {
-  id    String @id @default(cuid())
-  name  String @unique
-  users User[]
+  id String @id @default(cuid())
+
+  name        String  @unique
+  description String?
+
+  permissions RolePermission[]
+  users       UserRoleMapping[]
 }
 
-model Student {
-  id             String    @id @default(cuid())
-  userId         String    @unique
-  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  grade          String?
-  class          String?
-  section        String?
-  enrollmentDate DateTime?
-  currentLevel   String?
-  gpa            Float?
-  totalCredits   Int?
-  academicStatus String    @default("ACTIVE")
-  guardianName   String?
-  guardianPhone  String?
-  guardianEmail  String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+model Permission {
+  id String @id @default(cuid())
+
+  key         String  @unique
+  description String?
+
+  roles RolePermission[]
+}
+
+model RolePermission {
+  id String @id @default(cuid())
+
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model UserRoleMapping {
+  id String @id @default(cuid())
+
+  userId String
+  roleId String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, roleId])
+  @@index([userId])
+  @@index([roleId])
+}
+
+model UserProfile {
+  id String @id @default(cuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  username    String  @unique
+  displayName String?
+
+  avatar String?
+  banner String?
+
+  bio String?
+
+  country  String?
+  language String?
+
+  facebookUrl String?
+  youtubeUrl  String?
+  discordUrl  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  plan   SubscriptionType
+  status SubscriptionStatus
+
+  price    Float
+  currency String
+
+  startDate   DateTime
+  endDate     DateTime
+  cancelledAt DateTime?
+
+  payments PaymentHistory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+  @@index([endDate])
 }

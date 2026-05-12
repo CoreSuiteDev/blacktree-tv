@@ -10,9 +10,14 @@ import morgan from "morgan";
 import { errorMiddleware } from "./apps/middleware/error.middleware";
 import config from "./config";
 import routes from "./routes";
+import { ExpressAuth } from "@auth/express";
 import { AppError } from "./utils/AppError";
+import { authConfig } from "./apps/modules/auth/auth.config";
 
 const app = express();
+
+app.set("trust proxy", true);
+
 
 // 1. Security & Optimization Middleware
 app.use(helmet());
@@ -49,8 +54,10 @@ app.get("/health", (_: Request, res: Response) => {
 // API Routes
 app.use("/api/v1", routes);
 
+// Auth.js route
+app.use("/auth", ExpressAuth(authConfig));
+
 // 4. Error Handling
-// Handle undefined routes
 app.all("*path", (req: Request, res: Response, next: NextFunction) => {
   next(
     new AppError(
