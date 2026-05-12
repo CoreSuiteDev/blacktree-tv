@@ -76,22 +76,161 @@ export const movieSpotlights = [
 export const UPCOMING_MOVIES = [
   {
     id: 1,
-    title: "THE RED CHRONICLES",
-    label: "Upcoming Release",
-    subtitle: "A Dark Fantasy Epic",
+    title: "AVENGERS: DOOMSDAY",
+    label: "Marvel Studios",
+    subtitle: "The Multiverse Collapses",
     description:
-      "In a world of eternal twilight, a fallen guardian must unite the scattered clans before the ancient red moon descends for the final time.",
-    image: "/assets/images/sporlighyt-image.png",
-    releaseDate: "24/12/2026",
+      "A new era of the MCU begins as Doctor Doom rises to reshape reality. The remaining heroes must unite for the ultimate stand against the void.",
+    image: "/assets/images/movie-baner!.jpg",
+    releaseDate: "01/05/2026",
   },
   {
     id: 2,
-    title: "NEON VELOCITY",
-    label: "Premium Streaming",
-    subtitle: "Cyberpunk Action",
+    title: "THE BATMAN PART II",
+    label: "DC Studios",
+    subtitle: "Deep in the Shadows",
     description:
-      "Under the neon lights of Neo-Tokyo, a rogue pilot discovers a secret that could restart the dying sun.",
-    image: "/assets/images/sporlighyt-image.png",
-    releaseDate: "15/01/2027",
+      "Robert Pattinson returns as the Dark Knight. As Gotham faces a chilling new threat, Bruce Wayne must decide what he's willing to sacrifice for justice.",
+    image: "/assets/images/movie-baner2.jpg",
+    releaseDate: "02/10/2026",
+  },
+  {
+    id: 3,
+    title: "DUNE: THE PROPHET",
+    label: "Warner Bros",
+    subtitle: "The Desert War",
+    description:
+      "Paul Atreides continues his journey as the leader of the Fremen, navigating political intrigue and mystical visions on the sands of Arrakis.",
+    image: "/assets/images/movie-baner-3.jpg",
+    releaseDate: "18/12/2026",
+  },
+];
+
+export const ALL_MOVIES = [
+  {
+    id: 1,
+    title: "Black Panther: Wakanda Forever",
+    description:
+      "The people of Wakanda fight to protect their home from intervening world powers.",
+    image: "/assets/images/blcak-panther.jpg",
+  },
+  {
+    id: 2,
+    title: "Morbius",
+    description:
+      "Biochemist Michael Morbius tries to cure himself of a rare blood disease.",
+    image: "/assets/images/morbius.png",
+  },
+  {
+    id: 3,
+    title: "Doctor Strange: Multiverse of Madness",
+    description:
+      "Doctor Strange teams up with a mysterious teenage girl to traverse the multiverse.",
+    image: "/assets/images/doctor-strange.jpg",
+  },
+  {
+    id: 4,
+    title: "Jumanji: The Next Level",
+    description:
+      "The gang is back but the game has changed. They must brave unknown parts.",
+    image: "/assets/images/jumanji.jpg",
+  },
+  {
+    id: 5,
+    title: "The Mother",
+    description:
+      "A deadly assassin comes out of hiding to protect the daughter she gave up.",
+    image: "/assets/images/mother.png",
+  },
+  {
+    id: 6,
+    title: "RDX: Robert Dony Xavier",
+    description:
+      "Three friends reunite to take down a local gang in this high-octane action thriller.",
+    image: "/assets/images/robart-darny-dexter.png",
+  },
+  {
+    id: 7,
+    title: "The Perfection",
+    description:
+      "A troubled musical prodigy seeks out her former mentor's new star pupil.",
+    image: "/assets/images/the-prefection.png",
+  },
+  {
+    id: 8,
+    title: "Extraction",
+    description:
+      "A black-market mercenary is hired to rescue the kidnapped son of an imprisoned crime lord.",
+    image: "/assets/images/extraction.png",
+  },
+  {
+    id: 9,
+    title: "Jagame Thandhiram",
+    description:
+      "A clever, carefree gangster is recruited to help an overseas crime lord.",
+    image: "/assets/images/jhuma-thareadima.png",
+  },
+  {
+    id: 10,
+    title: "The Irishman",
+    description:
+      "An old man recalls his time as a hitman for the Bufalino crime family.",
+    image: "/assets/images/the-ice-man.png",
+  },
+  {
+    id: 11,
+    title: "Life",
+    description:
+      "A team of scientists aboard the ISS discover a rapidly evolving life form from Mars.",
+    image: "/assets/images/black-p.png",
+  },
+  {
+    id: 12,
+    title: "Echoes",
+    description:
+      "Identical twins Leni and Gina have secretly swapped lives since they were children.",
+    image: "/assets/images/ecehos.png",
+  },
+  {
+    id: 13,
+    title: "Shadow and Bone",
+    description: "Dark forces conspire against orphan mapmaker Alina Starkov.",
+    image: "/assets/images/shadow-and-bone.png",
+  },
+  {
+    id: 14,
+    title: "Money Heist",
+    description:
+      "An unusual group of robbers attempt to carry out the most perfect robbery in Spanish history.",
+    image: "/assets/images/dcotor-multyverce.png",
+  },
+  {
+    id: 15,
+    title: "Peaky Blinders",
+    description:
+      "A gangster family epic set in 1900s England, centering on a gang who sew razor blades into their caps.",
+    image: "/assets/images/peaky-blinders.png",
+  },
+  // Extra data for Page 2
+  {
+    id: 16,
+    title: "The Batman",
+    description:
+      "Batman ventures into Gotham City's underworld when a sadistic killer leaves behind a trail of cryptic clues.",
+    image: "/assets/images/dcotor-multyverce.png",
+  },
+  {
+    id: 17,
+    title: "Top Gun: Maverick",
+    description:
+      "After thirty years, Maverick is still pushing the envelope as a top naval aviator.",
+    image: "/assets/images/dcotor-multyverce.png",
+  },
+  {
+    id: 18,
+    title: "Everything Everywhere All at Once",
+    description:
+      "A Chinese-American immigrant is swept up in an insane adventure across the multiverse.",
+    image: "/assets/images/shadow-and-bone.png",
   },
 ];

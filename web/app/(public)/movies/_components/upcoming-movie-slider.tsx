@@ -45,7 +45,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
   }, [api]);
 
   return (
-    <section className="w-full my-26 bg-background">
+    <section className="w-full mt-26 bg-background">
       <Carousel
         setApi={setApi}
         plugins={plugins}
@@ -69,7 +69,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
                 <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent z-10" />
 
                 {/* Content Container */}
-                <div className="relative z-20 h-full flex flex-col justify-end pb-20 md:justify-center px-6 md:px-20 lg:px-32">
+                <div className="relative z-20 h-full container mx-auto flex flex-col justify-end pb-20 md:justify-center px-4">
                   <header className="max-w-3xl space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                     {/* Title Section */}
                     <div className="space-y-1">
@@ -94,7 +94,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
                     {/* Footer Section: Horizontal Layout */}
 
                     {/* Read More - Simple Side Button */}
-                    <button className="flex items-center gap-1 text-foreground hover:text-primary transition-colors font-bold text-xs uppercase tracking-widest outline-none group/btn">
+                    <button className="flex items-center gap-1 text-primary transition-colors font-bold text-xs uppercase tracking-widest outline-none group/btn">
                       Read More
                       <ChevronRight className="h-4 w-4 mb-1 group-hover:translate-y-0.5 transition-transform" />
                     </button>
@@ -103,7 +103,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
                     <div>
                       {item.releaseDate && (
                         <div className="flex items-center gap-2">
-                          <span className="text-[12px] text-muted-foreground uppercase tracking-wider font-bold">
+                          <span className="text-yellow-500 text-[12px] tracking-wider font-bold">
                             Release Date:
                           </span>
                           <span className="text-yellow-500 text-[12px] ">
@@ -131,7 +131,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
               className={cn(
                 "transition-all duration-500 rounded-full",
                 current === i
-                  ? "w-10 h-1.5 bg-primary shadow-[0_0_8px_rgba(var(--primary),0.5)]"
+                  ? "w-5 h-1.5 bg-primary shadow-[0_0_8px_rgba(var(--primary),0.5)]"
                   : "w-2 h-1.5 bg-muted-foreground/40 hover:bg-muted-foreground",
               )}
               aria-label={`Go to slide ${i + 1}`}
