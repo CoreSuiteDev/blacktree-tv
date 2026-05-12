@@ -40,7 +40,7 @@ export default function AllMoviesSection() {
   );
 
   return (
-    <section className="w-full py-10 px-4 md:px-10 lg:px-20">
+    <section className="w-full py-10 ">
       <div ref={sectionRef} className="scroll-mt-24" />
 
       <div className="container px-4 md:px-0 mx-auto space-y-12">
@@ -93,7 +93,7 @@ export default function AllMoviesSection() {
                       }}
                       className={`w-10 h-10 border-none rounded-lg transition-all flex items-center justify-center font-bold ${
                         isActive
-                          ? "bg-[#E50914] text-white hover:bg-[#E50914] hover:text-white pointer-events-none shadow-lg"
+                          ? "bg-primary  text-white hover:bg-primary  hover:cursor-pointer hover:text-white pointer-events-none shadow-lg"
                           : "bg-[#121212] text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer"
                       }`}
                     >
