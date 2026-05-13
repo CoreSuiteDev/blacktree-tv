@@ -23,7 +23,7 @@ export default function TrendingSubGenres() {
           {SUB_GENRES.map((genre) => (
             <div
               key={genre.id}
-              className="group relative flex flex-col sm:flex-row sm:items-center justify-between p-6 md:p-8 bg-background border border-background/50 rounded-2xl hover:bg-[#121212] transition-all duration-300 cursor-pointer overflow-hidden"
+              className="group relative flex flex-col sm:flex-row sm:items-center justify-between  p-6 md:p-8 bg-[#1A1A1ACC] border border-background/50 rounded-2xl hover:bg-[#121212] transition-all duration-300 cursor-pointer overflow-hidden"
             >
               <div className="flex items-start sm:items-center gap-5 md:gap-10">
                 {/* Number Index */}
