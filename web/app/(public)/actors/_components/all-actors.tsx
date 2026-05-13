@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
-import { Search } from "lucide-react";
+import React, { useRef, useMemo, useState } from "react";
+import { Search, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import {
   Pagination,
   PaginationContent,
@@ -12,24 +13,31 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { BrowseAlphabet } from "../../movies/_components/browse-alphabet";
 import { FEATURED_ACTORS } from "@/constants/actors";
 import ActorCard from "@/components/shared/actor-card";
 import { usePaginationStore } from "@/store/public/use-pagination-store";
 import { useActorStore } from "@/store/public/use-actor-store";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { cn } from "@/lib/utils";
+
+const sortOptions = [
+  { label: "Name (A-Z)", value: "az" },
+  { label: "Name (Z-A)", value: "za" },
+];
 
 export default function Actors() {
   // Store values
   const { searchQuery, setSearchQuery, selectedLetter, sortBy, setSortBy } =
     useActorStore();
   const { currentPage, setCurrentPage } = usePaginationStore();
+
+  // Local state for the custom Popover/Dropdown
+  const [open, setOpen] = useState(false);
 
   const sectionRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 15;
@@ -80,10 +88,14 @@ export default function Actors() {
 
   const totalPages = Math.ceil(filteredAndSortedActors.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const currentMovies = filteredAndSortedActors.slice(
+  const currentActors = filteredAndSortedActors.slice(
     startIndex,
     startIndex + itemsPerPage,
   );
+
+  const currentSortLabel = sortOptions.find(
+    (opt) => opt.value === sortBy,
+  )?.label;
 
   return (
     <main className="min-h-screen text-white py-10" ref={sectionRef}>
@@ -109,6 +121,7 @@ export default function Actors() {
           </div>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            {/* Search Input */}
             <div className="w-full md:max-w-md relative group">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
               <Input
@@ -122,49 +135,61 @@ export default function Actors() {
               />
             </div>
 
+            {/* Sort Dropdown */}
             <div className="w-full md:w-auto shrink-0">
-              <Select
-                value={sortBy}
-                onValueChange={(value) => setSortBy(value)}
-              >
-                <SelectTrigger className="bg-[#0A0A0A] text-zinc-400 text-sm border-zinc-800/60 rounded-xl h-11 w-full md:w-48 focus:ring-primary/10 focus:border-primary/40 transition-all">
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent className="bg-[#0A0A0A] border-zinc-800 text-zinc-400">
-                  <SelectItem
-                    value="popularity"
-                    className="focus:bg-primary focus:text-white cursor-pointer"
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    className="bg-[#0A0A0A] text-zinc-400 text-sm border-zinc-800/60 rounded-xl h-11 w-full md:w-48 justify-between hover:bg-[#0f0f0f] hover:text-zinc-300 focus:ring-1 focus:ring-primary/20 focus:border-primary/40 transition-all px-4 shadow-none"
                   >
-                    Most Popular
-                  </SelectItem>
-                  <SelectItem
-                    value="trending"
-                    className="focus:bg-primary focus:text-white cursor-pointer"
-                  >
-                    Trending Now
-                  </SelectItem>
-                  <SelectItem
-                    value="az"
-                    className="focus:bg-primary focus:text-white cursor-pointer"
-                  >
-                    Name (A-Z)
-                  </SelectItem>
-                  <SelectItem
-                    value="za"
-                    className="focus:bg-primary focus:text-white cursor-pointer"
-                  >
-                    Name (Z-A)
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+                    <span className="truncate">
+                      {currentSortLabel || "Sort by"}
+                    </span>
+                    <ChevronDown
+                      className={cn(
+                        "ml-2 h-4 w-4 shrink-0 opacity-50 transition-transform duration-200",
+                        open ? "rotate-180" : "rotate-0",
+                      )}
+                    />
+                  </Button>
+                </PopoverTrigger>
+
+                <PopoverContent
+                  className="w-[var(--radix-popover-trigger-width)] p-1 bg-[#0A0A0A] border-zinc-800 text-zinc-400 shadow-2xl"
+                  align="end"
+                  sideOffset={6}
+                >
+                  <div className="flex flex-col gap-1">
+                    {sortOptions.map((option) => (
+                      <button
+                        key={option.value}
+                        onClick={() => {
+                          setSortBy(option.value);
+                          setOpen(false);
+                        }}
+                        className={cn(
+                          "w-full text-left px-3 py-2.5 text-sm rounded-lg transition-colors cursor-pointer outline-none",
+                          sortBy === option.value
+                            ? "bg-primary text-white font-medium"
+                            : "hover:bg-zinc-800/50 hover:text-zinc-200",
+                        )}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
           </div>
         </div>
 
         {/* Actors Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-6">
-          {currentMovies.length > 0 ? (
-            currentMovies.map((actor) => (
+          {currentActors.length > 0 ? (
+            currentActors.map((actor) => (
               <ActorCard key={actor.id} actor={actor} />
             ))
           ) : (
@@ -176,7 +201,7 @@ export default function Actors() {
           )}
         </div>
 
-        {/* Shadcn UI Pagination */}
+        {/* Pagination */}
         {totalPages > 1 && (
           <Pagination className="mt-20">
             <PaginationContent className="gap-2 border-none bg-transparent">
@@ -190,52 +215,54 @@ export default function Actors() {
                       scrollToSection();
                     }
                   }}
-                  className={`bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors ${
-                    currentPage === 1
-                      ? "opacity-30 pointer-events-none"
-                      : "cursor-pointer"
-                  }`}
+                  className={cn(
+                    "bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors",
+                    currentPage === 1 && "opacity-30 pointer-events-none",
+                  )}
                 />
               </PaginationItem>
 
-              {(() => {
-                const pages = [];
-                for (let i = 1; i <= totalPages; i++) {
-                  if (
-                    i === 1 ||
-                    i === totalPages ||
-                    (i >= currentPage - 1 && i <= currentPage + 1)
-                  ) {
-                    pages.push(
-                      <PaginationItem key={i}>
-                        <PaginationLink
-                          href="#"
-                          isActive={currentPage === i}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setCurrentPage(i);
-                            scrollToSection();
-                          }}
-                          className={`w-11 h-11 border-none rounded-lg font-bold transition-all ${
-                            currentPage === i
-                              ? "bg-primary text-white pointer-events-none shadow-lg shadow-primary/20"
-                              : "bg-[#121212] text-zinc-400 hover:bg-zinc-800 cursor-pointer"
-                          }`}
-                        >
-                          {i}
-                        </PaginationLink>
-                      </PaginationItem>,
-                    );
-                  } else if (i === currentPage - 2 || i === currentPage + 2) {
-                    pages.push(
-                      <PaginationItem key={`ellipsis-${i}`}>
-                        <PaginationEllipsis className="text-zinc-600" />
-                      </PaginationItem>,
-                    );
-                  }
+              {Array.from({ length: totalPages }).map((_, idx) => {
+                const pageNum = idx + 1;
+                // Basic logic for showing pages: first, last, and around current
+                if (
+                  pageNum === 1 ||
+                  pageNum === totalPages ||
+                  (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
+                ) {
+                  return (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        href="#"
+                        isActive={currentPage === pageNum}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(pageNum);
+                          scrollToSection();
+                        }}
+                        className={cn(
+                          "w-11 h-11 border-none rounded-lg font-bold transition-all cursor-pointer",
+                          currentPage === pageNum
+                            ? "bg-primary text-white pointer-events-none shadow-lg shadow-primary/20"
+                            : "bg-[#121212] text-zinc-400 hover:bg-zinc-800",
+                        )}
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                } else if (
+                  pageNum === currentPage - 2 ||
+                  pageNum === currentPage + 2
+                ) {
+                  return (
+                    <PaginationItem key={`ellipsis-${pageNum}`}>
+                      <PaginationEllipsis className="text-zinc-600" />
+                    </PaginationItem>
+                  );
                 }
-                return pages;
-              })()}
+                return null;
+              })}
 
               <PaginationItem>
                 <PaginationNext
@@ -247,11 +274,11 @@ export default function Actors() {
                       scrollToSection();
                     }
                   }}
-                  className={`bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors ${
-                    currentPage === totalPages
-                      ? "opacity-30 pointer-events-none"
-                      : "cursor-pointer"
-                  }`}
+                  className={cn(
+                    "bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors",
+                    currentPage === totalPages &&
+                      "opacity-30 pointer-events-none",
+                  )}
                 />
               </PaginationItem>
             </PaginationContent>
