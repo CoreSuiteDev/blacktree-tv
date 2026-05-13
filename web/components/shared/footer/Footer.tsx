@@ -1,10 +1,11 @@
 import React from "react";
-import Image from "next/image";
-import Link from "next/link";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SendHorizontal, Clapperboard } from "lucide-react";
 import { footerLinks } from "@/constants/footer";
+import Image from "next/image";
+import Link from "next/link";
 
 const Footer = () => {
   const { brand, sections } = footerLinks;
