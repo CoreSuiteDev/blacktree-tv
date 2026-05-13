@@ -23,7 +23,7 @@ export function FilterControls() {
     <section className="w-full   py-4 ">
       <div className="container px-4 md:px-0  mx-auto ">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center justify-items-stretch">
-          <Button className="w-full h-[46px] bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-wider rounded-md transition-all shadow-md">
+          <Button className="w-full h-[46px] bg-primary/90 hover:bg-primary text-foreground font-bold uppercase tracking-wider rounded-md transition-all shadow-md">
             ALL
           </Button>
 
@@ -68,7 +68,7 @@ function FilterDropdown({ label, items }: FilterDropdownProps) {
             <SelectItem
               key={item}
               value={item.toLowerCase()}
-              className="focus:bg-red-600 focus:text-white data-[state=checked]:bg-red-600 data-[state=checked]:text-white cursor-pointer py-2 transition-colors rounded-lg mx-1"
+              className="focus:bg-primary focus:text-white data-ptimary:bg-red-600 data-frondground:text-white cursor-pointer py-2 transition-colors rounded-lg mx-1"
             >
               {item}
             </SelectItem>
