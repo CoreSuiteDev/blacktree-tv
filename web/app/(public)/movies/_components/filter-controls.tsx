@@ -3,16 +3,13 @@
 import * as React from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-// Type definition for props
 interface FilterDropdownProps {
   label: string;
   items: string[];
@@ -20,16 +17,16 @@ interface FilterDropdownProps {
 
 export function FilterControls() {
   return (
-    <section className="w-full   py-4 ">
-      <div className="container px-4 md:px-0  mx-auto ">
+    <section className="w-full py-4">
+      <div className="container px-4 md:px-0 mx-auto">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center justify-items-stretch">
-          <Button className="w-full h-[46px] bg-red-600 hover:bg-red-700 text-white font-bold uppercase tracking-wider rounded-md transition-all shadow-md">
+          <Button className="w-full py-5 bg-primary/90 hover:bg-primary text-foreground font-bold uppercase tracking-wider rounded-lg transition-all shadow-md">
             ALL
           </Button>
 
           <FilterDropdown
-            label="CATAGORY"
-            items={["ACTION", "HOROR", "COMEDY"]}
+            label="CATEGORY"
+            items={["ACTION", "HORROR", "COMEDY"]}
           />
           <FilterDropdown label="YEAR" items={["2024", "2023", "2022"]} />
           <FilterDropdown
@@ -43,38 +40,61 @@ export function FilterControls() {
 }
 
 function FilterDropdown({ label, items }: FilterDropdownProps) {
-  return (
-    /* TypeScript error fix: Removed 'modal={false}' as it's not supported in your version */
-    <Select>
-      <SelectTrigger className="w-full h-[52px] py-5 rounded-md bg-[#0a0a0a] border-zinc-800 text-zinc-400 focus:ring-1  focus:ring-offset-0 transition-all outline-none">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 whitespace-nowrap">
-            {label}:
-          </span>
-          <SelectValue placeholder="All" />
-        </div>
-      </SelectTrigger>
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState("All");
 
-      <SelectContent
-        position="popper"
-        sideOffset={5}
-        className="bg-zinc-950 border-zinc-800 text-zinc-200 min-w-[var(--radix-select-trigger-width)]"
+  return (
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full  justify-between px-4 py-5 rounded-lg bg-[#0a0a0a] border-zinc-800 text-zinc-400 hover:bg-[#0f0f0f] hover:text-zinc-300 transition-all outline-none"
+        >
+          <div className="flex items-center gap-2 overflow-hidden">
+            <span className="text-xs font-bold uppercase tracking-widest text-zinc-500 whitespace-nowrap">
+              {label}:
+            </span>
+            <span className="truncate text-sm text-zinc-300">{selected}</span>
+          </div>
+          <ChevronDown
+            className={cn(
+              "ml-2 h-4 w-4 shrink-0 opacity-50 transition-transform duration-200",
+              open ? "rotate-180" : "rotate-0",
+            )}
+          />
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent
+        className="w-[var(--radix-popover-trigger-width)] p-1 bg-zinc-950 border-zinc-800 text-zinc-200"
+        align="start"
+        sideOffset={8}
       >
-        <SelectGroup>
-          <SelectLabel className="text-zinc-500 text-[10px] uppercase tracking-widest px-2 py-2">
+        <div className="flex flex-col gap-1">
+          <div className="px-2 py-1.5 text-zinc-500 text-[10px] uppercase tracking-widest">
             Filter by {label}
-          </SelectLabel>
+          </div>
           {items.map((item) => (
-            <SelectItem
+            <button
               key={item}
-              value={item.toLowerCase()}
-              className="focus:bg-red-600 focus:text-white data-[state=checked]:bg-red-600 data-[state=checked]:text-white cursor-pointer py-2 transition-colors rounded-lg mx-1"
+              onClick={() => {
+                setSelected(item);
+                setOpen(false);
+              }}
+              className={cn(
+                "w-full text-left px-3 py-2 text-sm rounded-md transition-colors cursor-pointer outline-none",
+                selected === item
+                  ? "bg-primary text-white"
+                  : "hover:bg-zinc-800 text-zinc-300",
+              )}
             >
               {item}
-            </SelectItem>
+            </button>
           ))}
-        </SelectGroup>
-      </SelectContent>
-    </Select>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -5,6 +5,7 @@ import { UPCOMING_MOVIES } from "@/constants/movies";
 import { BrowseAlphabet } from "./_components/browse-alphabet";
 import { FilterControls } from "./_components/filter-controls";
 import AllMoviesSection from "./_components/all-movies";
+import TrendingSubGenres from "./_components/trending-sub-genres";
 
 const Movies = () => {
   return (
@@ -13,6 +14,7 @@ const Movies = () => {
       <BrowseAlphabet />
       <FilterControls />
       <AllMoviesSection />
+      <TrendingSubGenres />
     </div>
   );
 };

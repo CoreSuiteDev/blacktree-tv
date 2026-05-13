@@ -1,9 +1,16 @@
-import React from 'react'
+import React from "react";
+import { LivePlayer } from "./_components/live-player";
+import TrendingSlider from "./_components/trending-slider";
+import UpcomingEvents from "./_components/upcoming-events";
 
-const page = () => {
+const Live = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div className="mt-22">
+      <LivePlayer />
+      <TrendingSlider />
+      <UpcomingEvents />
+    </div>
+  );
+};
 
-export default page
+export default Live;

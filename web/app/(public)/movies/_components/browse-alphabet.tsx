@@ -21,12 +21,6 @@ export function BrowseAlphabet() {
               BROWSE <span className="text-primary">A-Z</span>
             </h2>
           </div>
-          <Button
-            variant="ghost"
-            className="text-muted-foreground hover:text-muted-foreground text-[12px] uppercase "
-          >
-            VIEW ALL
-          </Button>
         </header>
 
         {/* <Separator className="bg-border" /> */}

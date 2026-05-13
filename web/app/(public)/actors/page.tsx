@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Actors from "./_components/all-actors";
 
 const page = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div className="mt-22">
+      <Actors />
+    </div>
+  );
+};
 
-export default page
+export default page;
