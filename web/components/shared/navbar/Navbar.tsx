@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input"; // Shadcn Input added
 import {
   Sheet,
   SheetContent,
+  SheetDescription,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
@@ -176,6 +177,9 @@ export function Navbar() {
                 className="w-[85vw] p-0 z-150 border-l border-white/10"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Access navigation links and user account settings.
+                </SheetDescription>
                 <div className="flex flex-col h-full pt-20 px-6 bg-background">
                   {NAVIGATION_ITEMS.map((item) => (
                     <Link

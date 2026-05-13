@@ -1,7 +1,7 @@
-const Register = () => {
-  return <>
-  
-  </>;
+import { RegisterForm } from "../_components/reigster-form";
+
+const RegisterPage = () => {
+  return <RegisterForm />;
 };
 
-export default Register;
+export default RegisterPage;

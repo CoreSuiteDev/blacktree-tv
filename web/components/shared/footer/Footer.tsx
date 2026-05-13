@@ -6,11 +6,13 @@ import { Button } from "@/components/ui/button";
 import { SendHorizontal, Clapperboard } from "lucide-react";
 import { footerLinks } from "@/constants/footer";
 
-const Footer = () => {
+import { cn } from "@/lib/utils";
+
+const Footer = ({ className }: { className?: string }) => {
   const { brand, sections } = footerLinks;
 
   return (
-    <footer className="bg-background text-muted-foreground py-12 px-6 md:px-16 border-t border-border">
+    <footer className={cn("bg-background text-muted-foreground py-12 px-6 md:px-16 border-t border-border", className)}>
       <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12">
         {/* Brand Section */}
         <div className="flex flex-col gap-4">
