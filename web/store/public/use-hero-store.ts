@@ -25,6 +25,12 @@ export const useHeroStore = create<HeroState>((set) => ({
       color: "#ff0000",
       isMod: true,
     },
+    {
+      id: "2",
+      user: "Masrafi",
+      message: "Hello everyone!",
+      color: "#ffffff",
+    },
     // Add your initial messages here
   ],
   isChatOpen: true, // Default open

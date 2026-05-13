@@ -1,3 +1,5 @@
+"use client";
+
 import {
   AirPlayButton,
   CaptionButton,
@@ -13,6 +15,7 @@ import {
   Spinner,
   VolumeSlider,
   useCaptionOptions,
+  useMediaState,
   usePlaybackRateOptions,
   useVideoQualityOptions,
 } from "@vidstack/react";
@@ -47,6 +50,8 @@ import { usePlayerStore } from "../store/player.store";
 
 const CinematicControls = () => {
   const { isChatOpen, toggleChat } = usePlayerStore();
+  const canAirPlay = useMediaState("canAirPlay");
+  const canGoogleCast = useMediaState("canGoogleCast");
 
   return (
     <Controls.Root className="absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 p-4 md:p-6 transition-opacity duration-300 opacity-0 data-[visible]:opacity-100">
@@ -88,12 +93,16 @@ const CinematicControls = () => {
         {/* Right Action Group */}
         <div className="flex items-center gap-2 md:gap-6">
           <div className="flex items-center gap-1.5 md:gap-4 text-white/70">
-            <AirPlayButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
-              <Airplay className="w-5 h-5" />
-            </AirPlayButton>
-            <GoogleCastButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
-              <Cast className="w-5 h-5" />
-            </GoogleCastButton>
+            {canAirPlay && (
+              <AirPlayButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+                <Airplay className="w-5 h-5" />
+              </AirPlayButton>
+            )}
+            {canGoogleCast && (
+              <GoogleCastButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+                <Cast className="w-5 h-5" />
+              </GoogleCastButton>
+            )}
             <CaptionButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
               <CaptionsOff className="w-5 h-5 md:w-6 md:h-6 hidden group-data-[active]:block" />
               <Captions className="w-5 h-5 md:w-6 md:h-6 group-data-[active]:hidden" />
@@ -106,17 +115,19 @@ const CinematicControls = () => {
               <Minimize className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[active]:block" />
             </FullscreenButton>
 
-            <button
-              onClick={toggleChat}
-              className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400 p-1"
-              aria-label="Toggle Chat"
-            >
-              {isChatOpen ? (
-                <MessageSquare className="w-4 h-4 md:w-5 md:h-5" />
-              ) : (
-                <MessageSquareOff className="w-4 h-4 md:w-5 md:h-5" />
-              )}
-            </button>
+            {!useMediaState("fullscreen") && (
+              <button
+                onClick={toggleChat}
+                className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400 p-1"
+                aria-label="Toggle Chat"
+              >
+                {isChatOpen ? (
+                  <MessageSquare className="w-4 h-4 md:w-5 md:h-5" />
+                ) : (
+                  <MessageSquareOff className="w-4 h-4 md:w-5 md:h-5" />
+                )}
+              </button>
+            )}
 
             <Menu.Root>
               <Menu.Button
@@ -306,12 +317,14 @@ const VidPlayer = () => {
     <MediaPlayer
       title="Beyond The Story"
       src="https://files.vidstack.io/sprite-fight/hls/stream.m3u8"
-      crossOrigin
+      crossOrigin="anonymous"
       playsInline
+      logLevel="silent"
       streamType="live"
       viewType="video"
       autoPlay
       muted
+      fullscreenOrientation="portrait"
       onOrientationChange={undefined}
       className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-[fullscreen]:rounded-none data-[fullscreen]:aspect-auto data-[fullscreen]:h-full transition-all duration-300"
     >
