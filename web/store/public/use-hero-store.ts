@@ -11,7 +11,9 @@ interface Message {
 interface HeroState {
   messages: Message[];
   isChatOpen: boolean;
+  chatInput: string;
   addMessage: (text: string) => void;
+  setChatInput: (input: string | ((prev: string) => string)) => void;
   toggleChat: () => void;
   setChatOpen: (open: boolean) => void;
 }
@@ -25,9 +27,16 @@ export const useHeroStore = create<HeroState>((set) => ({
       color: "#ff0000",
       isMod: true,
     },
+    {
+      id: "2",
+      user: "Masrafi",
+      message: "Hello everyone!",
+      color: "#ffffff",
+    },
     // Add your initial messages here
   ],
   isChatOpen: true, // Default open
+  chatInput: "",
   addMessage: (text) =>
     set((state) => ({
       messages: [
@@ -39,6 +48,11 @@ export const useHeroStore = create<HeroState>((set) => ({
           color: "#00ff00",
         },
       ],
+      chatInput: "", // Clear input after adding message
+    })),
+  setChatInput: (input) =>
+    set((state) => ({
+      chatInput: typeof input === "function" ? input(state.chatInput) : input,
     })),
   toggleChat: () => set((state) => ({ isChatOpen: !state.isChatOpen })),
   setChatOpen: (open) => set({ isChatOpen: open }),
