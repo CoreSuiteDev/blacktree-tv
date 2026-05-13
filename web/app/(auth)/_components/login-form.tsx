@@ -45,12 +45,7 @@ export const LoginForm = () => {
   function onSubmit(data: ZTAuthLogin) {
     console.log("Login Form Values:", data);
 
-    toast("You submitted the following values:", {
-      description: (
-        <pre className="mt-2 w-[320px] overflow-x-auto rounded-md bg-black p-4 text-white">
-          <code>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    toast("Login Success", {
       position: "bottom-right",
     });
   }
@@ -97,7 +92,7 @@ export const LoginForm = () => {
                       placeholder="you@example.com"
                       autoComplete="email"
                       aria-invalid={fieldState.invalid}
-                      className="h-12 rounded-lg border bg-[#0F0F0F] border-zinc-800 px-4 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-600"
+                      className="h-12 rounded-lg border bg-transparent! border-[#FFFFFF1A] px-4 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-[#FFFFFF1A]"
                     />
 
                     {fieldState.invalid && (
@@ -130,7 +125,7 @@ export const LoginForm = () => {
                         placeholder="••••••••"
                         autoComplete="current-password"
                         aria-invalid={fieldState.invalid}
-                        className={`h-12 rounded-lg border border-zinc-800 bg-[#0F0F0F] px-4 pr-12 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-zinc-600 ${
+                        className={`h-12 rounded-lg border border-[#FFFFFF1A] bg-transparent! px-4 pr-12 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-[#FFFFFF1A] ${
                           !showPassword && field.value
                             ? "font-mono tracking-[0.25em]"
                             : ""
