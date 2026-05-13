@@ -1,5 +1,7 @@
-const page = () => {
-  return <div>page</div>;
+import { ResetPasswordForm } from "../_components/reset-password-form";
+
+const ResetPasswordPage = () => {
+  return <ResetPasswordForm />;
 };
 
-export default page;
+export default ResetPasswordPage;

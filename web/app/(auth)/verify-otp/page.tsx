@@ -1,9 +1,7 @@
-import React from 'react'
+import { VerifyOtpForm } from "../_components/verify-otp-form";
 
-const page = () => {
-  return (
-    <div>page</div>
-  )
-}
+const VerifyOtpPage = () => {
+  return <VerifyOtpForm />;
+};
 
-export default page
+export default VerifyOtpPage;

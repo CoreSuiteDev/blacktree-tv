@@ -28,7 +28,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 
-import { ZCAuthLogin, ZTAuthLogin } from "@/types/zod";
+import { ZCAuthLogin, ZTAuthLogin } from "@/types/zod/auth";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
