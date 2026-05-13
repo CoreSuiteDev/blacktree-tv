@@ -1,27 +1,22 @@
 "use client";
 
-import { useHeroStore } from "@/store/public/use-hero-store";
-import {
-  CircleDollarSign,
-  SendHorizontal,
-  Shield,
-  Smile,
-  X,
-} from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import { ChatInput } from "./chat-input";
+
+import { X, Shield } from "lucide-react";
+import React, { useEffect, useRef } from "react";
 
 // Shadcn UI Components
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardFooter, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import VidPlayer from "@/features/player/components/vid-player";
 import { usePlayerStore } from "@/features/player/store/player.store";
+import { useHeroStore } from "@/store/public/use-hero-store";
 
 export function HeroSection() {
-  const { messages, addMessage } = useHeroStore();
+  const { messages } = useHeroStore();
   const { isChatOpen, toggleChat } = usePlayerStore();
-  const [input, setInput] = useState("");
 
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -33,12 +28,7 @@ export function HeroSection() {
     if (viewport) viewport.scrollTop = viewport.scrollHeight;
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    addMessage(input);
-    setInput("");
-  };
+
 
   return (
     <section className="text-foreground p-4 overflow-hidden">
@@ -116,40 +106,7 @@ export function HeroSection() {
                 ))}
               </CardContent>
               {/* Chat Input Area */}
-              <CardFooter className="w-full p-0 m-0">
-                <div className="p-4 w-full bg-white/5 border-t border-white/5">
-                  <form onSubmit={handleSubmit} className="relative group">
-                    <div className="relative flex items-center bg-zinc-900/50 border border-white/5 group-focus-within:border-white/20 transition-all px-3 py-2">
-                      <Input
-                        type="text"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="Send a message..."
-                        className="bg-transparent! focus:bg-transparent! placeholder:text-white/40! border-none focus-visible:ring-0 text-[14px] h-9 p-0 px-2.5 w-full flex-1"
-                      />
-                      <div className="flex items-center gap-3 ml-2">
-                        <Smile className="w-5 h-5 text-white/30 hover:text-white transition-colors cursor-pointer" />
-                        <button type="submit" disabled={!input.trim()}>
-                          <SendHorizontal
-                            className={`cursor-pointer w-5 h-5 transition-all ${input.trim() ? "text-primary scale-110" : "text-white/20"}`}
-                          />
-                        </button>
-                      </div>
-                    </div>
-                  </form>
-
-                  {/* Chat Footer */}
-                  <div className="flex items-center justify-between mt-3 px-1 text-[11px] font-medium tracking-wide">
-                    <div className="flex items-center gap-1.5 text-white/40 hover:text-white/60 transition-colors cursor-pointer">
-                      <CircleDollarSign className="w-3.5 h-3.5" />
-                      <span>1,240 Bits</span>
-                    </div>
-                    <span className="text-white/20 uppercase tracking-widest text-[9px]">
-                      Press Enter to send
-                    </span>
-                  </div>
-                </div>
-              </CardFooter>
+              <ChatInput />
             </Card>
           </div>
         </div>
