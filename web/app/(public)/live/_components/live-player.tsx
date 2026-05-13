@@ -47,7 +47,7 @@ export function LivePlayer() {
   };
 
   return (
-    <section className="bg-black text-foreground p-4 lg:p-8 min-h-screen">
+    <section className="bg-black text-foreground p-4 lg:p-8 ">
       <div className="container mx-auto">
         {/* 1. TOP FILTER BAR */}
         <FilterBar />

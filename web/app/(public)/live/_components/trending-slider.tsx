@@ -1,12 +1,14 @@
 "use client";
 
 import React, { useState } from "react";
-import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { trendingChannels } from "@/constants/chanels";
 import ChannelCard from "../../live/_components/channel-card";
@@ -23,45 +25,53 @@ export interface Channel {
 }
 
 const TrendingSlider = () => {
-  // Initialize the plugin inside useState.
-  // This is safe because the initializer function only runs once.
   const [plugin] = useState(() =>
     Autoplay({ delay: 2000, stopOnInteraction: false }),
   );
 
   return (
-    <section className="w-full py-10 bg-black">
+    <section className="w-full py-10 px-4 md:px-0 bg-black">
       <div className="container mx-auto">
-        {/* Header Section */}
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
-              Trending Channels
-            </h2>
-            <p className="text-zinc-500 text-sm mt-1">
-              Most watched broadcasts right now
-            </p>
-          </div>
-          <Link
-            href="/all"
-            className="text-[#E50914] text-sm font-medium hover:underline transition-all"
-          >
-            See All
-          </Link>
-        </div>
-
-        {/* Slider Section */}
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          // We pass 'plugin' directly. No .current needed, so no render error!
           plugins={[plugin]}
           onMouseEnter={() => plugin.stop()}
           onMouseLeave={() => plugin.reset()}
           className="w-full"
         >
+          {/* Header Section with Navigation */}
+          <div className="flex items-end justify-between mb-8">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight">
+                Trending Channels
+              </h2>
+              <p className="text-zinc-500 text-sm mt-1">
+                Most watched broadcasts right now
+              </p>
+            </div>
+
+            {/* Navigation Buttons */}
+            <div className="flex gap-2 relative">
+              <CarouselPrevious
+                className="static translate-y-0 h-9 w-9 rounded-full border border-zinc-800 hover:text-primary bg-transparent hover:bg-transparent hover:border-primary transition-all duration-300 group shadow-none"
+                variant="ghost"
+              >
+                <ChevronLeft className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
+              </CarouselPrevious>
+
+              <CarouselNext
+                className="static translate-y-0 h-9 w-9 rounded-full border border-zinc-800 hover:text-primary bg-transparent hover:bg-transparent hover:border-primary transition-all duration-300 group shadow-none"
+                variant="ghost"
+              >
+                <ChevronRight className="w-5 h-5 text-white group-hover:text-primary transition-colors" />
+              </CarouselNext>
+            </div>
+          </div>
+
+          {/* Slider Content */}
           <CarouselContent>
             {(trendingChannels as Channel[]).map((channel: Channel) => (
               <CarouselItem
