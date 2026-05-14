@@ -3,7 +3,7 @@ export const NAVIGATION_ITEMS = [
   { label: "About", href: "/about-us" },
   { label: "Lives", href: "/live" },
   { label: "Movies", href: "/movies" },
-  { label: "Shows", href: "/shows" },
+
   { label: "Interviews", href: "/interviews" },
   { label: "Actors", href: "/actors" },
 ];

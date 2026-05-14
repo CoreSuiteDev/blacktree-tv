@@ -27,7 +27,7 @@ interface SpotlightSliderProps {
 
 // ... (baki import gulo thik thakbe)
 
-export function SpotlightSlider({ items }: SpotlightSliderProps) {
+export function ExclusiveInterview({ items }: SpotlightSliderProps) {
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
 
@@ -49,7 +49,7 @@ export function SpotlightSlider({ items }: SpotlightSliderProps) {
   }, [api]);
 
   return (
-    <div className="w-full py-10 px-4 md:px-0">
+    <div className="w-full py-10 ">
       <Carousel
         setApi={setApi}
         plugins={plugins}
@@ -72,17 +72,17 @@ export function SpotlightSlider({ items }: SpotlightSliderProps) {
                 </div>
 
                 <div className="relative h-full flex flex-col justify-center px-10 md:px-20">
-                  <div className="max-w-2xl space-y-3 md:space-y-5">
-                    <span className="text-primary font-bold uppercase tracking-widest text-[10px] md:text-xs bg-primary/10 px-3 py-1 rounded-full w-fit">
+                  <div className="max-w-2xl space-y-3 md:space-y-4">
+                    <h3 className="text-primary font-bold uppercase tracking-widest text-[10px] md:text-[15px]  py-1 rounded-full w-fit">
                       {item.label}
-                    </span>
+                    </h3>
 
-                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white font-sans uppercase">
+                    <h2 className="text-3xl md:text-5xl lg:text-6xl font-semibold text-frontground font-sans uppercase">
                       {item.title}
                     </h2>
 
                     <div className="space-y-1 md:space-y-2">
-                      <h4 className="text-lg md:text-2xl text-white/90 font-medium">
+                      <h4 className="text-lg md:text-2xl text-frontground/90 font-medium">
                         {item.subtitle}
                       </h4>
                       <p className="text-muted-foreground text-sm md:text-base max-w-md line-clamp-2">
@@ -91,7 +91,7 @@ export function SpotlightSlider({ items }: SpotlightSliderProps) {
                     </div>
 
                     <div className="pt-2">
-                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-6 py-4 h-auto text-base font-bold shadow-lg shadow-primary/20">
+                      <Button className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-4 py-3 md:px-5 md:py-3 h-auto text-base font-bold shadow-lg shadow-primary/20">
                         Watch Now
                         <Play className="ml-2 h-4 w-4 fill-current" />
                       </Button>
@@ -108,7 +108,7 @@ export function SpotlightSlider({ items }: SpotlightSliderProps) {
                         "h-1.5 transition-all duration-300 rounded-full",
                         current === i
                           ? "bg-primary w-8"
-                          : "bg-white/20 w-4 hover:bg-white/40",
+                          : "bg-frontground/20 w-4 hover:bg-frontground/40",
                       )}
                     />
                   ))}

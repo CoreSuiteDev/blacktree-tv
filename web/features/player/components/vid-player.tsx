@@ -53,7 +53,11 @@ const CinematicControls = () => {
   const canGoogleCast = useMediaState("canGoogleCast");
 
   return (
-    <Controls.Root className="absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 p-4 md:p-6 transition-opacity duration-300 opacity-0 data-visible:opacity-100">
+    <Controls.Root
+      className={`absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 transition-opacity duration-300 opacity-0 data-visible:opacity-100 ${
+        isChatOpen ? "px-6  py-4" : "px-6 py-4 md:py-8 lg:py-12" // Even larger padding when player is wide (Chat Closed)
+      }`}
+    >
       {/* Middle Section: Typography */}
       <div className="flex flex-col gap-1 md:gap-2 items-start max-w-2xl pointer-events-none select-none">
         <h1 className="text-white text-lg md:text-2xl font-medium tracking-tighter uppercase leading-none">
@@ -312,6 +316,7 @@ function SubmenuButton({
 }
 
 const VidPlayer = () => {
+  const { isChatOpen, toggleChat } = usePlayerStore();
   return (
     <MediaPlayer
       title="Beyond The Story"
@@ -332,10 +337,16 @@ const VidPlayer = () => {
       </MediaProvider>
 
       {/* Permanent Overlay: Always Visible */}
-      <div className="absolute top-6  right-6 z-10 pointer-events-none">
-        <div className="flex items-center gap-2 bg-red-600 px-3 py-1.5 rounded-md shadow-lg ">
-          <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-          <span className="text-white text-[11px] font-black uppercase tracking-widest">
+      <div
+        className={`absolute z-10 transition-all duration-300 pointer-events-none ${
+          isChatOpen
+            ? "top-4 right-4 lg:top-8 lg:right-8"
+            : "top-6 right-6 lg:top-12 lg:right-12"
+        }`}
+      >
+        <div className="flex items-center gap-2 bg-primary px-3 py-1.5 rounded-md shadow-[0_0_20px_rgba(var(--primary),0.4)] border border-white/10">
+          <div className="w-2 h-2 bg-primary-foreground rounded-full animate-pulse" />
+          <span className="text-primary-foreground text-[10px] md:text-[11px] font-black uppercase tracking-widest leading-none">
             LIVE
           </span>
         </div>

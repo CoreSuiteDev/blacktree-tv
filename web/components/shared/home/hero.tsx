@@ -27,8 +27,6 @@ export function HeroSection() {
     if (viewport) viewport.scrollTop = viewport.scrollHeight;
   }, [messages]);
 
-
-
   return (
     <section className="text-foreground p-4 overflow-hidden">
       <div className="container mx-auto">
@@ -37,7 +35,7 @@ export function HeroSection() {
           <div
             className={`transition-all duration-500 ease-in-out overflow-hidden bg-black flex items-center justify-center rounded-2xl ${
               isChatOpen ? "lg:w-2/3" : "lg:w-full"
-            } aspect-video lg:aspect-auto lg:max-h-[92vh] lg:min-h-[500px] w-full`}
+            } aspect-video lg:aspect-auto lg:max-h-[87vh] lg:min-h-[500px] w-full`}
           >
             <VidPlayer />
           </div>
