@@ -45,3 +45,38 @@ export const ALL_INTERVIEWS = [
     category: "Live",
   },
 ];
+
+export const INTERVIEW_SPORTLIGHT = [
+  {
+    id: 1,
+    label: "Exclusive Interview",
+    title: "Taraji P. Henson",
+    subtitle: "Breaking Barriers. Building Legacy",
+    description:
+      "An intimate conversation about her journey in Hollywood and beyond. From her iconic roles to her impact on the industry.",
+    image: "/assets/images/sporlighyt-image.png",
+    // High-end stage/interview lighting vibe
+  },
+  {
+    id: 2,
+    label: "Trending Spotlight",
+    title: "Midnight Echoes",
+    subtitle: "A Journey into the Unknown",
+    description:
+      "The most talked-about indie thriller of the year is now streaming exclusively on our platform.",
+    image:
+      "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop",
+    // Cinematic movie production/clapperboard vibe
+  },
+  {
+    id: 3,
+    label: "Director's Cut",
+    title: "The Silent Forest",
+    subtitle: "Experience Nature's Mystery",
+    description:
+      "Go behind the scenes with director Marcus Vane to see how this visual masterpiece was filmed.",
+    image:
+      "https://images.unsplash.com/photo-1478720568477-152d9b164e26?q=80&w=2000&auto=format&fit=crop",
+    // Dark theater/cinema screen vibe
+  },
+];

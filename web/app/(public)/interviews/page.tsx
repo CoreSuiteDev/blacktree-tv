@@ -1,7 +1,8 @@
 import { ExclusiveInterview } from "@/components/shared/home/SpotlightSlider";
-import { INTERVIEW_SPORTLIGHT } from "@/constants/movies";
+
 import React from "react";
 import InterviewsSection from "./_components/interviews-section";
+import { INTERVIEW_SPORTLIGHT } from "@/constants/intervirew";
 
 const Interview = () => {
   return (

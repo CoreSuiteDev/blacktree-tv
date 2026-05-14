@@ -12,11 +12,19 @@ import {
 import MovieCard from "./movieCard";
 
 interface Movie {
-  id: number | string;
+  id: number;
   title: string;
+  slug: string;
+  description: string;
   image: string;
+  year: number;
+  duration: string;
+  rating: number;
+  genres: string[];
+  languages: string[];
+  quality: string;
+  pgRating: string;
 }
-
 interface MovieSliderProps {
   title: string;
   movies: Movie[];

@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import SingleActor from "../_components/actor-details";
 
-const page = () => {
+const ActorDetails = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <SingleActor />
+    </div>
+  );
+};
 
-export default page
+export default ActorDetails;

@@ -11,12 +11,22 @@ import {
 } from "@/components/ui/carousel";
 import ActorCard from "./actor-card";
 
-interface Actor {
+export interface ActorDetails {
+  born: string;
+  awards: string;
+  training: string;
+}
+
+export interface Actor {
   id: number | string;
+  slug: string; // Add this line
   name: string;
   role: string;
+  label: string;
+  shortDesc: string;
+  bio: string[];
+  details: ActorDetails;
   image: string;
-  description: string;
 }
 
 interface ActorSliderProps {

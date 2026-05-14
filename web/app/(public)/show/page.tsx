@@ -1,7 +1,7 @@
 import React from "react";
 import SingleMovie from "./_components/single-movie";
 
-const MovieDetails = () => {
+const page = () => {
   return (
     <div>
       <SingleMovie />
@@ -9,4 +9,4 @@ const MovieDetails = () => {
   );
 };
 
-export default MovieDetails;
+export default page;

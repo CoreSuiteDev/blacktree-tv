@@ -2,13 +2,14 @@ import { HeroSection } from "@/components/shared/home/hero";
 import LiveSchedule from "@/components/shared/home/liveSchedule";
 import heroBg from "../../public/assets/images/hero-bg.png";
 
-import { FEATURED_MOVIES, INTERVIEW_SPORTLIGHT } from "@/constants/movies";
+import { FEATURED_MOVIES } from "@/constants/movies";
 
 import MovieSlider from "@/components/shared/movie-slider";
 import ActorSlider from "@/components/shared/actor-slider";
 import { FEATURED_ACTORS } from "@/constants/actors";
 import SubscriptionSection from "@/components/shared/home/subscription-section";
 import { ExclusiveInterview } from "@/components/shared/home/SpotlightSlider";
+import { INTERVIEW_SPORTLIGHT } from "@/constants/intervirew";
 
 export default function Home() {
   return (
