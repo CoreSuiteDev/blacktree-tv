@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import SubscriptionPlans from "./_components/subscription-plans";
 
-const page = () => {
+const Subscription = () => {
   return (
-    <div>page</div>
-  )
-}
+    <div>
+      <SubscriptionPlans />
+    </div>
+  );
+};
 
-export default page
+export default Subscription;

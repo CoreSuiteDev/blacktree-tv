@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 const SubscriptionSection = () => {
   return (
@@ -78,9 +79,11 @@ const SubscriptionSection = () => {
             </div>
           </div>
 
-          <Button className="w-full sm:w-auto bg-primary hover:opacity-90 transition-opacity text-primary-foreground font-medium px-8 py-6 rounded-xl text-md lg:text-lg">
-            Upgrade to Pro + Now
-          </Button>
+          <Link href="/subscription">
+            <Button className="w-full sm:w-auto bg-primary hover:opacity-90 transition-opacity text-primary-foreground font-medium px-8 py-6 rounded-xl text-md lg:text-lg">
+              Upgrade to Pro + Now
+            </Button>
+          </Link>
         </div>
         {/* right side card */}
         {/* right side card */}
