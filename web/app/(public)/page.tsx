@@ -2,13 +2,13 @@ import { HeroSection } from "@/components/shared/home/hero";
 import LiveSchedule from "@/components/shared/home/liveSchedule";
 import heroBg from "../../public/assets/images/hero-bg.png";
 
-import { FEATURED_MOVIES, movieSpotlights } from "@/constants/movies";
-import { SpotlightSlider } from "@/components/shared/home/SpotlightSlider";
+import { FEATURED_MOVIES, INTERVIEW_SPORTLIGHT } from "@/constants/movies";
 
 import MovieSlider from "@/components/shared/movie-slider";
 import ActorSlider from "@/components/shared/actor-slider";
 import { FEATURED_ACTORS } from "@/constants/actors";
 import SubscriptionSection from "@/components/shared/home/subscription-section";
+import { ExclusiveInterview } from "@/components/shared/home/SpotlightSlider";
 
 export default function Home() {
   return (
@@ -29,7 +29,7 @@ export default function Home() {
       <div className="bg-popover">
         <MovieSlider title="Featured Movies" movies={FEATURED_MOVIES} />
         <MovieSlider title="New Movies" movies={FEATURED_MOVIES} />
-        <SpotlightSlider items={movieSpotlights} />
+        <ExclusiveInterview items={INTERVIEW_SPORTLIGHT} />
         <ActorSlider title="Featured Actors" actors={FEATURED_ACTORS} />
         <SubscriptionSection />
       </div>

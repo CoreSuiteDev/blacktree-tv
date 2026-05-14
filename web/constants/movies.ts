@@ -38,7 +38,7 @@ export const FEATURED_MOVIES = [
 
 // moviesw soportlight
 
-export const movieSpotlights = [
+export const INTERVIEW_SPORTLIGHT = [
   {
     id: 1,
     label: "Exclusive Interview",

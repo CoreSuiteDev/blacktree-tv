@@ -154,7 +154,7 @@ const SingleMovie = () => {
 
       {/* Section Footer/Indicator */}
       <div className="container mx-auto  ">
-        <MovieSlider title="New Movies" movies={FEATURED_MOVIES} />
+        <MovieSlider title="Relited Movies" movies={FEATURED_MOVIES} />
       </div>
     </section>
   );

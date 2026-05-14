@@ -202,88 +202,87 @@ export default function Actors() {
         </div>
 
         {/* Pagination */}
-        {totalPages > 1 && (
-          <Pagination className="mt-20">
-            <PaginationContent className="gap-2 border-none bg-transparent">
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage > 1) {
-                      setCurrentPage(currentPage - 1);
-                      scrollToSection();
-                    }
-                  }}
-                  className={cn(
-                    "bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors",
-                    currentPage === 1 && "opacity-30 pointer-events-none",
-                  )}
-                />
-              </PaginationItem>
+        <Pagination className="mt-10">
+          <PaginationContent className="gap-2 border-none bg-transparent">
+            {/* Previous Button */}
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage > 1) {
+                    setCurrentPage(currentPage - 1);
+                    scrollToSection();
+                  }
+                }}
+                className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
+                  currentPage === 1
+                    ? "opacity-50 pointer-events-none"
+                    : "cursor-pointer"
+                }`}
+              />
+            </PaginationItem>
 
-              {Array.from({ length: totalPages }).map((_, idx) => {
-                const pageNum = idx + 1;
-                // Basic logic for showing pages: first, last, and around current
-                if (
-                  pageNum === 1 ||
-                  pageNum === totalPages ||
-                  (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)
-                ) {
-                  return (
-                    <PaginationItem key={pageNum}>
-                      <PaginationLink
-                        href="#"
-                        isActive={currentPage === pageNum}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          setCurrentPage(pageNum);
-                          scrollToSection();
-                        }}
-                        className={cn(
-                          "w-11 h-11 border-none rounded-lg font-bold transition-all cursor-pointer",
-                          currentPage === pageNum
-                            ? "bg-primary text-white pointer-events-none shadow-lg shadow-primary/20"
-                            : "bg-[#121212] text-zinc-400 hover:bg-zinc-800",
-                        )}
-                      >
-                        {pageNum}
-                      </PaginationLink>
-                    </PaginationItem>
-                  );
-                } else if (
-                  pageNum === currentPage - 2 ||
-                  pageNum === currentPage + 2
-                ) {
-                  return (
-                    <PaginationItem key={`ellipsis-${pageNum}`}>
-                      <PaginationEllipsis className="text-zinc-600" />
-                    </PaginationItem>
-                  );
-                }
-                return null;
-              })}
+            {/* Page Numbers */}
+            {[...Array(totalPages)].map((_, i) => {
+              const page = i + 1;
+              const isActive = currentPage === page;
 
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (currentPage < totalPages) {
-                      setCurrentPage(currentPage + 1);
-                      scrollToSection();
-                    }
-                  }}
-                  className={cn(
-                    "bg-[#121212] text-zinc-400 border-none rounded-lg px-4 hover:bg-zinc-800 transition-colors",
-                    currentPage === totalPages &&
-                      "opacity-30 pointer-events-none",
-                  )}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+              if (
+                page === 1 ||
+                page === totalPages ||
+                (page >= currentPage - 1 && page <= currentPage + 1)
+              ) {
+                return (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      href="#"
+                      // isActive prop soriye dewa hoyeche jate Shadcn internal style clash na kore
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setCurrentPage(page);
+                        scrollToSection();
+                      }}
+                      className={`w-10 h-10 border-none rounded-lg transition-all flex items-center justify-center font-bold ${
+                        isActive
+                          ? "bg-primary  text-white hover:bg-primary  hover:cursor-pointer hover:text-white pointer-events-none shadow-lg"
+                          : "bg-[#121212] text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer"
+                      }`}
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              } else if (page === currentPage - 2 || page === currentPage + 2) {
+                return (
+                  <PaginationItem key={page}>
+                    <PaginationEllipsis className="text-zinc-500" />
+                  </PaginationItem>
+                );
+              }
+              return null;
+            })}
+
+            {/* Next Button */}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (currentPage < totalPages) {
+                    setCurrentPage(currentPage + 1);
+                    scrollToSection();
+                  }
+                }}
+                className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
+                  currentPage === totalPages
+                    ? "opacity-50 pointer-events-none"
+                    : "cursor-pointer"
+                }`}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </main>
   );

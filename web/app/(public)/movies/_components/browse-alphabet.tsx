@@ -13,7 +13,7 @@ export function BrowseAlphabet() {
 
   return (
     <section className="w-full bg-background  py-4">
-      <div className="container px-4 md:px-0  mx-auto space-y-6">
+      <div className="container mx-auto space-y-6">
         {/* Header Section */}
         <header className="flex items-center justify-between">
           <div className="space-y-1">
