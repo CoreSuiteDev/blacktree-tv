@@ -27,7 +27,7 @@ const SingleActor = () => {
   }
 
   return (
-    <section className="bg-background text-foreground pt-32 pb-20 px-4 md:px-12 lg:px-0 min-h-screen selection:bg-primary/30 font-sans">
+    <section className="bg-background text-foreground pt-32  px-4  lg:px-0  selection:bg-primary/30 font-sans">
       <div className="container mx-auto">
         <div className="flex flex-col lg:flex-row gap-16 items-start">
           {/* Profile Image Section */}
@@ -137,7 +137,11 @@ const SingleActor = () => {
             {actor.bio.map((para, index) => (
               <p
                 key={index}
-                className="first-letter:text-4xl first-letter:font-bold text-[16px] first-letter:text-foreground first-letter:mr-1"
+                className={`text-[16px] ${
+                  index === 0
+                    ? "first-letter:text-4xl first-letter:font-bold first-letter:text-foreground first-letter:mr-1"
+                    : ""
+                }`}
               >
                 {para}
               </p>

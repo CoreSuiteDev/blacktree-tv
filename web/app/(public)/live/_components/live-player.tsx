@@ -1,35 +1,27 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import {
-  Send,
-  Smile,
-  X,
-  CheckCircle2,
-  MessageSquare,
-  Captions,
-  Bookmark,
-  VolumeX,
-  Maximize,
-} from "lucide-react";
+import React, { useEffect, useRef } from "react";
+import { X, Shield, Bookmark } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useHeroStore } from "@/store/public/use-hero-store";
 
-// Shadcn UI Components
+// Components
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { FilterBar } from "./live-filterbar";
 
-// --- NEW COMPONENT: FILTER BAR ---
+import VidPlayer from "@/features/player/components/vid-player";
+
+// Stores
+import { useHeroStore } from "@/store/public/use-hero-store";
+import { usePlayerStore } from "@/features/player/store/player.store";
+import { ChatInput } from "@/components/shared/home/chat-input";
 
 export function LivePlayer() {
-  const { messages, addMessage, isChatOpen, setChatOpen, toggleChat } =
-    useHeroStore();
-  const [input, setInput] = useState("");
+  const { messages } = useHeroStore();
+  const { isChatOpen, toggleChat } = usePlayerStore();
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -39,93 +31,32 @@ export function LivePlayer() {
     if (viewport) viewport.scrollTop = viewport.scrollHeight;
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim()) return;
-    addMessage(input);
-    setInput("");
-  };
-
   return (
-    <section className="bg-black text-foreground p-4 lg:p-8 ">
+    <section className="bg-black text-foreground p-4 lg:p-8 min-h-screen">
       <div className="container mx-auto">
-        {/* 1. TOP FILTER BAR */}
         <FilterBar />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        {/* Using items-stretch to ensure player and chat have the same height */}
+        <div className="flex flex-col lg:flex-row gap-6 mt-6 transition-all duration-500 ease-in-out items-stretch">
           {/* --- LEFT SIDE: VIDEO & INFO --- */}
           <div
             className={cn(
-              "transition-all duration-500",
-              isChatOpen ? "lg:col-span-8" : "lg:col-span-12",
+              "transition-all duration-500 ease-in-out flex flex-col gap-6",
+              isChatOpen ? "lg:w-2/3" : "lg:w-full",
             )}
           >
             {/* VIDEO PLAYER CONTAINER */}
-            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5">
-              <video
-                className="w-full h-full object-cover"
-                autoPlay
-                muted
-                playsInline
-                loop
-              >
-                <source
-                  src="/video/13208142_3840_2160_60fps.mp4"
-                  type="video/mp4"
-                />
-              </video>
-
-              {/* Bottom Video Controls Overlay (Match image_641fd9.jpg) */}
-              <div className="absolute bottom-0 left-0 w-full p-6 flex justify-between items-center bg-gradient-to-t from-black/80 to-transparent">
-                <div className="flex items-center gap-2 text-fontground/80/90 text-sm font-medium">
-                  <VolumeX className="w-4 h-4" />
-                  <span>Tab to Unmute</span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <Badge className="bg-[#E50914] hover:bg-[#E50914] border-none px-3 py-1 rounded-md text-[10px] font-black">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-pulse mr-1.5" />
-                    LIVE NOW
-                  </Badge>
-                  <div className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-3 py-1 rounded-md text-[10px] font-bold text-fontground/80 border border-white/10">
-                    <MessageSquare className="w-3 h-3" />
-                    2.4M Watching
-                  </div>
-                  <div className="flex gap-1">
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 bg-black/40 hover:bg-black/60 text-fontground/80 rounded-md border border-white/10"
-                    >
-                      <Captions className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 bg-black/40 hover:bg-black/60 text-fontground/80 rounded-md border border-white/10"
-                      onClick={toggleChat}
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      size="icon"
-                      variant="ghost"
-                      className="h-8 w-8 bg-black/40 hover:bg-black/60 text-fontground/80 rounded-md border border-white/10"
-                    >
-                      <Maximize className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
+            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5 flex flex-col h-full min-h-[400px] lg:min-h-[500px]">
+              <VidPlayer />
             </div>
 
-            {/* 2. TEXT INFO SECTION (BELOW VIDEO) */}
-            <div className="mt-8 flex justify-between items-start">
+            {/* TEXT INFO SECTION */}
+            <div className="flex justify-between items-start">
               <div className="space-y-2">
-                <h1 className="text-3xl font-semibold text-foreground uppercase tracking-tighter">
+                <h1 className="text-3xl font-semibold text-white uppercase tracking-tighter">
                   Beyond The Story
                 </h1>
-                <h2 className="text-xl font-bold text-foreground/90">
+                <h2 className="text-xl font-bold text-white/90">
                   Episode 4: Finding Home
                 </h2>
                 <p className="text-zinc-400 text-[14px] max-w-2xl leading-relaxed">
@@ -137,7 +68,7 @@ export function LivePlayer() {
 
               <Button
                 variant="outline"
-                className="bg-[#1A1A1A] border-white/10 hover:bg-zinc-800 text-fontground/80 rounded-xl gap-2 h-10 px-6"
+                className="bg-[#1A1A1A] border-white/10 hover:bg-zinc-800 text-white rounded-xl gap-2 h-10 px-6"
               >
                 <Bookmark className="w-4 h-4" />
                 Save
@@ -146,99 +77,82 @@ export function LivePlayer() {
           </div>
 
           {/* --- RIGHT SIDE: LIVE CHAT --- */}
-          {isChatOpen && (
-            <Card className="lg:col-span-4 flex flex-col bg-[#0A0A0A] border-white/5 rounded-2xl overflow-hidden h-[600px] shadow-2xl">
-              <div className="p-4 flex justify-between items-center border-b border-white/5 bg-zinc-900/20">
+          <div
+            className={cn(
+              "transition-all duration-500 ease-in-out overflow-hidden",
+              isChatOpen
+                ? "flex-1 lg:w-1/3 opacity-100 translate-y-0 lg:translate-x-0"
+                : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 pointer-events-none",
+            )}
+          >
+            <Card className="border border-white/10 bg-[#0A0A0A] flex flex-col h-full min-h-[500px] shadow-2xl overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-5 border-b border-white/5 bg-zinc-900/20">
                 <div className="flex items-center gap-2">
-                  <h2 className="font-bold text-sm uppercase text-fontground/80 tracking-widest">
+                  <CardTitle className="text-sm font-bold uppercase text-white tracking-widest">
                     Live Chat
-                  </h2>
-                  <Badge
-                    variant="outline"
-                    className="text-[9px] border-white/20 text-zinc-400 py-0 h-5"
-                  >
+                  </CardTitle>
+                  <Badge className="bg-white/10 text-white/60 hover:bg-white/20 border-none px-2 py-0.5 text-[9px] uppercase font-bold">
                     Top Chat
                   </Badge>
                 </div>
-                <div className="flex gap-1">
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-zinc-500 hover:text-fontground/80"
-                  >
-                    <Maximize className="h-3 w-3" />
-                  </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-8 w-8 text-zinc-500 hover:text-fontground/80"
-                    onClick={() => setChatOpen(false)}
-                  >
-                    <X className="h-4 w-4" />
-                  </Button>
-                </div>
+
+                <X
+                  onClick={toggleChat}
+                  className="w-5 h-5 cursor-pointer text-zinc-500 hover:text-white transition-colors"
+                />
               </div>
 
-              <div className="flex-1 min-h-0">
-                <ScrollArea ref={scrollRef} className="h-full">
-                  <div className="p-4 space-y-4">
+              <CardContent className="flex-1 p-0 overflow-hidden relative">
+                <ScrollArea ref={scrollRef} className="absolute inset-0 h-full">
+                  <div className="p-4 space-y-5">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
                         className={cn(
-                          "flex gap-3 text-[13px]",
+                          "flex gap-3 animate-in fade-in slide-in-from-right-4 text-[13px]",
                           msg.isMod &&
-                            "bg-[#E50914]/5 p-3 rounded-xl border border-[#E50914]/20",
+                            "bg-red-950/10 border-l-2 border-red-600 p-3 rounded-r-md -mx-1",
                         )}
                       >
-                        <Avatar className="h-7 w-7 rounded-lg">
+                        <Avatar className="h-8 w-8 rounded-full ring-1 ring-white/10">
                           <AvatarImage
                             src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${msg.user}`}
                           />
-                          <AvatarFallback>{msg.user[0]}</AvatarFallback>
+                          <AvatarFallback className="bg-white/5 text-white/40">
+                            {msg.user[0]}
+                          </AvatarFallback>
                         </Avatar>
-                        <div className="flex-1">
-                          <span
-                            className={cn(
-                              "font-bold text-xs",
-                              msg.isMod ? "text-[#E50914]" : "text-zinc-400",
-                            )}
-                          >
-                            {msg.user}
-                          </span>
-                          <p className="text-zinc-200 mt-0.5">{msg.message}</p>
+
+                        <div className="flex-1 leading-tight">
+                          <div className="flex items-center gap-1.5 mb-1 flex-wrap">
+                            <span
+                              className={cn(
+                                "flex items-center gap-1 font-bold text-[14px]",
+                                msg.isMod ? "text-red-500" : "text-primary",
+                              )}
+                            >
+                              <span className="hover:underline cursor-pointer">
+                                {msg.user}
+                              </span>
+                              {msg.isMod && <Shield className="w-3.5 h-3.5" />}
+                              <span>:</span>
+                            </span>
+                            <span className="text-[14px] text-zinc-200 font-normal leading-relaxed break-words">
+                              {msg.message}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     ))}
                   </div>
                 </ScrollArea>
-              </div>
+              </CardContent>
 
               <div className="p-4 border-t border-white/5 bg-black">
-                <form
-                  onSubmit={handleSubmit}
-                  className="flex items-center gap-2 bg-[#1A1A1A] rounded-xl px-4 py-2 border border-white/5"
-                >
-                  <Input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Send a message..."
-                    className="bg-transparent border-none focus-visible:ring-0 text-sm p-0 h-8 text-fontground/80"
-                  />
-                  <Smile className="w-5 h-5 text-zinc-500 cursor-pointer hover:text-zinc-300" />
-                  <Button
-                    type="submit"
-                    disabled={!input.trim()}
-                    size="icon"
-                    variant="ghost"
-                    className="text-[#E50914] hover:bg-transparent"
-                  >
-                    <Send className="h-5 w-5" />
-                  </Button>
-                </form>
+                <ChatInput />
               </div>
             </Card>
-          )}
+          </div>
         </div>
       </div>
     </section>
