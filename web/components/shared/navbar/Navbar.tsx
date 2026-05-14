@@ -33,7 +33,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 5);
+      setIsScrolled(window.scrollY > 1);
     };
 
     window.addEventListener("scroll", handleScroll);

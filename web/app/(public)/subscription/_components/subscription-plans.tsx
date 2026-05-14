@@ -20,7 +20,7 @@ export default function SubscriptionPlans() {
         {/* Heading Section from image_a19555.png */}
         <div className="flex flex-col items-center text-center mb-16 space-y-4 px-4">
           <div className="border border-primary/30 rounded-full px-6 py-2">
-            <span className="text-[#C5A059] uppercase tracking-[0.2em] text-sm font-medium">
+            <span className="text-primary uppercase tracking-[0.2em] text-sm font-medium">
               Experience Excellence
             </span>
           </div>
