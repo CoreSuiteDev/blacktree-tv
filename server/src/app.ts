@@ -9,14 +9,14 @@ import morgan from "morgan";
 
 import { toNodeHandler } from "better-auth/node";
 import { errorMiddleware } from "./apps/middleware/error.middleware";
-import { authConfig } from "./apps/modules/auth/auth.config";
 import config from "./config";
 import routes from "./routes";
+import authRouter from "./routes/auth.route";
 import { AppError } from "./utils/AppError";
 
 const app = express();
 
-app.set("trust proxy", true);
+app.set("trust proxy", config.nodeEnv === "production" ? 1 : false);
 
 // 1. Security & Optimization Middleware
 app.use(helmet());
@@ -53,9 +53,7 @@ app.get("/health", (_: Request, res: Response) => {
 
 // API Routes
 app.use("/api/v1", routes);
-
-// Auth Middleware
-app.all("/api/auth/{*any}", toNodeHandler(authConfig));
+app.use("/api/auth", authRouter);
 
 // 4. Error Handling
 app.all("*path", (req: Request, res: Response, next: NextFunction) => {

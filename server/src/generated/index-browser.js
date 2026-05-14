@@ -125,10 +125,10 @@ exports.Prisma.UserScalarFieldEnum = {
   name: 'name',
   username: 'username',
   email: 'email',
+  image: 'image',
   emailVerified: 'emailVerified',
   isActive: 'isActive',
   isBanned: 'isBanned',
-  isVerified: 'isVerified',
   lastLoginAt: 'lastLoginAt',
   lastSeenAt: 'lastSeenAt',
   createdAt: 'createdAt',
@@ -139,12 +139,15 @@ exports.Prisma.UserScalarFieldEnum = {
 exports.Prisma.AccountScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
+  accountId: 'accountId',
+  providerId: 'providerId',
   password: 'password',
   accessToken: 'accessToken',
   refreshToken: 'refreshToken',
-  tokenExpiresAt: 'tokenExpiresAt',
+  idToken: 'idToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  refreshTokenExpiresAt: 'refreshTokenExpiresAt',
+  scope: 'scope',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -158,6 +161,22 @@ exports.Prisma.SessionScalarFieldEnum = {
   expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.VerificationScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  value: 'value',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.JwksScalarFieldEnum = {
+  id: 'id',
+  publicKey: 'publicKey',
+  privateKey: 'privateKey',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.LiveChatScalarFieldEnum = {
@@ -302,12 +321,6 @@ exports.UserRole = exports.$Enums.UserRole = {
   USER: 'USER'
 };
 
-exports.AuthProvider = exports.$Enums.AuthProvider = {
-  credential: 'credential',
-  google: 'google',
-  apple: 'apple'
-};
-
 exports.ChatBanType = exports.$Enums.ChatBanType = {
   TIMEOUT: 'TIMEOUT',
   TEMP_BAN: 'TEMP_BAN',
@@ -365,6 +378,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   Account: 'Account',
   Session: 'Session',
+  Verification: 'Verification',
+  Jwks: 'Jwks',
   LiveChat: 'LiveChat',
   ChatBan: 'ChatBan',
   ModerationLog: 'ModerationLog',
