@@ -1,17 +1,113 @@
-model Session {
-  id String @id @default(uuid())
+// ============================================================
+// auth.prisma
+// Models: User, Account, Session
+// Used by: better-auth (email/password + Google + Apple)
+// ============================================================
+
+model User {
+  id String @id @default(cuid())
+
+  // --- Identity ---
+  name     String?
+  username String? @unique
+  email    String? @unique
+
+  emailVerified DateTime?
+
+  // --- Auth state ---
+  isActive   Boolean @default(true)
+  isBanned   Boolean @default(false)
+  isVerified Boolean @default(false)
+
+  // --- Activity ---
+  lastLoginAt DateTime?
+  lastSeenAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relations ---
+  accounts Account[]
+  sessions Session[]
+
+  //  user roles
+  role UserRole @default(USER)
+
+  profile UserProfile?
+
+  subscriptions Subscription[]
+  payments      PaymentHistory[]
+
+  // live chat
+  messages      LiveChat[]
+  chatBans      ChatBan[]
+  bannedByUsers ChatBan[]  @relation("BannedBy")
+
+  // moderation
+  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
+
+  subscribers Subscriber[]
+  roleMappings UserRoleMapping[]
+
+  @@index([email])
+  @@index([username])
+}
+
+// ------------------------------------------------------------
+// Account
+// One row per provider per user.
+// better-auth creates one row for "credential" (email/password),
+// one for "google", one for "apple" — linked to the same User.
+// ------------------------------------------------------------
+model Account {
+  id String @id @default(cuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  refreshToken String @unique
+  // better-auth provider strings: "credential" | "google" | "apple"
+  provider AuthProvider
 
-  userAgent String?
+  // The ID returned by the external provider (email for credential)
+  providerAccountId String
+
+  // Hashed password — only set when provider = credential
+  password String?
+
+  // OAuth tokens — only set for google / apple
+  accessToken  String?
+  refreshToken String?
+
+  tokenExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// ------------------------------------------------------------
+// Session
+// better-auth uses `token` (not refreshToken) to identify a session.
+// ------------------------------------------------------------
+model Session {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // better-auth session token (opaque string, stored in cookie)
+  token String @unique
+
   ipAddress String?
+  userAgent String?
 
   expiresAt DateTime
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }

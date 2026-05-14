@@ -1,37 +1,204 @@
-model Session {
-  id String @id @default(uuid())
+// ============================================================
+// auth.prisma
+// Models: User, Account, Session
+// Used by: better-auth (email/password + Google + Apple)
+// ============================================================
+
+model User {
+  id String @id @default(cuid())
+
+  // --- Identity ---
+  name     String?
+  username String? @unique
+  email    String? @unique
+
+  emailVerified DateTime?
+
+  // --- Auth state ---
+  isActive   Boolean @default(true)
+  isBanned   Boolean @default(false)
+  isVerified Boolean @default(false)
+
+  // --- Activity ---
+  lastLoginAt DateTime?
+  lastSeenAt  DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // --- Relations ---
+  accounts Account[]
+  sessions Session[]
+
+  //  user roles
+  role UserRole @default(USER)
+
+  profile UserProfile?
+
+  subscriptions Subscription[]
+  payments      PaymentHistory[]
+
+  // live chat
+  messages      LiveChat[]
+  chatBans      ChatBan[]
+  bannedByUsers ChatBan[]  @relation("BannedBy")
+
+  // moderation
+  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
+
+  subscribers  Subscriber[]
+  roleMappings UserRoleMapping[]
+
+  @@index([email])
+  @@index([username])
+}
+
+// ------------------------------------------------------------
+// Account
+// One row per provider per user.
+// better-auth creates one row for "credential" (email/password),
+// one for "google", one for "apple" — linked to the same User.
+// ------------------------------------------------------------
+model Account {
+  id String @id @default(cuid())
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  refreshToken String @unique
+  // better-auth provider strings: "credential" | "google" | "apple"
+  provider AuthProvider
 
-  userAgent String?
+  // The ID returned by the external provider (email for credential)
+  providerAccountId String
+
+  // Hashed password — only set when provider = credential
+  password String?
+
+  // OAuth tokens — only set for google / apple
+  accessToken  String?
+  refreshToken String?
+
+  tokenExpiresAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+// ------------------------------------------------------------
+// Session
+// better-auth uses `token` (not refreshToken) to identify a session.
+// ------------------------------------------------------------
+model Session {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // better-auth session token (opaque string, stored in cookie)
+  token String @unique
+
   ipAddress String?
+  userAgent String?
 
   expiresAt DateTime
 
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([userId])
 }
 
+// ============================================================
+// chat.prisma
+// Models: LiveChat, ChatBan
+// ============================================================
+
+model LiveChat {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  message String
+
+  isDeleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// ------------------------------------------------------------
+// ChatBan
+// Tracks who banned whom, with type and optional expiry.
+// ------------------------------------------------------------
+model ChatBan {
+  id String @id @default(cuid())
+
+  // The user being banned
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // The moderator/admin who issued the ban
+  bannedById String
+  bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
+
+  type ChatBanType
+
+  reason String?
+
+  // null = permanent ban
+  expiresAt DateTime?
+
+  isActive Boolean @default(true)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([bannedById])
+  @@index([isActive])
+  @@index([expiresAt])
+}
+
+// ============================================================
+// enums.prisma
+// All enum declarations for the entire schema.
+// ============================================================
+
+// ------------------------------------------------------------
+// Auth
+// better-auth provider strings must match what better-auth
+// passes internally. Use lowercase to match the library.
+// ------------------------------------------------------------
+enum AuthProvider {
+  credential // email + password
+  google
+  apple
+}
+
+// ------------------------------------------------------------
+// RBAC — kept as enum for seeding convenience.
+// The Role table is the source of truth at runtime.
+// ------------------------------------------------------------
 enum UserRole {
   ADMIN
   MODERATOR
   USER
 }
 
-enum AuthProvider {
-  GOOGLE
-  APPLE
-  EMAIL
-}
-
+// ------------------------------------------------------------
+// Subscription
+// ------------------------------------------------------------
 enum SubscriptionType {
-  FREE
-  BASIC
+  STANDARD
   PREMIUM
+  ELITE
 }
 
 enum SubscriptionStatus {
@@ -41,6 +208,9 @@ enum SubscriptionStatus {
   PENDING
 }
 
+// ------------------------------------------------------------
+// Payment
+// ------------------------------------------------------------
 enum PaymentStatus {
   PENDING
   SUCCESS
@@ -56,12 +226,18 @@ enum PaymentProvider {
   ROCKET
 }
 
+// ------------------------------------------------------------
+// Chat
+// ------------------------------------------------------------
 enum ChatBanType {
-  TIMEOUT
-  TEMP_BAN
-  PERMANENT
+  TIMEOUT // short mute (minutes)
+  TEMP_BAN // days/weeks ban
+  PERMANENT // indefinite
 }
 
+// ------------------------------------------------------------
+// Moderation
+// ------------------------------------------------------------
 enum ModerationAction {
   USER_BANNED
   USER_UNBANNED
@@ -74,51 +250,30 @@ enum ModerationAction {
   USER_ROLE_UPDATED
 }
 
-model LiveChat {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  message String
-
-  isDeleted Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([createdAt])
+// ------------------------------------------------------------
+// Subscriber
+// ------------------------------------------------------------
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  PENDING
 }
 
-model ChatBan {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  bannedById String
-  bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
-
-  type ChatBanType
-
-  reason String?
-
-  expiresAt DateTime?
-
-  isActive Boolean @default(true)
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([isActive])
-}
+// ============================================================
+// moderation.prisma
+// Model: ModerationLog
+// Audit trail for all admin / moderator actions.
+// ============================================================
 
 model ModerationLog {
   id String @id @default(cuid())
 
+  // Who performed the action
   moderatorId String
   moderator   User   @relation("ModeratorLogs", fields: [moderatorId], references: [id])
 
+  // Who was affected (optional — some actions have no target user)
   targetUserId String?
   targetUser   User?   @relation("TargetUserLogs", fields: [targetUserId], references: [id])
 
@@ -131,141 +286,75 @@ model ModerationLog {
   createdAt DateTime @default(now())
 
   @@index([moderatorId])
+  @@index([targetUserId])
   @@index([action])
   @@index([createdAt])
 }
 
-model PaymentHistory {
+// ============================================================
+// profile.prisma
+// Model: UserProfile
+// Public-facing profile data, separate from auth identity.
+// avatar/banner live here (not on User).
+// ============================================================
+
+model UserProfile {
   id String @id @default(cuid())
 
-  userId String
+  userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  subscriptionId String?
-  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
-
-  provider PaymentProvider
-
-  transactionId String @unique
-
-  amount Decimal @db.Decimal(10, 2)
-
-  currency String @default("BDT")
-
-  status PaymentStatus
-
-  paymentMethod String?
-
-  paidAt DateTime?
-
-  failureReason String?
-
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([transactionId])
-  @@index([status])
-}
-
-generator client {
-  provider = "prisma-client-js"
-  output   = "../../src/generated"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User {
-  id String @id @default(cuid())
-
-  name          String?
-  username      String?   @unique
-  email         String?   @unique
-  emailVerified DateTime?
+  displayName String?
 
   avatar String?
   banner String?
 
-  passwordHash String?
+  bio String?
 
-  isActive   Boolean @default(true)
-  isBanned   Boolean @default(false)
-  isVerified Boolean @default(false)
+  country  String?
+  language String?
 
-  lastLoginAt DateTime?
-  lastSeenAt  DateTime?
+  // Social links
+  facebookUrl String?
+  youtubeUrl  String?
+  discordUrl  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  accounts Account[]
-  sessions Session[]
-  roles    UserRoleMapping[]
-
-  // profile
-  profile UserProfile?
-
-  // subscription
-  subscriptions Subscription[]
-
-  // live chat
-  messages       LiveChat[]
-  chatBans       ChatBan[]
-  bannedByUsers  ChatBan[]       @relation("BannedBy")
-  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
-  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
-
-  // payment
-  payments PaymentHistory[]
-
-  @@index([email])
 }
 
-model Account {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  provider AuthProvider
-
-  providerAccountId String
-
-  password String?
-
-  accessToken  String?
-  refreshToken String?
-
-  tokenExpiresAt DateTime?
-
-  createdAt DateTime @default(now())
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
-}
+// ============================================================
+// rbac.prisma
+// Models: Role, Permission, RolePermission, UserRoleMapping
+// Handles: fine-grained role-based access control
+// ============================================================
 
 model Role {
   id String @id @default(cuid())
 
-  name        String  @unique
+  name        String  @unique // e.g. "admin", "moderator", "user"
   description String?
 
   permissions RolePermission[]
   users       UserRoleMapping[]
 }
 
+// ------------------------------------------------------------
+// Permission
+// Granular permission keys, e.g. "chat:delete", "user:ban"
+// ------------------------------------------------------------
 model Permission {
   id String @id @default(cuid())
 
-  key         String  @unique
+  key         String  @unique // e.g. "user:ban", "content:publish"
   description String?
 
   roles RolePermission[]
 }
 
+// ------------------------------------------------------------
+// RolePermission — join table (Role <-> Permission)
+// ------------------------------------------------------------
 model RolePermission {
   id String @id @default(cuid())
 
@@ -280,6 +369,10 @@ model RolePermission {
   @@index([permissionId])
 }
 
+// ------------------------------------------------------------
+// UserRoleMapping — join table (User <-> Role)
+// A user can hold multiple roles (e.g. admin + moderator)
+// ------------------------------------------------------------
 model UserRoleMapping {
   id String @id @default(cuid())
 
@@ -289,37 +382,51 @@ model UserRoleMapping {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
+  assignedAt DateTime @default(now())
+
   @@unique([userId, roleId])
   @@index([userId])
   @@index([roleId])
 }
 
-model UserProfile {
-  id String @id @default(cuid())
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated"
+}
 
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+datasource db {
+  provider = "postgresql"
+}
 
-  username    String  @unique
-  displayName String?
+// ============================================================
+// subscriber.prisma
+// Model: Subscriber
+// Tracks newsletter and marketing mailing list signups.
+// ============================================================
 
-  avatar String?
-  banner String?
+model Subscriber {
+  id    String  @id @default(cuid())
+  email String  @unique
+  name  String?
 
-  bio String?
+  // Linking to User if they decide to register later
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  country  String?
-  language String?
-
-  facebookUrl String?
-  youtubeUrl  String?
-  discordUrl  String?
+  status SubscriberStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([username])
+  @@index([email])
+  @@index([status])
+  @@index([userId])
 }
+
+// ============================================================
+// subscription.prisma
+// Models: Subscription, PaymentHistory
+// ============================================================
 
 model Subscription {
   id String @id @default(cuid())
@@ -330,8 +437,8 @@ model Subscription {
   plan   SubscriptionType
   status SubscriptionStatus
 
-  price    Float
-  currency String
+  price    Decimal @db.Decimal(10, 2)
+  currency String  @default("BDT")
 
   startDate   DateTime
   endDate     DateTime
@@ -345,4 +452,43 @@ model Subscription {
   @@index([userId])
   @@index([status])
   @@index([endDate])
+}
+
+// ------------------------------------------------------------
+// PaymentHistory
+// Every payment attempt (success or failure) is recorded here.
+// ------------------------------------------------------------
+model PaymentHistory {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  provider PaymentProvider
+
+  // Unique ID from the payment gateway
+  transactionId String @unique
+
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("BDT")
+
+  status PaymentStatus
+
+  paymentMethod String?
+
+  paidAt        DateTime?
+  failureReason String?
+
+  // Raw webhook payload or extra data from the gateway
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([transactionId])
+  @@index([status])
 }

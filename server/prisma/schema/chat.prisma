@@ -1,3 +1,8 @@
+// ============================================================
+// chat.prisma
+// Models: LiveChat, ChatBan
+// ============================================================
+
 model LiveChat {
   id String @id @default(cuid())
 
@@ -11,15 +16,22 @@ model LiveChat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([userId])
   @@index([createdAt])
 }
 
+// ------------------------------------------------------------
+// ChatBan
+// Tracks who banned whom, with type and optional expiry.
+// ------------------------------------------------------------
 model ChatBan {
   id String @id @default(cuid())
 
+  // The user being banned
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  // The moderator/admin who issued the ban
   bannedById String
   bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
 
@@ -27,6 +39,7 @@ model ChatBan {
 
   reason String?
 
+  // null = permanent ban
   expiresAt DateTime?
 
   isActive Boolean @default(true)
@@ -34,5 +47,7 @@ model ChatBan {
   createdAt DateTime @default(now())
 
   @@index([userId])
+  @@index([bannedById])
   @@index([isActive])
+  @@index([expiresAt])
 }

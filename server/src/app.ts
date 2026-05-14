@@ -7,17 +7,16 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
 
+import { toNodeHandler } from "better-auth/node";
 import { errorMiddleware } from "./apps/middleware/error.middleware";
+import { authConfig } from "./apps/modules/auth/auth.config";
 import config from "./config";
 import routes from "./routes";
-import { ExpressAuth } from "@auth/express";
 import { AppError } from "./utils/AppError";
-import { authConfig } from "./apps/modules/auth/auth.config";
 
 const app = express();
 
 app.set("trust proxy", true);
-
 
 // 1. Security & Optimization Middleware
 app.use(helmet());
@@ -27,6 +26,7 @@ app.use(
   cors({
     origin: config.cors.origin,
     credentials: config.cors.credentials,
+    methods: [...config.cors.methods],
   }),
 );
 
@@ -54,8 +54,8 @@ app.get("/health", (_: Request, res: Response) => {
 // API Routes
 app.use("/api/v1", routes);
 
-// Auth.js route
-app.use("/auth", ExpressAuth(authConfig));
+// Auth Middleware
+app.all("/api/auth/{*any}", toNodeHandler(authConfig));
 
 // 4. Error Handling
 app.all("*path", (req: Request, res: Response, next: NextFunction) => {

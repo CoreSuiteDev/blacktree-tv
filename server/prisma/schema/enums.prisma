@@ -1,0 +1,93 @@
+// ============================================================
+// enums.prisma
+// All enum declarations for the entire schema.
+// ============================================================
+
+// ------------------------------------------------------------
+// Auth
+// better-auth provider strings must match what better-auth
+// passes internally. Use lowercase to match the library.
+// ------------------------------------------------------------
+enum AuthProvider {
+  credential // email + password
+  google
+  apple
+}
+
+// ------------------------------------------------------------
+// RBAC — kept as enum for seeding convenience.
+// The Role table is the source of truth at runtime.
+// ------------------------------------------------------------
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+// ------------------------------------------------------------
+// Subscription
+// ------------------------------------------------------------
+enum SubscriptionType {
+  STANDARD
+  PREMIUM
+  ELITE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCELLED
+  PENDING
+}
+
+// ------------------------------------------------------------
+// Payment
+// ------------------------------------------------------------
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  STRIPE
+  SSLCOMMERZ
+  BKASH
+  NAGAD
+  ROCKET
+}
+
+// ------------------------------------------------------------
+// Chat
+// ------------------------------------------------------------
+enum ChatBanType {
+  TIMEOUT // short mute (minutes)
+  TEMP_BAN // days/weeks ban
+  PERMANENT // indefinite
+}
+
+// ------------------------------------------------------------
+// Moderation
+// ------------------------------------------------------------
+enum ModerationAction {
+  USER_BANNED
+  USER_UNBANNED
+  CHAT_MESSAGE_DELETED
+  CHAT_USER_MUTED
+  SUBSCRIPTION_CANCELLED
+  MOVIE_CREATED
+  MOVIE_UPDATED
+  MOVIE_DELETED
+  USER_ROLE_UPDATED
+}
+
+// ------------------------------------------------------------
+// Subscriber
+// ------------------------------------------------------------
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  PENDING
+}

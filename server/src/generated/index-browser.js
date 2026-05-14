@@ -120,14 +120,44 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  username: 'username',
+  email: 'email',
+  emailVerified: 'emailVerified',
+  isActive: 'isActive',
+  isBanned: 'isBanned',
+  isVerified: 'isVerified',
+  lastLoginAt: 'lastLoginAt',
+  lastSeenAt: 'lastSeenAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  role: 'role'
+};
+
+exports.Prisma.AccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  provider: 'provider',
+  providerAccountId: 'providerAccountId',
+  password: 'password',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  tokenExpiresAt: 'tokenExpiresAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SessionScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  refreshToken: 'refreshToken',
-  userAgent: 'userAgent',
+  token: 'token',
   ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
   expiresAt: 'expiresAt',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.LiveChatScalarFieldEnum = {
@@ -160,50 +190,20 @@ exports.Prisma.ModerationLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
-exports.Prisma.PaymentHistoryScalarFieldEnum = {
+exports.Prisma.UserProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  subscriptionId: 'subscriptionId',
-  provider: 'provider',
-  transactionId: 'transactionId',
-  amount: 'amount',
-  currency: 'currency',
-  status: 'status',
-  paymentMethod: 'paymentMethod',
-  paidAt: 'paidAt',
-  failureReason: 'failureReason',
-  metadata: 'metadata',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.UserScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  username: 'username',
-  email: 'email',
-  emailVerified: 'emailVerified',
+  displayName: 'displayName',
   avatar: 'avatar',
   banner: 'banner',
-  passwordHash: 'passwordHash',
-  isActive: 'isActive',
-  isBanned: 'isBanned',
-  isVerified: 'isVerified',
-  lastLoginAt: 'lastLoginAt',
-  lastSeenAt: 'lastSeenAt',
+  bio: 'bio',
+  country: 'country',
+  language: 'language',
+  facebookUrl: 'facebookUrl',
+  youtubeUrl: 'youtubeUrl',
+  discordUrl: 'discordUrl',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.AccountScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  provider: 'provider',
-  providerAccountId: 'providerAccountId',
-  password: 'password',
-  accessToken: 'accessToken',
-  refreshToken: 'refreshToken',
-  tokenExpiresAt: 'tokenExpiresAt',
-  createdAt: 'createdAt'
 };
 
 exports.Prisma.RoleScalarFieldEnum = {
@@ -227,22 +227,16 @@ exports.Prisma.RolePermissionScalarFieldEnum = {
 exports.Prisma.UserRoleMappingScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
-  roleId: 'roleId'
+  roleId: 'roleId',
+  assignedAt: 'assignedAt'
 };
 
-exports.Prisma.UserProfileScalarFieldEnum = {
+exports.Prisma.SubscriberScalarFieldEnum = {
   id: 'id',
+  email: 'email',
+  name: 'name',
   userId: 'userId',
-  username: 'username',
-  displayName: 'displayName',
-  avatar: 'avatar',
-  banner: 'banner',
-  bio: 'bio',
-  country: 'country',
-  language: 'language',
-  facebookUrl: 'facebookUrl',
-  youtubeUrl: 'youtubeUrl',
-  discordUrl: 'discordUrl',
+  status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -259,6 +253,22 @@ exports.Prisma.SubscriptionScalarFieldEnum = {
   cancelledAt: 'cancelledAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  subscriptionId: 'subscriptionId',
+  provider: 'provider',
+  transactionId: 'transactionId',
+  amount: 'amount',
+  currency: 'currency',
+  status: 'status',
+  paymentMethod: 'paymentMethod',
+  paidAt: 'paidAt',
+  failureReason: 'failureReason',
+  metadata: 'metadata',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -286,6 +296,18 @@ exports.Prisma.JsonNullValueFilter = {
   JsonNull: Prisma.JsonNull,
   AnyNull: Prisma.AnyNull
 };
+exports.UserRole = exports.$Enums.UserRole = {
+  ADMIN: 'ADMIN',
+  MODERATOR: 'MODERATOR',
+  USER: 'USER'
+};
+
+exports.AuthProvider = exports.$Enums.AuthProvider = {
+  credential: 'credential',
+  google: 'google',
+  apple: 'apple'
+};
+
 exports.ChatBanType = exports.$Enums.ChatBanType = {
   TIMEOUT: 'TIMEOUT',
   TEMP_BAN: 'TEMP_BAN',
@@ -304,6 +326,26 @@ exports.ModerationAction = exports.$Enums.ModerationAction = {
   USER_ROLE_UPDATED: 'USER_ROLE_UPDATED'
 };
 
+exports.SubscriberStatus = exports.$Enums.SubscriberStatus = {
+  ACTIVE: 'ACTIVE',
+  UNSUBSCRIBED: 'UNSUBSCRIBED',
+  BOUNCED: 'BOUNCED',
+  PENDING: 'PENDING'
+};
+
+exports.SubscriptionType = exports.$Enums.SubscriptionType = {
+  STANDARD: 'STANDARD',
+  PREMIUM: 'PREMIUM',
+  ELITE: 'ELITE'
+};
+
+exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
+  ACTIVE: 'ACTIVE',
+  EXPIRED: 'EXPIRED',
+  CANCELLED: 'CANCELLED',
+  PENDING: 'PENDING'
+};
+
 exports.PaymentProvider = exports.$Enums.PaymentProvider = {
   STRIPE: 'STRIPE',
   SSLCOMMERZ: 'SSLCOMMERZ',
@@ -319,39 +361,21 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
   REFUNDED: 'REFUNDED'
 };
 
-exports.AuthProvider = exports.$Enums.AuthProvider = {
-  GOOGLE: 'GOOGLE',
-  APPLE: 'APPLE',
-  EMAIL: 'EMAIL'
-};
-
-exports.SubscriptionType = exports.$Enums.SubscriptionType = {
-  FREE: 'FREE',
-  BASIC: 'BASIC',
-  PREMIUM: 'PREMIUM'
-};
-
-exports.SubscriptionStatus = exports.$Enums.SubscriptionStatus = {
-  ACTIVE: 'ACTIVE',
-  EXPIRED: 'EXPIRED',
-  CANCELLED: 'CANCELLED',
-  PENDING: 'PENDING'
-};
-
 exports.Prisma.ModelName = {
+  User: 'User',
+  Account: 'Account',
   Session: 'Session',
   LiveChat: 'LiveChat',
   ChatBan: 'ChatBan',
   ModerationLog: 'ModerationLog',
-  PaymentHistory: 'PaymentHistory',
-  User: 'User',
-  Account: 'Account',
+  UserProfile: 'UserProfile',
   Role: 'Role',
   Permission: 'Permission',
   RolePermission: 'RolePermission',
   UserRoleMapping: 'UserRoleMapping',
-  UserProfile: 'UserProfile',
-  Subscription: 'Subscription'
+  Subscriber: 'Subscriber',
+  Subscription: 'Subscription',
+  PaymentHistory: 'PaymentHistory'
 };
 
 /**
