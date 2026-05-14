@@ -1,8 +1,7 @@
 "use client";
-import React from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 
 interface Movie {
   id: number | string;
@@ -26,7 +25,7 @@ const MovieCard = ({ movie }: { movie: Movie }) => {
           />
 
           {/* Default State: Dark Gradient Bottom (Shob somoy thakbe) */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-100" />
+          <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/20 to-transparent opacity-100" />
 
           {/* Hover State: Glassy Blur Overlay (Smooth transition) */}
           <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

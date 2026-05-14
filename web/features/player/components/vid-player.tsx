@@ -24,7 +24,6 @@ import {
   ChevronRightIcon,
   RadioButtonIcon,
   RadioButtonSelectedIcon,
-  
 } from "@vidstack/react/icons";
 import "@vidstack/react/player/styles/default/layouts/audio.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
@@ -54,7 +53,7 @@ const CinematicControls = () => {
   const canGoogleCast = useMediaState("canGoogleCast");
 
   return (
-    <Controls.Root className="absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 p-4 md:p-6 transition-opacity duration-300 opacity-0 data-[visible]:opacity-100">
+    <Controls.Root className="absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 p-4 md:p-6 transition-opacity duration-300 opacity-0 data-visible:opacity-100">
       {/* Middle Section: Typography */}
       <div className="flex flex-col gap-1 md:gap-2 items-start max-w-2xl pointer-events-none select-none">
         <h1 className="text-white text-lg md:text-2xl font-medium tracking-tighter uppercase leading-none">
@@ -68,25 +67,25 @@ const CinematicControls = () => {
       <div className="flex justify-between items-end w-full pointer-events-auto">
         {/* Sound Control Group */}
         <div className="flex items-center gap-2 md:gap-4 group/volume">
-          <MuteButton className="group ring-sky-400 relative inline-flex px-2 h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+          <MuteButton className="group ring-sky-400 relative inline-flex px-2 h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
             <VolumeOff className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[state='muted']:block" />
             <Volume1 className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[state='low']:block" />
             <Volume2 className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[state='high']:block" />
           </MuteButton>
 
           <VolumeSlider.Root className="group relative mx-[7.5px] hidden md:inline-flex h-10 w-full min-w-[80px] cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
-            <VolumeSlider.Track className="relative ring-sky-400 z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-[focus]:ring-[3px]">
-              <VolumeSlider.TrackFill className="bg-indigo-400 absolute h-full w-[var(--slider-fill)] rounded-sm will-change-[width]" />
+            <VolumeSlider.Track className="relative ring-sky-400 z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-focus:ring-[3px]">
+              <VolumeSlider.TrackFill className="bg-indigo-400 absolute h-full w-(--slider-fill) rounded-sm will-change-[width]" />
             </VolumeSlider.Track>
 
             <VolumeSlider.Preview
-              className="flex flex-col items-center opacity-0 transition-opacity duration-200 data-[visible]:opacity-100 pointer-events-none"
+              className="flex flex-col items-center opacity-0 transition-opacity duration-200 data-visible:opacity-100 pointer-events-none"
               noClamp
             >
               <VolumeSlider.Value className="rounded-sm bg-black px-2 py-px text-[13px] font-medium text-white" />
             </VolumeSlider.Preview>
 
-            <VolumeSlider.Thumb className="absolute left-[var(--slider-fill)] top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-[active]:opacity-100 group-data-[dragging]:ring-4 will-change-[left]" />
+            <VolumeSlider.Thumb className="absolute left-(--slider-fill) top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-active:opacity-100 group-data-dragging:ring-4 will-change-[left]" />
           </VolumeSlider.Root>
         </div>
 
@@ -94,31 +93,31 @@ const CinematicControls = () => {
         <div className="flex items-center gap-2 md:gap-6">
           <div className="flex items-center gap-1.5 md:gap-4 text-white/70">
             {canAirPlay && (
-              <AirPlayButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+              <AirPlayButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
                 <Airplay className="w-5 h-5" />
               </AirPlayButton>
             )}
             {canGoogleCast && (
-              <GoogleCastButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+              <GoogleCastButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
                 <Cast className="w-5 h-5" />
               </GoogleCastButton>
             )}
-            <CaptionButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
-              <CaptionsOff className="w-5 h-5 md:w-6 md:h-6 hidden group-data-[active]:block" />
-              <Captions className="w-5 h-5 md:w-6 md:h-6 group-data-[active]:hidden" />
+            <CaptionButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <CaptionsOff className="w-5 h-5 md:w-6 md:h-6 hidden group-data-active:block" />
+              <Captions className="w-5 h-5 md:w-6 md:h-6 group-data-active:hidden" />
             </CaptionButton>
-            <PIPButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
+            <PIPButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <PictureInPicture className="w-5 h-5 md:w-6 md:h-6" />
             </PIPButton>
-            <FullscreenButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400">
-              <Maximize className="w-4 h-4 md:w-5 md:h-5 group-data-[active]:hidden" />
-              <Minimize className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[active]:block" />
+            <FullscreenButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <Maximize className="w-4 h-4 md:w-5 md:h-5 group-data-active:hidden" />
+              <Minimize className="w-4 h-4 md:w-5 md:h-5 hidden group-data-active:block" />
             </FullscreenButton>
 
             {!useMediaState("fullscreen") && (
               <button
                 onClick={toggleChat}
-                className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400 p-1"
+                className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400 p-1"
                 aria-label="Toggle Chat"
               >
                 {isChatOpen ? (
@@ -131,13 +130,13 @@ const CinematicControls = () => {
 
             <Menu.Root>
               <Menu.Button
-                className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-[focus]:ring-4 data-[active]:text-indigo-400 p-1"
+                className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400 p-1"
                 aria-label="Settings"
               >
-                <Settings className="h-4 h-4 md:h-5 md:w-5 transform transition-transform duration-200 ease-out group-data-[open]:rotate-90" />
+                <Settings className="h-4 md:h-5 md:w-5 transform transition-transform duration-200 ease-out group-data-open:rotate-90" />
               </Menu.Button>
               <Menu.Items
-                className="animate-out fade-out slide-out-to-bottom-2 data-[open]:animate-in data-[open]:fade-in data-[open]:slide-in-from-bottom-4 flex h-[var(--menu-height)] max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-[resizing]:overflow-hidden"
+                className="animate-out fade-out slide-out-to-bottom-2 data-open:animate-in data-open:fade-in data-open:slide-in-from-bottom-4 flex h-(--menu-height) max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-resizing:overflow-hidden"
                 placement="top"
                 offset={0}
               >
@@ -300,7 +299,7 @@ function SubmenuButton({
 }: SubmenuButtonProps) {
   return (
     <Menu.Button
-      className="ring-sky-400 parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm bg-black/60 p-2.5 outline-none ring-inset data-[open]:sticky data-[open]:-top-2.5 data-[hocus]:bg-white/10 data-[focus]:ring-[3px] disabled:opacity-50 disabled:cursor-not-allowed"
+      className="ring-sky-400 parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm bg-black/60 p-2.5 outline-none ring-inset data-open:sticky data-open:-top-2.5 data-hocus:bg-white/10 data-focus:ring-[3px] disabled:opacity-50 disabled:cursor-not-allowed"
       disabled={disabled}
     >
       <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-[18px] w-[18px]" />
@@ -326,7 +325,7 @@ const VidPlayer = () => {
       muted
       fullscreenOrientation="portrait"
       onOrientationChange={undefined}
-      className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-[fullscreen]:rounded-none data-[fullscreen]:aspect-auto data-[fullscreen]:h-full transition-all duration-300"
+      className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-fullscreen:rounded-none data-fullscreen:aspect-auto data-fullscreen:h-full transition-all duration-300"
     >
       <MediaProvider>
         <Poster className="absolute inset-0 w-full h-full object-cover opacity-50" />

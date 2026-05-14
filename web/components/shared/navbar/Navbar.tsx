@@ -1,26 +1,29 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Search, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Menu, Search, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
-import { NAVIGATION_ITEMS } from "@/constants";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"; // Shadcn Input added
 import {
   Sheet,
   SheetContent,
-  SheetTrigger,
+  SheetDescription,
   SheetTitle,
+  SheetTrigger,
 } from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Shadcn Input added
+import { NAVIGATION_ITEMS } from "@/constants";
 import { useNavbar } from "@/store/public/use-navbar-store";
 
 export function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const user = false;
   const { isSearchOpen, setSearch, isMobileMenuOpen, setMobileMenu } =
     useNavbar();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -47,7 +50,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 z-[100] w-full transition-all duration-300",
+        "fixed top-0 z-100 w-full transition-all duration-300",
         isScrolled
           ? "border-b bg-background/80 backdrop-blur-md py-0 shadow-sm"
           : "bg-transparent border-transparent py-2",
@@ -57,7 +60,7 @@ export function Navbar() {
         {/* LEFT: LOGO */}
         <div
           className={cn(
-            "flex-shrink-0 flex items-center transition-all duration-500 z-[130]",
+            "shrink-0 flex items-center transition-all duration-500 z-130",
             isSearchOpen
               ? "opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto"
               : "opacity-100",
@@ -105,7 +108,7 @@ export function Navbar() {
         {/* RIGHT: ACTIONS */}
         <div
           className={cn(
-            "flex items-center gap-2 md:gap-4 flex-shrink-0 relative z-[130] transition-all duration-500",
+            "flex items-center gap-2 md:gap-4 shrink-0 relative z-130 transition-all duration-500",
             isSearchOpen
               ? "opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto"
               : "opacity-100",
@@ -117,29 +120,46 @@ export function Navbar() {
                 variant="ghost"
                 size="icon"
                 onClick={() => setSearch(true)}
-                className="rounded-full h-8 w-8 md:h-9 md:w-9"
+                className="rounded-full h-8 w-8 md:h-9 md:w-9 cursor-pointer"
               >
                 <Search className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
               </Button>
             </div>
           )}
 
-          <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-white/20 ml-1">
-            <div className="hidden lg:flex flex-col text-right">
-              <p className="text-xs lg:text-sm font-bold leading-none text-foreground">
-                Jamal
-              </p>
-              <p className="text-[10px] text-primary font-bold uppercase mt-1">
-                Premium
-              </p>
-            </div>
-            <Avatar className="h-8 w-8 md:h-10 md:w-10 border-2 border-primary ring-2 ring-background shadow-sm">
-              <AvatarImage src="https://github.com/shadcn.png" />
-              <AvatarFallback className="bg-primary/5 text-primary text-xs">
-                JH
-              </AvatarFallback>
-            </Avatar>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => router.push("/subscription")}
+              className="px-5 py-5 rounded-lg hover:scale-105 hover:bg-primary/90 duration-300 ease-in-out transition-colors  text-white backdrop-blur-sm cursor-pointer"
+            >
+              Subscribe Now
+            </Button>
+            <Button
+              onClick={() => router.push("/login")}
+              className="rounded-lg px-5 py-5 bg-cyan-700 hover:scale-105 duration-300 ease-in-out hover:bg-cyan-800/80 transition-colors text-white backdrop-blur-sm cursor-pointer"
+            >
+              LogIn
+            </Button>
           </div>
+
+          {user && (
+            <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-white/20 ml-1">
+              <div className="hidden lg:flex flex-col text-right">
+                <p className="text-xs lg:text-sm font-bold leading-none text-foreground">
+                  Jamal
+                </p>
+                <p className="text-[10px] text-primary font-bold uppercase mt-1">
+                  Premium
+                </p>
+              </div>
+              <Avatar className="h-8 w-8 md:h-10 md:w-10 border-2 border-primary ring-2 ring-background shadow-sm">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback className="bg-primary/5 text-primary text-xs">
+                  JH
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          )}
 
           <div className="md:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenu}>
@@ -154,9 +174,12 @@ export function Navbar() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[85vw] p-0 z-[150] border-l border-white/10"
+                className="w-[85vw] p-0 z-150 border-l border-white/10"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                <SheetDescription className="sr-only">
+                  Access navigation links and user account settings.
+                </SheetDescription>
                 <div className="flex flex-col h-full pt-20 px-6 bg-background">
                   {NAVIGATION_ITEMS.map((item) => (
                     <Link
@@ -182,7 +205,7 @@ export function Navbar() {
         {/* DYNAMIC SEARCH BAR OVERLAY */}
         <div
           className={cn(
-            "absolute inset-0 z-[140] flex items-center justify-center px-4 transition-all duration-500",
+            "absolute inset-0 z-140 flex items-center justify-center px-4 transition-all duration-500",
             isSearchOpen
               ? "opacity-100 translate-y-0 pointer-events-auto"
               : "opacity-0 -translate-y-full pointer-events-none",
