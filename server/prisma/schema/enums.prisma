@@ -1,32 +1,15 @@
-// ============================================================
-// enums.prisma
-// All enum declarations for the entire schema.
-// ============================================================
-
-// ------------------------------------------------------------
-// Auth
-// better-auth provider strings must match what better-auth
-// passes internally. Use lowercase to match the library.
-// ------------------------------------------------------------
 enum AuthProvider {
-  credential // email + password
+  credential
   google
   apple
 }
 
-// ------------------------------------------------------------
-// RBAC — kept as enum for seeding convenience.
-// The Role table is the source of truth at runtime.
-// ------------------------------------------------------------
 enum UserRole {
   ADMIN
   MODERATOR
   USER
 }
 
-// ------------------------------------------------------------
-// Subscription
-// ------------------------------------------------------------
 enum SubscriptionType {
   STANDARD
   PREMIUM
@@ -40,9 +23,6 @@ enum SubscriptionStatus {
   PENDING
 }
 
-// ------------------------------------------------------------
-// Payment
-// ------------------------------------------------------------
 enum PaymentStatus {
   PENDING
   SUCCESS
@@ -58,18 +38,12 @@ enum PaymentProvider {
   ROCKET
 }
 
-// ------------------------------------------------------------
-// Chat
-// ------------------------------------------------------------
 enum ChatBanType {
-  TIMEOUT // short mute (minutes)
-  TEMP_BAN // days/weeks ban
-  PERMANENT // indefinite
+  TIMEOUT
+  TEMP_BAN
+  PERMANENT
 }
 
-// ------------------------------------------------------------
-// Moderation
-// ------------------------------------------------------------
 enum ModerationAction {
   USER_BANNED
   USER_UNBANNED
@@ -82,9 +56,6 @@ enum ModerationAction {
   USER_ROLE_UPDATED
 }
 
-// ------------------------------------------------------------
-// Subscriber
-// ------------------------------------------------------------
 enum SubscriberStatus {
   ACTIVE
   UNSUBSCRIBED

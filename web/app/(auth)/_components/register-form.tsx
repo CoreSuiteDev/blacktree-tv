@@ -23,6 +23,7 @@ import {
   FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth/auth-client";
 import { ZCAuthRegister, ZTAuthRegister } from "@/types/zod/auth";
 
 export const RegisterForm = () => {
@@ -43,6 +44,20 @@ export const RegisterForm = () => {
       position: "bottom-right",
     });
   }
+
+  const handleSocialLogin = async (provider: "google" | "facebook") => {
+    try {
+      await authClient.signIn.social({
+        provider: provider,
+        callbackURL: "http://localhost:3000",
+      });
+    } catch (error) {
+      toast("Registration Failed", {
+        position: "bottom-right",
+      });
+      console.log(error);
+    }
+  };
 
   return (
     <div className="w-full flex items-center justify-center px-4">
@@ -192,8 +207,8 @@ export const RegisterForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11"
-                onClick={() => {}}
+                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 cursor-pointer"
+                onClick={() => handleSocialLogin("google")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
                   <path
@@ -219,12 +234,12 @@ export const RegisterForm = () => {
                 type="button"
                 variant="outline"
                 className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11"
-                onClick={() => {}}
+                onClick={() => handleSocialLogin("facebook")}
               >
                 <svg className="mr-2 h-4 w-4 fill-white" viewBox="0 0 24 24">
                   <path d="M17.05 20.28c-.96.95-2.04 2.13-3.4 2.13-1.33 0-1.77-.83-3.32-.83-1.57 0-2.06.81-3.32.81-1.32 0-2.43-1.15-3.42-2.15-1.99-1.99-3.52-5.63-3.52-8.87 0-5.11 3.2-7.81 6.23-7.81 1.58 0 2.92.93 3.82.93.9 0 2.45-1.09 4.33-1.09.79 0 3.03.29 4.49 2.43-.12.07-2.68 1.56-2.68 4.67 0 3.73 3.23 5.04 3.29 5.06-.02.07-.51 1.76-1.5 3.32zM12.03 4.22c-.08-1.9 1.53-3.55 3.33-3.69.19 2.18-2.07 3.96-3.33 3.69z" />
                 </svg>
-                Apple
+                Facebook
               </Button>
             </div>
           </form>

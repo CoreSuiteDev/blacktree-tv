@@ -1,22 +1,15 @@
-import { Router } from "express";
-import { toNodeHandler } from "better-auth/node";
-import { auth } from "../apps/modules/auth/auth.config";
+import express, { Router } from "express";
 import { protect } from "../apps/middleware/auth.middleware";
 import * as authController from "../apps/modules/auth/auth.controller";
 
 const authRouter = Router();
 
-// Custom Signup/Login Routes (mapping fullName to name)
-authRouter.post("/signup", authController.signUp);
-authRouter.post("/login", authController.signIn);
+// 1. Custom Signup/Login Routes
+authRouter.post("/sign-up", express.json(), authController.signUp);
+authRouter.post("/sign-in", express.json(), authController.signIn);
 
-// Social Login Trigger Routes
-authRouter.get("/google", authController.googleSignIn);
-authRouter.get("/apple", authController.appleSignIn);
-
-// Get current user (protected)
+// 3. Get current user (protected)
 authRouter.get("/me", protect, (req, res) => {
-  console.log("Protect middleware passed. User ID:", req.user?.id);
   try {
     res.status(200).json({
       success: true,
@@ -28,12 +21,8 @@ authRouter.get("/me", protect, (req, res) => {
       },
     });
   } catch (error: any) {
-    console.error("Error in /me route serialization:", error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
-
-// Mount better-auth for all other requests (callback, sessions, etc.)
-authRouter.all("*path", toNodeHandler(auth));
 
 export default authRouter;

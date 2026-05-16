@@ -5,8 +5,8 @@
 // ============================================================
 
 model Subscriber {
-  id    String @id @default(cuid())
-  email String @unique
+  id    String  @id @default(cuid())
+  email String  @unique
   name  String?
 
   // Linking to User if they decide to register later

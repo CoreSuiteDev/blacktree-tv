@@ -1,10 +1,3 @@
-// ============================================================
-// profile.prisma
-// Model: UserProfile
-// Public-facing profile data, separate from auth identity.
-// avatar/banner live here (not on User).
-// ============================================================
-
 model UserProfile {
   id String @id @default(cuid())
 
@@ -29,5 +22,3 @@ model UserProfile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
-
-

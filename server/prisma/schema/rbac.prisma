@@ -1,35 +1,22 @@
-// ============================================================
-// rbac.prisma
-// Models: Role, Permission, RolePermission, UserRoleMapping
-// Handles: fine-grained role-based access control
-// ============================================================
-
 model Role {
   id String @id @default(cuid())
 
-  name        String  @unique // e.g. "admin", "moderator", "user"
+  name        String  @unique
   description String?
 
   permissions RolePermission[]
   users       UserRoleMapping[]
 }
 
-// ------------------------------------------------------------
-// Permission
-// Granular permission keys, e.g. "chat:delete", "user:ban"
-// ------------------------------------------------------------
 model Permission {
   id String @id @default(cuid())
 
-  key         String  @unique // e.g. "user:ban", "content:publish"
+  key         String  @unique
   description String?
 
   roles RolePermission[]
 }
 
-// ------------------------------------------------------------
-// RolePermission — join table (Role <-> Permission)
-// ------------------------------------------------------------
 model RolePermission {
   id String @id @default(cuid())
 
@@ -44,10 +31,6 @@ model RolePermission {
   @@index([permissionId])
 }
 
-// ------------------------------------------------------------
-// UserRoleMapping — join table (User <-> Role)
-// A user can hold multiple roles (e.g. admin + moderator)
-// ------------------------------------------------------------
 model UserRoleMapping {
   id String @id @default(cuid())
 

@@ -1,17 +1,9 @@
-// ============================================================
-// moderation.prisma
-// Model: ModerationLog
-// Audit trail for all admin / moderator actions.
-// ============================================================
-
 model ModerationLog {
   id String @id @default(cuid())
 
-  // Who performed the action
   moderatorId String
   moderator   User   @relation("ModeratorLogs", fields: [moderatorId], references: [id])
 
-  // Who was affected (optional — some actions have no target user)
   targetUserId String?
   targetUser   User?   @relation("TargetUserLogs", fields: [targetUserId], references: [id])
 

@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { fromNodeHeaders } from "better-auth/node";
 import { auth } from "../modules/auth/auth.config";
 import { AppError } from "../../utils/AppError";
 import { asyncHandler } from "../../utils/asyncHandler";
@@ -11,7 +12,7 @@ export const protect = asyncHandler(async (req: Request, res: Response, next: Ne
   // Validate session via better-auth
   console.log("Validating session...");
   const session = await auth.api.getSession({
-    headers: new Headers(req.headers as any),
+    headers: fromNodeHeaders(req.headers),
   });
 
   if (!session) {

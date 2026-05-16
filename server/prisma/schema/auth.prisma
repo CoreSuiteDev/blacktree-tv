@@ -1,140 +1,96 @@
-// ============================================================
-// auth.prisma
-// Models: User, Account, Session
-// Used by: better-auth (email/password + Google + Apple)
-// ============================================================
-
 model User {
-  id String @id @default(cuid())
-
-  // --- Identity ---
-  name     String?
-  username String? @unique
-  email    String? @unique
-  image    String?
-
-  emailVerified Boolean @default(false)
-
-  // --- Auth state ---
-  isActive   Boolean @default(true)
-  isBanned   Boolean @default(false)
-
-  // --- Activity ---
-  lastLoginAt DateTime?
-  lastSeenAt  DateTime?
-
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  // --- Relations ---
-  accounts Account[]
-  sessions Session[]
+  name          String
+  email         String
+  emailVerified Boolean @default(false)
+  image         String?
 
-  //  user roles
+  sessions Session[]
+  accounts Account[]
+
   role UserRole @default(USER)
 
   profile UserProfile?
 
-  subscriptions Subscription[]
-  payments      PaymentHistory[]
+  subscription   Subscription[]
+  paymentHistory PaymentHistory[]
 
-  // live chat
-  messages      LiveChat[]
   chatBans      ChatBan[]
+  liveChat      LiveChat[]
   bannedByUsers ChatBan[]  @relation("BannedBy")
 
-  // moderation
-  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
+  moderationLogs ModerationLog[] @relation("ModeratorLogs")
   targetUserLogs ModerationLog[] @relation("TargetUserLogs")
 
-  subscribers Subscriber[]
   roleMappings UserRoleMapping[]
 
-  @@index([email])
-  @@index([username])
+  subscribed  Subscriber[]
+
+  @@unique([email])
+  @@map("user")
 }
 
-// ------------------------------------------------------------
-// Account
-// One row per provider per user.
-// better-auth creates one row for "credential" (email/password),
-// one for "google", one for "apple" — linked to the same User.
-// ------------------------------------------------------------
-model Account {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // better-auth fields
-  accountId  String
-  providerId String
-
-  // Hashed password — only set when provider = credential
-  password String?
-
-  // OAuth tokens
-  accessToken  String?
-  refreshToken String?
-
-  idToken String?
-
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-
+model Session {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([providerId, accountId])
-  @@index([userId])
-}
+  expiresAt DateTime
 
-// ------------------------------------------------------------
-// Session
-// better-auth uses `token` (not refreshToken) to identify a session.
-// ------------------------------------------------------------
-model Session {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // better-auth session token (opaque string, stored in cookie)
-  token String @unique
+  token String
 
   ipAddress String?
   userAgent String?
 
-  expiresAt DateTime
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  accountId  String
+  providerId String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+
+  scope    String?
+  password String?
+
   @@index([userId])
+  @@map("account")
 }
 
-// ------------------------------------------------------------
-// Verification
-// Required for email verification and other OTP flows.
-// ------------------------------------------------------------
 model Verification {
-  id String @id @default(cuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   identifier String
   value      String
   expiresAt  DateTime
 
-  createdAt DateTime? @default(now())
-  updatedAt DateTime? @updatedAt
-
+  @@index([identifier])
   @@map("verification")
 }
 
-// ------------------------------------------------------------
-// Jwks
-// Required for the Better Auth JWT plugin to store signing keys.
-// ------------------------------------------------------------
 model Jwks {
   id String @id @default(cuid())
 
