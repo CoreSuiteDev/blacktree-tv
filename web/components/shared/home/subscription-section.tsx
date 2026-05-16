@@ -5,12 +5,17 @@ import {
   HardDriveDownload,
   Infinity,
   Check,
+  X,
+  Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { PLANS } from "@/constants/subcriptions";
 
 const SubscriptionSection = () => {
+  const premiumPlan = PLANS.find((p) => p.id === "plan_premium") || PLANS[1];
+
   return (
     <div className="text-foreground flex items-center py-10 md:py-20 px-4">
       <div className="container mx-auto w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center bg-popover p-6 md:p-12 lg:p-16 rounded-[30px] md:rounded-[40px] border border-foreground/5 shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
@@ -85,7 +90,7 @@ const SubscriptionSection = () => {
             </Button>
           </Link>
         </div>
-        {/* right side card */}
+
         {/* right side card */}
         <div className="flex justify-center md:justify-end w-full">
           <div className="relative group w-full md:max-w-md">
@@ -102,8 +107,8 @@ const SubscriptionSection = () => {
             >
               <CardContent className="p-6 sm:p-10 flex flex-col h-full relative z-10">
                 <div className="flex justify-between items-center mb-6">
-                  <span className="text-foreground/60 font-bold tracking-widest text-[10px] lg:text-sm uppercase">
-                    Premium Plan
+                  <span className="text-foreground/60 font-bold tracking-widest text-[10px] lg:text-sm uppercase flex items-center gap-1.5">
+                    {premiumPlan.name} Plan
                   </span>
                   <span className="bg-primary/20 text-primary text-[9px] lg:text-[10px] font-bold px-2 lg:px-3 py-1 rounded-full border border-primary/30 uppercase">
                     Most Popular
@@ -113,7 +118,7 @@ const SubscriptionSection = () => {
                 <div className="mb-6 lg:mb-10">
                   <div className="flex items-baseline">
                     <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground">
-                      $14.99
+                      ${premiumPlan.price}
                     </span>
                     <span className="text-foreground/40 ml-2 text-sm lg:text-base">
                       / month
@@ -121,34 +126,42 @@ const SubscriptionSection = () => {
                   </div>
                 </div>
 
+                {/* Dynamic Features List */}
                 <ul className="space-y-4 lg:space-y-6 mb-8 lg:mb-12">
-                  {[
-                    "Access all 4K Content",
-                    "No Advertisements",
-                    "Exclusive VR Theater Access",
-                  ].map((feature, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-3 text-sm lg:text-base"
-                    >
-                      <div className="bg-primary rounded-full p-0.5 shadow-[0_0_15px_rgba(239,68,68,0.4)]">
-                        <Check
-                          size={12}
-                          className="text-foreground lg:w-[14px]"
-                          strokeWidth={4}
-                        />
-                      </div>
-                      <span className="text-foreground/80">{feature}</span>
-                    </li>
-                  ))}
+                  {premiumPlan.features.map((feature, index) => {
+                    const IconComponent =
+                      feature.icon || (feature.included ? Check : X);
+                    return (
+                      <li
+                        key={index}
+                        className={`flex items-center gap-3 text-sm lg:text-base ${
+                          feature.included ? "" : "opacity-40 line-through"
+                        }`}
+                      >
+                        <div className="bg-primary rounded-full p-0.5 shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center justify-center shrink-0">
+                          <IconComponent
+                            size={12}
+                            className="text-foreground lg:w-[14px]"
+                            strokeWidth={4}
+                          />
+                        </div>
+                        <span className="text-foreground/80">
+                          {feature.text}
+                        </span>
+                      </li>
+                    );
+                  })}
                 </ul>
 
-                <Button
-                  variant="outline"
-                  className="w-full border-primary/40 py-6 rounded-xl text-foreground font-bold uppercase tracking-widest text-[10px] lg:text-sm bg-primary/5 hover:bg-primary hover:text-foreground hover:border-primary transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
-                >
-                  Start 7-Day Free Trial
-                </Button>
+                {/* Dynamic Route Checkout Button */}
+                <Link href={`/checkout/${premiumPlan.slug}`} className="w-full">
+                  <Button
+                    variant="outline"
+                    className="w-full border-primary/40 py-6 rounded-xl text-foreground font-bold uppercase tracking-widest text-[10px] lg:text-sm bg-primary/5 hover:bg-primary hover:text-foreground hover:border-primary transition-all duration-300 shadow-[0_5px_15px_rgba(0,0,0,0.2)]"
+                  >
+                    Start 7-Day Free Trial
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </div>

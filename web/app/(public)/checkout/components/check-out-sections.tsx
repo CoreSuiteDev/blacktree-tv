@@ -72,15 +72,15 @@ export default function CheckoutSection() {
       <Card className="w-full max-w-5xl rounded-xl border border-neutral-800/60 overflow-hidden bg-[#121212] shadow-2xl flex flex-col md:flex-row items-stretch md:min-h-[640px]">
         {/* Left Column: Dynamic Plan Summary Based on Slug */}
         <div className="w-full md:w-[50%] p-8 lg:p-12 border-b md:border-b-0 md:border-r border-neutral-800/60 flex flex-col justify-between relative overflow-hidden bg-cover bg-center bg-no-repeat bg-[url('/assets/images/checkout-bg.png')]">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#e50914]/15 via-[#121212]/90 to-[#121212] z-0" />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/15 via-[#121212]/90 to-[#121212] z-0" />
           <div className="absolute inset-0 bg-[#121212]/40 backdrop-blur-[2px] z-0" />
 
           <div className="space-y-8 z-10 relative">
             <div>
-              <Badge className="bg-[#e50914] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border-none mb-5 pointer-events-none shadow-sm shadow-[#e50914]/20">
+              <Badge className="bg-primary text-fontground text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border-none mb-5 pointer-events-none shadow-sm shadow-primary/20">
                 Selected Option
               </Badge>
-              <h2 className="text-2xl font-bold tracking-tight text-white">
+              <h2 className="text-2xl font-bold tracking-tight text-fontground">
                 {currentPlan.name}
               </h2>
               <p className="text-sm text-neutral-400 mt-2 font-normal leading-relaxed max-w-xs">
@@ -89,7 +89,7 @@ export default function CheckoutSection() {
             </div>
 
             <div className="flex items-baseline gap-1 py-1">
-              <span className="text-5xl font-black text-white tracking-tight">
+              <span className="text-5xl font-black text-fontground tracking-tight">
                 ${currentPlan.price}
               </span>
               <span className="text-sm text-neutral-400 font-medium">
@@ -104,9 +104,9 @@ export default function CheckoutSection() {
                   className={`flex items-center gap-3.5 ${feature.included ? "text-neutral-200" : "text-neutral-600 line-through"}`}
                 >
                   {feature.icon ? (
-                    <feature.icon className="w-5 h-5 text-[#e50914] shrink-0" />
+                    <feature.icon className="w-5 h-5 text-primary shrink-0" />
                   ) : feature.included ? (
-                    <Check className="w-5 h-5 text-[#e50914] shrink-0" />
+                    <Check className="w-5 h-5 text-primary shrink-0" />
                   ) : (
                     <X className="w-5 h-5 text-neutral-600 shrink-0" />
                   )}
@@ -133,7 +133,7 @@ export default function CheckoutSection() {
             className="space-y-6"
           >
             <div className="flex items-center justify-between pb-2">
-              <h3 className="text-lg font-bold tracking-wide text-white">
+              <h3 className="text-lg font-bold tracking-wide text-fontground">
                 Secure Checkout
               </h3>
               <div className="flex items-center gap-2.5 text-neutral-500">
@@ -156,9 +156,9 @@ export default function CheckoutSection() {
                   id="cardholderName"
                   type="text"
                   placeholder="John Wick"
-                  className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                  className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-fontground placeholder:text-neutral-600 focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
                     errors.cardholderName
-                      ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                      ? "border-primary focus-visible:ring-primary"
                       : ""
                   }`}
                   {...register("cardholderName", {
@@ -166,7 +166,7 @@ export default function CheckoutSection() {
                   })}
                 />
                 {errors.cardholderName && (
-                  <p className="text-xs text-[#e50914] mt-1">
+                  <p className="text-xs text-primary mt-1">
                     {errors.cardholderName.message}
                   </p>
                 )}
@@ -197,9 +197,9 @@ export default function CheckoutSection() {
                         type="text"
                         maxLength={19}
                         placeholder="0000 0000 0000 0000"
-                        className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                        className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-fontground placeholder:text-neutral-600 tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
                           errors.cardNumber
-                            ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                            ? "border-primary focus-visible:ring-primary"
                             : ""
                         }`}
                         onChange={(e) => {
@@ -218,7 +218,7 @@ export default function CheckoutSection() {
                   </div>
                 </div>
                 {errors.cardNumber && (
-                  <p className="text-xs text-[#e50914] mt-1">
+                  <p className="text-xs text-primary mt-1">
                     {errors.cardNumber.message}
                   </p>
                 )}
@@ -267,9 +267,9 @@ export default function CheckoutSection() {
                         type="text"
                         maxLength={5}
                         placeholder="MM/YY"
-                        className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 text-center tracking-wider focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                        className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-fontground placeholder:text-neutral-600 text-center tracking-wider focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
                           errors.expiryDate
-                            ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                            ? "border-primary focus-visible:ring-primary"
                             : ""
                         }`}
                         onChange={(e) => {
@@ -283,7 +283,7 @@ export default function CheckoutSection() {
                     )}
                   />
                   {errors.expiryDate && (
-                    <p className="text-xs text-[#e50914] mt-1">
+                    <p className="text-xs text-primary mt-1">
                       {errors.expiryDate.message}
                     </p>
                   )}
@@ -301,9 +301,9 @@ export default function CheckoutSection() {
                     type="password"
                     maxLength={4}
                     placeholder="•••"
-                    className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 text-center tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                    className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-fontground placeholder:text-neutral-600 text-center tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
                       errors.cvc
-                        ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                        ? "border-primary focus-visible:ring-primary"
                         : ""
                     }`}
                     {...register("cvc", {
@@ -312,7 +312,7 @@ export default function CheckoutSection() {
                     })}
                   />
                   {errors.cvc && (
-                    <p className="text-xs text-[#e50914] mt-1">
+                    <p className="text-xs text-primary mt-1">
                       {errors.cvc.message}
                     </p>
                   )}
@@ -323,7 +323,7 @@ export default function CheckoutSection() {
             <Button
               type="submit"
               disabled={isSubmitting}
-              className="w-full bg-[#e50914] text-white hover:bg-[#b80710] font-bold text-sm h-auto py-4 rounded-md shadow-lg shadow-[#e50914]/10 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              className="w-full bg-primary text-fontground hover:bg-[#b80710] font-bold text-sm h-auto py-4 rounded-md shadow-lg shadow-primary/10 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
             >
               {isSubmitting ? (
                 <>

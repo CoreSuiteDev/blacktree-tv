@@ -33,8 +33,8 @@ export const footerLinks = {
       links: [
         { label: "Contact Us", href: "/contact" },
         { label: "FAQ", href: "/faq" },
-        { label: "Privacy Policy", href: "/privacy" },
-        { label: "Terms & Conditions", href: "/terms" },
+        { label: "Privacy Policy", href: "/privacy-policy" },
+        { label: "Terms & Conditions", href: "/terms-conditions" },
       ],
     },
   ],

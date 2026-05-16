@@ -85,7 +85,7 @@ export function LivePlayer() {
                 : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 pointer-events-none",
             )}
           >
-            <Card className="border border-white/10 bg-[#0A0A0A] flex flex-col h-full min-h-[500px] shadow-2xl overflow-hidden">
+            <Card className="border border-white/10 bg-[#0A0A0A] flex flex-col h-full min-h-[500px] rounded-lg shadow-2xl overflow-hidden">
               <div className="flex items-center justify-between px-4 py-5 border-b border-white/5 bg-zinc-900/20">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-sm font-bold uppercase text-white tracking-widest">
