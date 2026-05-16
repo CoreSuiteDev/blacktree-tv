@@ -20,7 +20,7 @@ export function HeroSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Scroll to bottom logic targeted directly at the message container
+    // Directly targets the container so scrolling works seamlessly when new messages arrive
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
@@ -34,7 +34,7 @@ export function HeroSection() {
           <div
             className={`transition-all duration-500 ease-in-out overflow-hidden bg-black flex items-center justify-center rounded-2xl ${
               isChatOpen ? "lg:w-2/3" : "lg:w-full"
-            } aspect-video lg:aspect-auto lg:h-[85vh] h-[500px] w-full`}
+            } aspect-video lg:aspect-auto lg:max-h-[87vh] lg:min-h-[500px] w-full`}
           >
             <VidPlayer />
           </div>
@@ -47,7 +47,7 @@ export function HeroSection() {
                 : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 translate-y-10 lg:translate-x-10 pointer-events-none"
             }`}
           >
-            <Card className="border border-[#FFFFFF1A] bg-[#100F0F] flex flex-col min-w-full lg:min-w-[380px] shadow-2xl lg:h-[85vh] h-[83vh] rounded-lg overflow-hidden s">
+            <Card className="border border-[#FFFFFF1A] bg-[#100F0F] h-full flex flex-col min-w-full lg:min-w-[380px] h-[63vh] rounded-lg shadow-2xl overflow-hidden">
               {/* Chat Header */}
               <div className="flex items-center justify-between px-4 py-5 border-b border-[#FFFFFF1A]">
                 <div className="flex items-center gap-2">
