@@ -5,7 +5,6 @@ import {
   Send,
   Smile,
   X,
-  CheckCircle2,
   MessageSquare,
   Captions,
   Bookmark,

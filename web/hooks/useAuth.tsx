@@ -17,7 +17,8 @@ export const useAuth = () => {
         const { data } = await api.get("/auth/me");
         return data.user;
       } catch (err) {
-        return null;
+        console.log(err);
+        throw err;
       }
     },
     retry: false,
@@ -39,7 +40,7 @@ export const useAuth = () => {
     onSuccess: () => {
       clearStore();
       queryClient.setQueryData(["auth-me"], null);
-      window.location.href = "/login"; // Redirect after logout
+      window.location.href = "/login";
     },
   });
 

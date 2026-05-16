@@ -55,3 +55,8 @@ export const handleAuthError = (error: any) => {
     message: "Something went wrong. Please try again later",
   };
 };
+
+
+export const generateOTPCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};

@@ -49,7 +49,7 @@ export const LoginForm = () => {
   const onSubmit = async (data: ZTAuthLogin) => {
     try {
       const { email, password, rememberMe } = data;
-      const { data: result, error } = await authClient.signIn.email({
+      const { error } = await authClient.signIn.email({
         email,
         password,
         rememberMe,
