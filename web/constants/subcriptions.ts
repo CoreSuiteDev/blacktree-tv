@@ -2,6 +2,8 @@ import { Star } from "lucide-react";
 
 export const PLANS = [
   {
+    id: "plan_basic",
+    slug: "basic-plan",
     name: "Basic",
     price: "8.99",
     features: [
@@ -14,6 +16,8 @@ export const PLANS = [
     isCurrent: false,
   },
   {
+    id: "plan_premium",
+    slug: "premium-4k-hdr",
     name: "Premium 4K + HDR",
     price: "19.99",
     features: [
@@ -27,6 +31,8 @@ export const PLANS = [
     isCurrent: true,
   },
   {
+    id: "plan_standard",
+    slug: "standard-plan",
     name: "Standard",
     price: "13.99",
     features: [

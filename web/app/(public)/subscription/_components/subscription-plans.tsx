@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { Check, Ban, Star } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Check, Ban } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,10 +15,12 @@ import {
 import { PLANS } from "@/constants/subcriptions";
 
 export default function SubscriptionPlans() {
+  const router = useRouter();
+
   return (
     <section className="bg-black text-frontground py-24 px-4 font-sans overflow-x-hidden">
       <div className="container mx-auto max-w-6xl">
-        {/* Heading Section from image_a19555.png */}
+        {/* Heading Section */}
         <div className="flex flex-col items-center text-center mb-16 space-y-4 px-4">
           <div className="border border-primary/30 rounded-full px-6 py-2">
             <span className="text-primary uppercase tracking-[0.2em] text-sm font-medium">
@@ -34,13 +37,16 @@ export default function SubscriptionPlans() {
           </p>
         </div>
 
-        {/* Added extra padding-x on mobile to accommodate the scale-105 effect */}
+        {/* Grid Section */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 items-center px-4 md:px-0">
           {PLANS.map((plan) => {
             const isPremium = plan.isCurrent;
 
             return (
-              <div key={plan.name} className="relative flex h-full group">
+              <div
+                key={plan.id || plan.slug || plan.name}
+                className="relative flex h-full group"
+              >
                 {isPremium && (
                   <div className="absolute -top-[25px] left-1/2 -translate-x-1/2 z-40">
                     <div className="bg-primary text-frontground px-4 py-1 text-[10px] font-bold rounded-full uppercase tracking-widest border border-[#ff313b]">
@@ -111,8 +117,9 @@ export default function SubscriptionPlans() {
 
                   <CardFooter className="px-10 pb-10">
                     <Button
+                      onClick={() => router.push(`/checkout/${plan.slug}`)}
                       className={cn(
-                        "w-full h-[56px] rounded-xl font-bold text-[16px] transition-all duration-300",
+                        "w-full h-[56px] rounded-xl font-bold text-[16px] transition-all duration-300 cursor-pointer",
                         isPremium
                           ? "bg-primary hover:bg-[#ff1f29] text-frontground shadow-lg"
                           : "bg-[#1f1f1f] hover:bg-primary hover:text-frontground text-zinc-300 border border-zinc-800 hover:border-primary",
