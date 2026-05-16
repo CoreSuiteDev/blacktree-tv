@@ -1,0 +1,306 @@
+/* eslint-disable react/no-unescaped-entities */
+"use client";
+
+import React from "react";
+import { useForm } from "react-hook-form";
+import {
+  Tv,
+  Ban,
+  Download,
+  Layers,
+  CreditCard,
+  Lock,
+  ShieldCheck,
+  Loader2,
+} from "lucide-react";
+
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  CheckoutPayload,
+  useCheckoutStore,
+} from "@/store/public/use-checkout-store";
+
+export function CheckoutSection() {
+  const { isSubmitting, submitSubscription } = useCheckoutStore();
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<CheckoutPayload>({
+    defaultValues: {
+      cardholderName: "",
+      cardNumber: "",
+      expiryDate: "",
+      cvc: "",
+    },
+  });
+
+  // Fires when form passes client-side validation rules
+  const onSubmit = async (data: CheckoutPayload) => {
+    console.log("Form data capture initiated:", data);
+    await submitSubscription(data);
+  };
+
+  return (
+    <section className="bg-[#0a0a0a] my-20 md:my-24 text-[#f5f5f5] flex items-center justify-center p-4 antialiased font-sans">
+      <Card className="w-full max-w-5xl rounded-xl border border-neutral-800/60 overflow-hidden bg-[#121212] shadow-2xl flex flex-col md:flex-row items-stretch md:min-h-[640px]">
+        {/* Left Column: Plan Summary */}
+        <div className="w-full md:w-[50%] p-8 lg:p-12 border-b md:border-b-0 md:border-r border-neutral-800/60 flex flex-col justify-between relative overflow-hidden bg-cover bg-center bg-no-repeat bg-[url('/assets/images/checkout-bg.png')]">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#e50914]/15 via-[#121212]/90 to-[#121212] z-0" />
+          <div className="absolute inset-0 bg-[#121212]/40 backdrop-blur-[2px] z-0" />
+
+          <div className="space-y-8 z-10 relative">
+            <div>
+              <Badge className="bg-[#e50914] text-white text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full border-none mb-5 pointer-events-none shadow-sm shadow-[#e50914]/20">
+                Premium Choice
+              </Badge>
+              <h2 className="text-2xl font-bold tracking-tight text-white">
+                Gold Plan
+              </h2>
+              <p className="text-sm text-neutral-400 mt-2 font-normal leading-relaxed max-w-xs">
+                Elevate your home cinema experience with peak fidelity.
+              </p>
+            </div>
+
+            <div className="flex items-baseline gap-1 py-1">
+              <span className="text-5xl font-black text-white tracking-tight">
+                $19
+              </span>
+              <span className="text-sm text-neutral-400 font-medium">
+                / month
+              </span>
+            </div>
+
+            <div className="space-y-4 pt-2">
+              <div className="flex items-center gap-3.5 text-neutral-200">
+                <Tv className="w-5 h-5 text-[#e50914] shrink-0" />
+                <span className="text-sm font-medium tracking-wide">
+                  Ultra HD 4K + HDR10+ Quality
+                </span>
+              </div>
+              <div className="flex items-center gap-3.5 text-neutral-200">
+                <Ban className="w-5 h-5 text-[#e50914] shrink-0" />
+                <span className="text-sm font-medium tracking-wide">
+                  Zero Interruptions (No Ads)
+                </span>
+              </div>
+              <div className="flex items-center gap-3.5 text-neutral-200">
+                <Download className="w-5 h-5 text-[#e50914] shrink-0" />
+                <span className="text-sm font-medium tracking-wide">
+                  Unlimited Offline Downloads
+                </span>
+              </div>
+              <div className="flex items-center gap-3.5 text-neutral-200">
+                <Layers className="w-5 h-5 text-[#e50914] shrink-0" />
+                <span className="text-sm font-medium tracking-wide">
+                  Stream on 4 devices simultaneously
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-8 border-t border-neutral-800/40 mt-12 md:mt-0 z-10 relative">
+            <p className="text-[11px] text-neutral-500 font-medium leading-normal tracking-wide">
+              Next billing date: November 24, 2023. Cancel anytime with one
+              click.
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column: Checkout Form */}
+        <CardContent className="flex-1 p-8 lg:p-12 bg-[#121212] flex flex-col justify-between border-none">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            <div className="flex items-center justify-between pb-2">
+              <h3 className="text-lg font-bold tracking-wide text-white">
+                Secure Checkout
+              </h3>
+              <div className="flex items-center gap-2.5 text-neutral-500">
+                <CreditCard className="w-5 h-5" />
+                <div className="w-5 h-5 border-2 border-neutral-500 rounded-md flex items-center justify-center text-[9px] font-black tracking-tighter">
+                  ID
+                </div>
+              </div>
+            </div>
+
+            {/* Form Inputs Container */}
+            <div className="space-y-5">
+              {/* Cardholder Name */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="cardholderName"
+                  className="text-[11px] font-bold text-neutral-400 tracking-wider uppercase"
+                >
+                  Cardholder Name
+                </Label>
+                <Input
+                  id="cardholderName"
+                  type="text"
+                  placeholder="John Wick"
+                  className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                    errors.cardholderName
+                      ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                      : ""
+                  }`}
+                  {...register("cardholderName", { required: true })}
+                />
+              </div>
+
+              {/* Card Number */}
+              <div className="space-y-2">
+                <Label
+                  htmlFor="cardNumber"
+                  className="text-[11px] font-bold text-neutral-400 tracking-wider uppercase"
+                >
+                  Card Number
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="cardNumber"
+                    type="text"
+                    maxLength={19}
+                    placeholder="0000 0000 0000 0000"
+                    className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                      errors.cardNumber
+                        ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                        : ""
+                    }`}
+                    {...register("cardNumber", {
+                      required: true,
+                      minLength: 16,
+                    })}
+                    onChange={(e) => {
+                      // Formats entry automatically to "0000 0000 0000 0000"
+                      const value = e.target.value
+                        .replace(/\D/g, "")
+                        .replace(/(.{4})/g, "$1 ")
+                        .trim();
+                      setValue("cardNumber", value, { shouldValidate: true });
+                    }}
+                  />
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-1.5 opacity-25">
+                    <div className="w-7 h-4.5 bg-neutral-400 rounded-sm" />
+                    <div className="w-7 h-4.5 bg-neutral-200 rounded-sm" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {/* Expiry Date (Using standard text mask for cleaner payment forms) */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="expiryDate"
+                    className="text-[11px] font-bold text-neutral-400 tracking-wider uppercase"
+                  >
+                    Expiry Date
+                  </Label>
+                  <Input
+                    id="expiryDate"
+                    type="text"
+                    maxLength={5}
+                    placeholder="MM/YY"
+                    className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 text-center tracking-wider focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                      errors.expiryDate
+                        ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                        : ""
+                    }`}
+                    {...register("expiryDate", {
+                      required: true,
+                      pattern: /^(0[1-9]|1[0-2])\/([0-9]{2})$/,
+                      validate: (value) => {
+                        if (!value) return false;
+                        const [monthStr, yearStr] = value.split("/");
+                        const month = parseInt(monthStr, 10);
+                        const year = parseInt(`20${yearStr}`, 10);
+
+                        const now = new Date();
+                        const currentYear = now.getFullYear();
+                        const currentMonth = now.getMonth() + 1;
+
+                        return (
+                          year > currentYear ||
+                          (year === currentYear && month >= currentMonth)
+                        );
+                      },
+                    })}
+                    onChange={(e) => {
+                      // Formats entry automatically to MM/YY string mask
+                      let value = e.target.value.replace(/\D/g, "");
+                      if (value.length > 2) {
+                        value = `${value.slice(0, 2)}/${value.slice(2, 4)}`;
+                      }
+                      setValue("expiryDate", value, { shouldValidate: true });
+                    }}
+                  />
+                </div>
+
+                {/* CVC Field */}
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="cvc"
+                    className="text-[11px] font-bold text-neutral-400 tracking-wider uppercase"
+                  >
+                    CVC
+                  </Label>
+                  <Input
+                    id="cvc"
+                    type="password"
+                    maxLength={4}
+                    placeholder="•••"
+                    className={`w-full bg-[#1a1a1a] border-neutral-800 rounded-md px-4 py-6 text-sm text-white placeholder:text-neutral-600 text-center tracking-widest focus-visible:ring-1 focus-visible:ring-neutral-700 focus-visible:ring-offset-0 ${
+                      errors.cvc
+                        ? "border-[#e50914] focus-visible:ring-[#e50914]"
+                        : ""
+                    }`}
+                    {...register("cvc", { required: true, minLength: 3 })}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Action Block */}
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[#e50914] text-white hover:bg-[#b80710] font-bold text-sm h-auto py-4 rounded-md shadow-lg shadow-[#e50914]/10 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Processing Transaction...
+                </>
+              ) : (
+                "Start Subscription"
+              )}
+            </Button>
+          </form>
+
+          {/* Secure compliance branding metrics block */}
+          <div className="pt-8 space-y-4">
+            <div className="flex items-center justify-center gap-5 text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+              <span className="flex items-center gap-1.5">
+                <Lock className="w-3 h-3 text-neutral-600" /> SSL Secured
+              </span>
+              <span>Powered by Stripe</span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3 h-3 text-neutral-600" /> PCI
+                Compliant
+              </span>
+            </div>
+
+            <p className="text-[10px] text-neutral-600 text-center max-w-sm mx-auto leading-relaxed tracking-wide">
+              By clicking "Start Subscription", you agree to our Terms of
+              Service and Privacy Policy. CineLuxe uses industry-standard
+              encryption protocols to safeguard your transactional data.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </section>
+  );
+}

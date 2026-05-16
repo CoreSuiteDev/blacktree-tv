@@ -5,6 +5,7 @@
     "build": "pnpm -r build"
   },
   "dependencies": {
-    "embla-carousel-autoplay": "^8.6.0"
+    "embla-carousel-autoplay": "^8.6.0",
+    "react-hook-form": "^7.76.0"
   }
 }

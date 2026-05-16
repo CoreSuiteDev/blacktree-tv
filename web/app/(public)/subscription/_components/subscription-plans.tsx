@@ -88,9 +88,6 @@ export default function SubscriptionPlans() {
                               <div className="w-[18px] h-[18px] rounded-full border border-primary/50 flex items-center justify-center">
                                 <Check className="w-3 h-3 text-primary stroke-[3px]" />
                               </div>
-                              {feature.text.toLowerCase().includes("4k") && (
-                                <Star className="w-[8px] h-[8px] text-primary fill-primary absolute -top-1 -left-1" />
-                              )}
                             </div>
                           ) : (
                             <div className="w-[18px] h-[18px] rounded-full border border-zinc-800 flex items-center justify-center">

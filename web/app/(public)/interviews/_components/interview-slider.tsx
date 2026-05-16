@@ -62,7 +62,7 @@ const InterviewSlider = ({ title, interviews }: InterviewSliderProps) => {
           <div className="flex items-center justify-between mb-8">
             <div className="flex items-center gap-3">
               <div className="w-1.5 h-8 bg-primary rounded-r-full" />
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground/90 uppercase tracking-tight">
+              <h2 className="text-2xl md:text-3xl font-bold text-foreground/90  tracking-tight">
                 {title}
               </h2>
             </div>
