@@ -25,8 +25,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth/auth-client";
 import { ZCAuthRegister, ZTAuthRegister } from "@/types/zod/auth";
+import { useRouter } from "next/navigation";
 
 export const RegisterForm = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const form = useForm<ZTAuthRegister>({
@@ -38,12 +40,31 @@ export const RegisterForm = () => {
     },
   });
 
-  function onSubmit(data: ZTAuthRegister) {
-    console.log("Register Form Values:", data);
-    toast("Registration Success", {
-      position: "bottom-right",
-    });
-  }
+  const onSubmit = async (data: ZTAuthRegister) => {
+    try {
+      const { name, email, password } = data;
+      const { error } = await authClient.signUp.email({
+        name,
+        email,
+        password,
+        callbackURL: "/",
+      });
+
+      if (error) {
+        toast.error(error.message || "Registration failed");
+        return;
+      }
+
+      toast.success("Account created successfully!", {
+        position: "bottom-right",
+      });
+
+      router.push("/");
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+      console.error(error);
+    }
+  };
 
   const handleSocialLogin = async (provider: "google" | "facebook") => {
     try {

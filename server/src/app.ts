@@ -9,9 +9,9 @@ import morgan from "morgan";
 import { toNodeHandler } from "better-auth/node";
 import { errorMiddleware } from "./apps/middleware/error.middleware";
 import { auth } from "./apps/modules/auth/auth.config";
+import authRouter from "./apps/modules/auth/auth.route";
 import config from "./config";
 import routes from "./routes";
-import authRouter from "./routes/auth.route";
 import { AppError } from "./utils/AppError";
 
 const app = express();
@@ -34,7 +34,6 @@ app.use(
 app.use(morgan(config.nodeEnv === "production" ? "combined" : "dev"));
 
 // 3. Auth Routes - PRIORITY 1: Custom Handlers
-app.use("/api/auth", authRouter);
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
 

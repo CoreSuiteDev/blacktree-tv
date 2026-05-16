@@ -27,11 +27,15 @@ import {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth/auth-client";
 
 import { ZCAuthLogin, ZTAuthLogin } from "@/types/zod/auth";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+
+  const router = useRouter();
 
   const form = useForm<ZTAuthLogin>({
     resolver: zodResolver(ZCAuthLogin),
@@ -42,18 +46,42 @@ export const LoginForm = () => {
     },
   });
 
-  function onSubmit(data: ZTAuthLogin) {
-    console.log("Login Form Values:", data);
+  const onSubmit = async (data: ZTAuthLogin) => {
+    try {
+      const { email, password, rememberMe } = data;
+      const { data: result, error } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe,
+      });
 
-    toast("Login Success", {
-      position: "bottom-right",
-    });
-  }
+      if (error) {
+        toast.error(error.message || "Login failed");
+        return;
+      }
 
-  const handleSocialLogin = (provider: "google" | "apple") => {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
-    const callbackUrl = window.location.origin;
-    window.location.href = `${backendUrl}/auth/${provider}?callbackURL=${encodeURIComponent(callbackUrl)}`;
+      toast.success("Login successful!", {
+        position: "bottom-right",
+      });
+
+      // Redirect or update UI state here
+      router.push("/");
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+      console.error(error);
+    }
+  };
+
+  const handleSocialLogin = async (provider: "google" | "apple") => {
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: window.location.origin,
+      });
+    } catch (error) {
+      toast.error("Social login failed");
+      console.error(error);
+    }
   };
 
   return (
@@ -201,11 +229,11 @@ export const LoginForm = () => {
 
             {/* Social Login Divider */}
             <div className="relative flex items-center py-2">
-              <div className="flex-grow border-t border-[#FFFFFF1A]"></div>
-              <span className="mx-4 flex-shrink text-xs font-medium text-zinc-500 uppercase tracking-wider">
+              <div className="grow border-t border-[#FFFFFF1A]"></div>
+              <span className="mx-4 shrink text-xs font-medium text-zinc-500 uppercase tracking-wider">
                 Or continue with
               </span>
-              <div className="flex-grow border-t border-[#FFFFFF1A]"></div>
+              <div className="grow border-t border-[#FFFFFF1A]"></div>
             </div>
 
             {/* Social Buttons */}

@@ -29,7 +29,7 @@ export const auth = betterAuth({
   },
 
   debug: true,
-  
+
   plugins: [
     jwt({
       jwt: {

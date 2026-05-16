@@ -4,12 +4,7 @@ import { auth } from "../modules/auth/auth.config";
 import { AppError } from "../../utils/AppError";
 import { asyncHandler } from "../../utils/asyncHandler";
 
-/**
- * Middleware to protect routes and ensure the user is authenticated.
- * It validates the session/tokens provided in headers or cookies.
- */
 export const protect = asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-  // Validate session via better-auth
   console.log("Validating session...");
   const session = await auth.api.getSession({
     headers: fromNodeHeaders(req.headers),
@@ -22,20 +17,15 @@ export const protect = asyncHandler(async (req: Request, res: Response, next: Ne
 
   console.log("Session found for user:", session.user.id);
 
-  // Add user and session info to the request object for use in controllers
   req.user = session.user as any;
   req.session = session.session as any;
 
   next();
 });
 
-/**
- * Middleware to restrict access to specific roles.
- * Must be used after the 'protect' middleware.
- */
+
 export const restrictTo = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    // Note: Better-auth stores role in the user object if configured
     const userRole = (req.user as any)?.role;
     
     if (!userRole || !roles.includes(userRole)) {
