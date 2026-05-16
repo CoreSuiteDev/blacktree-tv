@@ -59,7 +59,7 @@ export default function ContactForm() {
               className="w-full bg-[#2a2a2a] border border-transparent focus:border-zinc-700 text-zinc-200 placeholder-zinc-500 rounded px-4 py-3 outline-none transition text-sm"
             />
             {errors.fullName && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-primary text-xs mt-1">
                 {errors.fullName.message}
               </p>
             )}
@@ -83,7 +83,7 @@ export default function ContactForm() {
               className="w-full bg-[#2a2a2a] border border-transparent focus:border-zinc-700 text-zinc-200 placeholder-zinc-500 rounded px-4 py-3 outline-none transition text-sm"
             />
             {errors.email && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-primary text-xs mt-1">
                 {errors.email.message}
               </p>
             )}
@@ -127,7 +127,7 @@ export default function ContactForm() {
               className="w-full bg-[#2a2a2a] border border-transparent focus:border-zinc-700 text-zinc-200 placeholder-zinc-500 rounded px-4 py-3 outline-none transition text-sm resize-none"
             />
             {errors.message && (
-              <p className="text-red-500 text-xs mt-1">
+              <p className="text-primary text-xs mt-1">
                 {errors.message.message}
               </p>
             )}
@@ -136,7 +136,7 @@ export default function ContactForm() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full bg-[#e50914] hover:bg-[#b20710] text-white font-semibold py-3.5 rounded transition duration-200 text-base shadow-md active:scale-[0.99]"
+            className="w-full bg-primary hover:bg-[#b20710] text-white font-semibold py-5.5 rounded transition duration-200 text-base shadow-md active:scale-[0.99]"
           >
             Send Message
           </Button>
