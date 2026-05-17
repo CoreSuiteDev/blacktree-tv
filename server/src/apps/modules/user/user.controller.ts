@@ -65,11 +65,46 @@ export const getAllUsers = asyncHandler(async (req: Request, res: Response) => {
 
 export const getUserById = asyncHandler(async (req: Request, res: Response) => {
   try {
-    const result = await auth.api.getUser({
-      query: {
-        id: req.params.id as string,
+    const { id } = req.params;
+
+    if ((req.user as any)?.role !== "ADMIN" && (req.user as any)?.role !== "MODERATOR" && (req.user as any)?.id !== id) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have permission to view this profile",
+      });
+    }
+
+    const result = await prisma.user.findUnique({
+      where: {
+        id: id as string,
       },
-      headers: fromNodeHeaders(req.headers),
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+        sessions: {
+          select: {
+            id: true,
+            expiresAt: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+        profile: true,
+        emailVerified: true,
+        image: true,
+        accounts: {
+          select: {
+            id: true,
+            providerId: true,
+            createdAt: true,
+            updatedAt: true,
+          },
+        },
+      },
     });
 
     return res.status(200).json({
@@ -98,9 +133,19 @@ export const getUserById = asyncHandler(async (req: Request, res: Response) => {
 export const deleteAccount = asyncHandler(
   async (req: Request, res: Response) => {
     try {
-      const result = await auth.api.deleteUser({
-        body: {},
-        headers: fromNodeHeaders(req.headers),
+      const { id } = req.params;
+
+      if ((req.user as any)?.role !== "ADMIN" && (req.user as any)?.id !== id) {
+        return res.status(403).json({
+          success: false,
+          message: "You do not have permission to delete this account",
+        });
+      }
+
+      const result = await prisma.user.delete({
+        where: {
+          id: id as string,
+        },
       });
 
       return res.status(200).json({
@@ -125,4 +170,4 @@ export const deleteAccount = asyncHandler(
       });
     }
   },
-);
+);

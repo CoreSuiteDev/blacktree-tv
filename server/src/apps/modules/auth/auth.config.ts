@@ -32,7 +32,10 @@ export const auth = betterAuth({
   debug: true,
 
   plugins: [
-    admin(),
+    admin({
+      defaultRole: "USER",
+      adminRoles: ["ADMIN"],
+    }),
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         await sendOTPEmail(email, otp, type);
