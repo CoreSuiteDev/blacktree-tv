@@ -55,7 +55,7 @@ const CinematicControls = () => {
   return (
     <Controls.Root
       className={`absolute inset-0 z-50 flex flex-col justify-end gap-2 md:gap-4 transition-opacity duration-300 opacity-0 data-visible:opacity-100 ${
-        isChatOpen ? "px-6  py-4" : "px-6 py-4 md:py-8 lg:py-12" // Even larger padding when player is wide (Chat Closed)
+        isChatOpen ? "px-6  py-4" : "px-6 py-4 md:py-8 lg:py-12"
       }`}
     >
       {/* Middle Section: Typography */}
@@ -316,7 +316,7 @@ function SubmenuButton({
 }
 
 const VidPlayer = () => {
-  const { isChatOpen, toggleChat } = usePlayerStore();
+  const { isChatOpen } = usePlayerStore();
   return (
     <MediaPlayer
       title="Beyond The Story"
