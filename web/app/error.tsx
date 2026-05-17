@@ -30,15 +30,15 @@ export default function Error({
           priority
         />
         <div className="absolute inset-0 bg-[#050505]/95 backdrop-blur-[1px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_transparent_0%,_#050505_100%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)]" />
       </div>
 
       {/* Decorative Glows */}
-      <div className="fixed right-[-5%] top-[-5%] h-[500px] w-[500px] rounded-full bg-red-950/10 blur-[120px] pointer-events-none z-[1]" />
-      <div className="fixed left-[-5%] bottom-[-5%] h-[500px] w-[500px] rounded-full bg-zinc-900/40 blur-[120px] pointer-events-none z-[1]" />
+      <div className="fixed right-[-5%] top-[-5%] h-[500px] w-[500px] rounded-full bg-red-950/10 blur-[120px] pointer-events-none z-1" />
+      <div className="fixed left-[-5%] bottom-[-5%] h-[500px] w-[500px] rounded-full bg-zinc-900/40 blur-[120px] pointer-events-none z-1" />
 
       <div className="relative z-10 w-full max-w-2xl px-6">
-        <div className="relative overflow-hidden rounded-[2.5rem] border border-red-500/10 bg-white/[0.02] p-8 md:p-16 backdrop-blur-2xl shadow-2xl">
+        <div className="relative overflow-hidden rounded-[2.5rem] border border-red-500/10 bg-white/2 p-8 md:p-16 backdrop-blur-2xl shadow-2xl">
           {/* Accent Line */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-24 bg-red-600 rounded-b-full shadow-[0_0_20px_rgba(220,38,38,0.5)]" />
           
@@ -95,11 +95,11 @@ export default function Error({
 
         {/* Footer info */}
         <div className="mt-10 flex items-center justify-center gap-6">
-          <div className="h-px flex-1 bg-white/[0.03]" />
+          <div className="h-px flex-1 bg-white/3" />
           <p className="text-[9px] uppercase tracking-[0.5em] text-zinc-700 font-bold whitespace-nowrap">
             Technical Operations Center // Final Production
           </p>
-          <div className="h-px flex-1 bg-white/[0.03]" />
+          <div className="h-px flex-1 bg-white/3" />
         </div>
       </div>
     </div>

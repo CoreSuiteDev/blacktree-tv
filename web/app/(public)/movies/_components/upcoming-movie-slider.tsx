@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import { ChevronDown, ChevronRight } from "lucide-react";
+import {  ChevronRight } from "lucide-react";
 
 import {
   Carousel,

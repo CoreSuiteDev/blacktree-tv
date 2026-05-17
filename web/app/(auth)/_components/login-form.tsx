@@ -27,11 +27,15 @@ import {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { authClient } from "@/lib/auth/auth-client";
 
 import { ZCAuthLogin, ZTAuthLogin } from "@/types/zod/auth";
+import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+
+  const router = useRouter();
 
   const form = useForm<ZTAuthLogin>({
     resolver: zodResolver(ZCAuthLogin),
@@ -42,13 +46,43 @@ export const LoginForm = () => {
     },
   });
 
-  function onSubmit(data: ZTAuthLogin) {
-    console.log("Login Form Values:", data);
+  const onSubmit = async (data: ZTAuthLogin) => {
+    try {
+      const { email, password, rememberMe } = data;
+      const { error } = await authClient.signIn.email({
+        email,
+        password,
+        rememberMe,
+      });
 
-    toast("Login Success", {
-      position: "bottom-right",
-    });
-  }
+      if (error) {
+        toast.error(error.message || "Login failed");
+        return;
+      }
+
+      toast.success("Login successful!", {
+        position: "bottom-right",
+      });
+
+      // Redirect or update UI state here
+      router.push("/");
+    } catch (error) {
+      toast.error("An unexpected error occurred");
+      console.error(error);
+    }
+  };
+
+  const handleSocialLogin = async (provider: "google" | "apple") => {
+    try {
+      await authClient.signIn.social({
+        provider,
+        callbackURL: window.location.origin,
+      });
+    } catch (error) {
+      toast.error("Social login failed");
+      console.error(error);
+    }
+  };
 
   return (
     <div className="w-full flex items-center justify-center px-4">
@@ -192,6 +226,56 @@ export const LoginForm = () => {
                 Sign In
               </Button>
             </FieldGroup>
+
+            {/* Social Login Divider */}
+            <div className="relative flex items-center py-2">
+              <div className="grow border-t border-[#FFFFFF1A]"></div>
+              <span className="mx-4 shrink text-xs font-medium text-zinc-500 uppercase tracking-wider">
+                Or continue with
+              </span>
+              <div className="grow border-t border-[#FFFFFF1A]"></div>
+            </div>
+
+            {/* Social Buttons */}
+            <div className="grid grid-cols-2 gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleSocialLogin("google")}
+                className="h-12 w-full rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition hover:bg-[#FFFFFF0D] hover:text-white"
+              >
+                <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
+                  <path
+                    d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                    fill="#4285F4"
+                  />
+                  <path
+                    d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                    fill="#34A853"
+                  />
+                  <path
+                    d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"
+                    fill="#FBBC05"
+                  />
+                  <path
+                    d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                    fill="#EA4335"
+                  />
+                </svg>
+                Google
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleSocialLogin("apple")}
+                className="h-12 w-full rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition hover:bg-[#FFFFFF0D] hover:text-white"
+              >
+                <svg className="mr-2 h-5 w-5 fill-white" viewBox="0 0 24 24">
+                  <path d="M17.05 20.28c-.96.95-2.04 2.13-3.4 2.13-1.33 0-1.77-.83-3.32-.83-1.57 0-2.06.81-3.32.81-1.32 0-2.43-1.15-3.42-2.15-1.99-1.99-3.52-5.63-3.52-8.87 0-5.11 3.2-7.81 6.23-7.81 1.58 0 2.92.93 3.82.93.9 0 2.45-1.09 4.33-1.09.79 0 3.03.29 4.49 2.43-.12.07-2.68 1.56-2.68 4.67 0 3.73 3.23 5.04 3.29 5.06-.02.07-.51 1.76-1.5 3.32zM12.03 4.22c-.08-1.9 1.53-3.55 3.33-3.69.19 2.18-2.07 3.96-3.33 3.69z" />
+                </svg>
+                Apple
+              </Button>
+            </div>
           </form>
         </CardContent>
 

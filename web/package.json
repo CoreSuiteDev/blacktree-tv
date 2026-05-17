@@ -19,6 +19,7 @@
     "@tanstack/react-table": "^8.21.3",
     "@vidstack/react": "^1.12.13",
     "axios": "^1.15.2",
+    "better-auth": "^1.6.11",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
