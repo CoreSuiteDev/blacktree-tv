@@ -1,6 +1,6 @@
 "use client";
-import React from "react";
-import { VolumeX, Bookmark, Subtitles, MessageSquare, Tv } from "lucide-react";
+
+import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VidPlayer from "@/features/player/components/vid-player";
 import { cn } from "@/lib/utils";
@@ -18,7 +18,7 @@ const WatchingVideo = () => {
             )}
           >
             {/* VIDEO PLAYER CONTAINER */}
-            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5 flex flex-col h-full min-h-[400px] lg:h-[800px]">
+            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5 flex flex-col h-full min-h-100 lg:h-200">
               <VidPlayer />
             </div>
 

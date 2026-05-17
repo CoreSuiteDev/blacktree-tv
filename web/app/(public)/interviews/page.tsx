@@ -3,7 +3,6 @@ import { ExclusiveInterview } from "@/components/shared/home/SpotlightSlider";
 import React from "react";
 import InterviewsSection from "./_components/interviews-section";
 
-import { HeroSection } from "@/components/shared/home/hero";
 import { INTERVIEW_SPORTLIGHT } from "@/constants/intervirew";
 
 const Interview = () => {

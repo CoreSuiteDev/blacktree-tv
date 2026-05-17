@@ -39,7 +39,7 @@ const ProgramSchedule = () => {
         {/* Section Header */}
         <div className="flex items-center gap-3 mb-8">
           {/* Rounded Left Pill Bar */}
-          <span className="w-[5px] h-6 bg-red-600 rounded-r-full block" />
+          <span className="w-1.25 h-6 bg-red-600 rounded-r-full block" />
           <h2 className="text-2xl  font-semibold tracking-wide text-neutral-200">
             Program Schedule
           </h2>
@@ -54,10 +54,10 @@ const ProgramSchedule = () => {
               <div
                 key={program.id}
                 onClick={() => setActiveId(program.id)}
-                className={`relative p-6 min-h-[140px] flex flex-col justify-center transition-all duration-300 group cursor-pointer select-none
+                className={`relative p-6 min-h-35 flex flex-col justify-center transition-all duration-300 group cursor-pointer select-none
                   ${
                     isActive
-                      ? "bg-gradient-to-br from-neutral-900/40 to-neutral-950/20"
+                      ? "bg-linear-to-br from-neutral-900/40 to-neutral-950/20"
                       : "bg-[#0d0d0d]/20 hover:bg-[#121212]/30"
                   }`}
               >
@@ -65,9 +65,9 @@ const ProgramSchedule = () => {
                 {isActive && (
                   <>
                     {/* Top Accent Border Line */}
-                    <span className="absolute top-0 left-0 right-0 h-[2px] bg-red-600 z-10" />
+                    <span className="absolute top-0 left-0 right-0 h-0.5 bg-red-600 z-10" />
                     {/* Left Accent Border Line */}
-                    <span className="absolute top-0 bottom-0 left-0 w-[3px] bg-red-600 z-10" />
+                    <span className="absolute top-0 bottom-0 left-0 w-0.75 bg-red-600 z-10" />
                   </>
                 )}
 

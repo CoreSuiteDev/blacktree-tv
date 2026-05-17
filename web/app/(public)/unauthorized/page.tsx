@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Lock, ArrowRight, Home } from "lucide-react";
-import authBg from "../../public/assets/images/auth-bg.png";
+
 import { Button } from "@/components/ui/button";
 
 export default function UnauthorizedPage() {
@@ -10,7 +10,7 @@ export default function UnauthorizedPage() {
       {/* Cinematic Background Layer */}
       <div className="fixed inset-0 z-0">
         <Image
-          src={authBg}
+          src="/assets/images/auth-bg.png"
           alt="background"
           fill
           className="object-cover opacity-20 sepia-[0.3]"
@@ -28,7 +28,7 @@ export default function UnauthorizedPage() {
         <div className="relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-white/2 p-8 md:p-16 backdrop-blur-2xl shadow-2xl">
           {/* Accent Line */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 h-1 w-24 bg-primary rounded-b-full shadow-[0_0_20px_rgba(229,9,20,0.5)]" />
-          
+
           <div className="flex flex-col items-center text-center">
             {/* Security Header */}
             <div className="mb-10 text-[10px] font-black uppercase tracking-[0.8em] text-zinc-500">
@@ -46,7 +46,8 @@ export default function UnauthorizedPage() {
                 Restricted Content
               </h1>
               <p className="text-sm md:text-lg text-zinc-400 leading-relaxed max-w-[400px] mx-auto font-medium">
-                This screening is exclusive to our premium subscribers. Please authenticate to continue your experience.
+                This screening is exclusive to our premium subscribers. Please
+                authenticate to continue your experience.
               </p>
             </div>
 
@@ -60,7 +61,7 @@ export default function UnauthorizedPage() {
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              
+
               <Link
                 href="/"
                 className="flex items-center gap-2 text-xs font-bold text-zinc-500 uppercase tracking-widest transition-all hover:text-white group"

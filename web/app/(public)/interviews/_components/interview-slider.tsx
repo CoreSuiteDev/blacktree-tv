@@ -28,7 +28,7 @@ interface InterviewSliderProps {
   interviews: Interview[];
 }
 
-const InterviewSlider = ({ title, interviews }: InterviewSliderProps) => {
+const InterviewSlider = ({ title }: InterviewSliderProps) => {
   const plugins = React.useMemo(
     () => [
       Autoplay({

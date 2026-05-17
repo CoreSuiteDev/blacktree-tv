@@ -1,6 +1,5 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from "react";
-import Image from "next/image";
+
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -34,13 +33,13 @@ const AboutSection = () => {
           </div>
 
           {/* Right Side: Director Chair & Asset Image Placeholder */}
-          <div className="relative w-full h-[400px]  md:h-[550px] md:aspect-square flex justify-center items-center bg-gradient-to-b from-neutral-900/40 to-transparent rounded-2xl border border-neutral-800/20 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent z-10" />
+          <div className="relative w-full h-100  group md:h-137.5 md:aspect-square flex justify-center items-center bg-linear-to-b from-neutral-900/40 to-transparent rounded-2xl border border-neutral-800/20 overflow-hidden">
+            <div className="absolute inset-0 bg-linear-to-t from-[#0a0a0a] via-transparent to-transparent z-10" />
 
             <div
-              className="w-full h-full bg-cover bg-center bg-no-repeat opacity-80"
+              className="w-full h-full bg-cover grayscale group-hover:grayscale-50 transition-all duration-300 ease-in-out bg-center bg-no-repeat opacity-80"
               style={{
-                backgroundImage: "url('/assets/images/checkout-bg.png')",
+                backgroundImage: "url('/assets/images/about-baner.png')",
               }}
             />
           </div>
@@ -63,7 +62,7 @@ const AboutSection = () => {
                   <h4 className="text-sm font-semibold text-white tracking-wide">
                     {feat.title}
                   </h4>
-                  <p className="text-[11px] text-neutral-500 max-w-[140px] mx-auto leading-normal">
+                  <p className="text-[11px] text-neutral-500 max-w-35 mx-auto leading-normal">
                     {feat.desc}
                   </p>
                 </div>
@@ -90,7 +89,7 @@ const AboutSection = () => {
           {stars.map((star, index) => (
             <div
               key={index}
-              className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-neutral-800/50 group bg-neutral-900/40"
+              className="relative aspect-3/4 rounded-2xl overflow-hidden border border-neutral-800/50 group bg-neutral-900/40"
             >
               {/* Image Layer */}
               <div
@@ -99,7 +98,7 @@ const AboutSection = () => {
               />
 
               {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-linear-to-t from-black via-black/20 to-transparent opacity-80" />
 
               {/* Hover Content placeholder (If needed) */}
               <div className="absolute bottom-6 left-6 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -126,7 +125,7 @@ const AboutSection = () => {
               key={index}
               className="flex flex-col items-center space-y-3 px-4"
             >
-              <tech.icon className="w-5 h-5 text-primary stroke-[2]" />
+              <tech.icon className="w-5 h-5 text-primary stroke-2" />
               <div className="space-y-1.5">
                 <h4 className="text-sm font-bold text-white tracking-wide">
                   {tech.title}

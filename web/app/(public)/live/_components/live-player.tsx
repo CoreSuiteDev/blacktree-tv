@@ -46,7 +46,7 @@ export function LivePlayer() {
             )}
           >
             {/* VIDEO PLAYER CONTAINER */}
-            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5 flex flex-col h-full min-h-[400px] lg:min-h-[500px]">
+            <div className="relative aspect-video rounded-3xl overflow-hidden bg-zinc-900 shadow-2xl border border-white/5 flex flex-col h-full min-h-100 lg:min-h-125">
               <VidPlayer />
             </div>
 
@@ -85,7 +85,7 @@ export function LivePlayer() {
                 : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 pointer-events-none",
             )}
           >
-            <Card className="border border-white/10 bg-[#0A0A0A] flex flex-col h-full min-h-[500px] rounded-lg shadow-2xl overflow-hidden">
+            <Card className="border border-white/10 bg-[#0A0A0A] flex flex-col h-full min-h-125 rounded-lg shadow-2xl overflow-hidden">
               <div className="flex items-center justify-between px-4 py-5 border-b border-white/5 bg-zinc-900/20">
                 <div className="flex items-center gap-2">
                   <CardTitle className="text-sm font-bold uppercase text-white tracking-widest">
@@ -137,7 +137,7 @@ export function LivePlayer() {
                               {msg.isMod && <Shield className="w-3.5 h-3.5" />}
                               <span>:</span>
                             </span>
-                            <span className="text-[14px] text-zinc-200 font-normal leading-relaxed break-words">
+                            <span className="text-[14px] text-zinc-200 font-normal leading-relaxed wrap-break-word">
                               {msg.message}
                             </span>
                           </div>
