@@ -120,6 +120,16 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.ActorScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  biography: 'biography',
+  birthDate: 'birthDate',
+  profileImage: 'profileImage',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   createdAt: 'createdAt',
@@ -207,6 +217,93 @@ exports.Prisma.ModerationLogScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.MovieScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  shortDescription: 'shortDescription',
+  description: 'description',
+  releaseDate: 'releaseDate',
+  durationSeconds: 'durationSeconds',
+  maturityRatingId: 'maturityRatingId',
+  languageId: 'languageId',
+  imdbRating: 'imdbRating',
+  popularityScore: 'popularityScore',
+  status: 'status',
+  visibility: 'visibility',
+  featured: 'featured',
+  viewsCount: 'viewsCount',
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.MediaAssetScalarFieldEnum = {
+  id: 'id',
+  movieId: 'movieId',
+  type: 'type',
+  storageKey: 'storageKey',
+  playbackUrl: 'playbackUrl',
+  mimeType: 'mimeType',
+  width: 'width',
+  height: 'height',
+  duration: 'duration',
+  sizeInBytes: 'sizeInBytes',
+  isPrimary: 'isPrimary',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.MovieCastScalarFieldEnum = {
+  movieId: 'movieId',
+  actorId: 'actorId',
+  characterName: 'characterName',
+  roleType: 'roleType',
+  displayOrder: 'displayOrder'
+};
+
+exports.Prisma.GenreScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug'
+};
+
+exports.Prisma.MovieGenreScalarFieldEnum = {
+  movieId: 'movieId',
+  genreId: 'genreId'
+};
+
+exports.Prisma.LanguageScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  code: 'code'
+};
+
+exports.Prisma.MaturityRatingScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  description: 'description'
+};
+
+exports.Prisma.TrailerScalarFieldEnum = {
+  id: 'id',
+  movieId: 'movieId',
+  title: 'title',
+  playbackUrl: 'playbackUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.KeywordScalarFieldEnum = {
+  id: 'id',
+  name: 'name'
+};
+
+exports.Prisma.MovieKeywordScalarFieldEnum = {
+  movieId: 'movieId',
+  keywordId: 'keywordId'
+};
+
 exports.Prisma.UserProfileScalarFieldEnum = {
   id: 'id',
   userId: 'userId',
@@ -288,6 +385,23 @@ exports.Prisma.PaymentHistoryScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.WatchHistoryScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  movieId: 'movieId',
+  progressSeconds: 'progressSeconds',
+  completed: 'completed',
+  lastWatchedAt: 'lastWatchedAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.WatchlistScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  movieId: 'movieId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -337,6 +451,35 @@ exports.ModerationAction = exports.$Enums.ModerationAction = {
   USER_ROLE_UPDATED: 'USER_ROLE_UPDATED'
 };
 
+exports.ContentStatus = exports.$Enums.ContentStatus = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.Visibility = exports.$Enums.Visibility = {
+  PUBLIC: 'PUBLIC',
+  PRIVATE: 'PRIVATE',
+  UNLISTED: 'UNLISTED'
+};
+
+exports.MediaAssetType = exports.$Enums.MediaAssetType = {
+  THUMBNAIL: 'THUMBNAIL',
+  POSTER: 'POSTER',
+  BANNER: 'BANNER',
+  VIDEO: 'VIDEO',
+  TRAILER: 'TRAILER',
+  SUBTITLE: 'SUBTITLE'
+};
+
+exports.CastRoleType = exports.$Enums.CastRoleType = {
+  ACTOR: 'ACTOR',
+  DIRECTOR: 'DIRECTOR',
+  PRODUCER: 'PRODUCER',
+  WRITER: 'WRITER'
+};
+
 exports.SubscriberStatus = exports.$Enums.SubscriberStatus = {
   ACTIVE: 'ACTIVE',
   UNSUBSCRIBED: 'UNSUBSCRIBED',
@@ -373,6 +516,7 @@ exports.PaymentStatus = exports.$Enums.PaymentStatus = {
 };
 
 exports.Prisma.ModelName = {
+  Actor: 'Actor',
   User: 'User',
   Session: 'Session',
   Account: 'Account',
@@ -381,6 +525,16 @@ exports.Prisma.ModelName = {
   LiveChat: 'LiveChat',
   ChatBan: 'ChatBan',
   ModerationLog: 'ModerationLog',
+  Movie: 'Movie',
+  MediaAsset: 'MediaAsset',
+  MovieCast: 'MovieCast',
+  Genre: 'Genre',
+  MovieGenre: 'MovieGenre',
+  Language: 'Language',
+  MaturityRating: 'MaturityRating',
+  Trailer: 'Trailer',
+  Keyword: 'Keyword',
+  MovieKeyword: 'MovieKeyword',
   UserProfile: 'UserProfile',
   Role: 'Role',
   Permission: 'Permission',
@@ -388,7 +542,9 @@ exports.Prisma.ModelName = {
   UserRoleMapping: 'UserRoleMapping',
   Subscriber: 'Subscriber',
   Subscription: 'Subscription',
-  PaymentHistory: 'PaymentHistory'
+  PaymentHistory: 'PaymentHistory',
+  WatchHistory: 'WatchHistory',
+  Watchlist: 'Watchlist'
 };
 
 /**

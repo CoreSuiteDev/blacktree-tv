@@ -62,3 +62,32 @@ enum SubscriberStatus {
   BOUNCED
   PENDING
 }
+
+enum MediaAssetType {
+  THUMBNAIL
+  POSTER
+  BANNER
+  VIDEO
+  TRAILER
+  SUBTITLE
+}
+
+enum CastRoleType {
+  ACTOR
+  DIRECTOR
+  PRODUCER
+  WRITER
+}
+
+enum ContentStatus {
+  DRAFT
+  REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum Visibility {
+  PUBLIC
+  PRIVATE
+  UNLISTED
+}

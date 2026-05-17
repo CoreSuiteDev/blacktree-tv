@@ -31,7 +31,10 @@ model User {
 
   roleMappings UserRoleMapping[]
 
-  subscribed  Subscriber[]
+  subscribed Subscriber[]
+
+  watchHistory WatchHistory[]
+  watchlist    Watchlist[]
 
   @@unique([email])
   @@map("user")
