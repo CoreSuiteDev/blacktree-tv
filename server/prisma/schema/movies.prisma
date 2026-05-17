@@ -46,6 +46,7 @@ model Movie {
 
   watchHistory WatchHistory[]
   watchlist    Watchlist[]
+  interviews   ActorInterview[]
 
   @@index([slug])
   @@index([status])

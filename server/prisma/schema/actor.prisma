@@ -13,6 +13,7 @@ model Actor {
   createdAt DateTime @default(now())
 
   castIn MovieCast[]
+  interviews ActorInterview[]
 
   @@index([slug])
 }

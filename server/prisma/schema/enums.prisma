@@ -91,3 +91,11 @@ enum Visibility {
   PRIVATE
   UNLISTED
 }
+
+
+enum InterviewAssetType {
+  VIDEO
+  THUMBNAIL
+  SUBTITLE
+  AUDIO
+}

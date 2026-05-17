@@ -207,6 +207,55 @@ exports.Prisma.ChatBanScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ActorInterviewScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  videoUrl: 'videoUrl',
+  thumbnailUrl: 'thumbnailUrl',
+  durationSeconds: 'durationSeconds',
+  languageId: 'languageId',
+  publishedAt: 'publishedAt',
+  viewsCount: 'viewsCount',
+  status: 'status',
+  isFeatured: 'isFeatured',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  actorId: 'actorId',
+  movieId: 'movieId',
+  seriesId: 'seriesId'
+};
+
+exports.Prisma.InterviewTagScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug'
+};
+
+exports.Prisma.ActorInterviewTagScalarFieldEnum = {
+  interviewId: 'interviewId',
+  tagId: 'tagId'
+};
+
+exports.Prisma.InterviewAssetScalarFieldEnum = {
+  id: 'id',
+  interviewId: 'interviewId',
+  type: 'type',
+  storageKey: 'storageKey',
+  playbackUrl: 'playbackUrl',
+  language: 'language',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.InterviewSeriesScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ModerationLogScalarFieldEnum = {
   id: 'id',
   moderatorId: 'moderatorId',
@@ -439,6 +488,20 @@ exports.ChatBanType = exports.$Enums.ChatBanType = {
   PERMANENT: 'PERMANENT'
 };
 
+exports.ContentStatus = exports.$Enums.ContentStatus = {
+  DRAFT: 'DRAFT',
+  REVIEW: 'REVIEW',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+exports.InterviewAssetType = exports.$Enums.InterviewAssetType = {
+  VIDEO: 'VIDEO',
+  THUMBNAIL: 'THUMBNAIL',
+  SUBTITLE: 'SUBTITLE',
+  AUDIO: 'AUDIO'
+};
+
 exports.ModerationAction = exports.$Enums.ModerationAction = {
   USER_BANNED: 'USER_BANNED',
   USER_UNBANNED: 'USER_UNBANNED',
@@ -449,13 +512,6 @@ exports.ModerationAction = exports.$Enums.ModerationAction = {
   MOVIE_UPDATED: 'MOVIE_UPDATED',
   MOVIE_DELETED: 'MOVIE_DELETED',
   USER_ROLE_UPDATED: 'USER_ROLE_UPDATED'
-};
-
-exports.ContentStatus = exports.$Enums.ContentStatus = {
-  DRAFT: 'DRAFT',
-  REVIEW: 'REVIEW',
-  PUBLISHED: 'PUBLISHED',
-  ARCHIVED: 'ARCHIVED'
 };
 
 exports.Visibility = exports.$Enums.Visibility = {
@@ -524,6 +580,11 @@ exports.Prisma.ModelName = {
   Jwks: 'Jwks',
   LiveChat: 'LiveChat',
   ChatBan: 'ChatBan',
+  ActorInterview: 'ActorInterview',
+  InterviewTag: 'InterviewTag',
+  ActorInterviewTag: 'ActorInterviewTag',
+  InterviewAsset: 'InterviewAsset',
+  InterviewSeries: 'InterviewSeries',
   ModerationLog: 'ModerationLog',
   Movie: 'Movie',
   MediaAsset: 'MediaAsset',
