@@ -4,11 +4,13 @@ import React from "react";
 import InterviewsSection from "./_components/interviews-section";
 
 import { HeroSection } from "@/components/shared/home/hero";
+import { INTERVIEW_SPORTLIGHT } from "@/constants/intervirew";
 
 const Interview = () => {
   return (
     <div className="mt-22 px-4 md:px-0">
-      <HeroSection />
+      {/* <HeroSection /> */}
+      <ExclusiveInterview items={INTERVIEW_SPORTLIGHT} />
       <InterviewsSection />
     </div>
   );
