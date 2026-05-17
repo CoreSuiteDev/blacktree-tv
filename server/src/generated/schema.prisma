@@ -1,19 +1,153 @@
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name          String
+  email         String
+  emailVerified Boolean @default(false)
+  image         String?
+
+  sessions Session[]
+  accounts Account[]
+
+  role UserRole @default(USER)
+
+  profile UserProfile?
+
+  subscription   Subscription[]
+  paymentHistory PaymentHistory[]
+
+  chatBans      ChatBan[]
+  liveChat      LiveChat[]
+  bannedByUsers ChatBan[]  @relation("BannedBy")
+
+  moderationLogs ModerationLog[] @relation("ModeratorLogs")
+  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
+
+  roleMappings UserRoleMapping[]
+
+  subscribed Subscriber[]
+
+  @@unique([email])
+  @@map("user")
+}
+
 model Session {
-  id String @id @default(uuid())
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  expiresAt DateTime
+
+  token String
+
+  ipAddress String?
+  userAgent String?
 
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  refreshToken String @unique
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
 
-  userAgent String?
-  ipAddress String?
+model Account {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  expiresAt DateTime
+  accountId  String
+  providerId String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  accessToken  String?
+  refreshToken String?
+  idToken      String?
+
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+
+  scope    String?
+  password String?
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  identifier String
+  value      String
+  expiresAt  DateTime
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Jwks {
+  id String @id @default(cuid())
+
+  publicKey  String
+  privateKey String
+
+  createdAt DateTime @default(now())
+
+  @@map("jwks")
+}
+
+model LiveChat {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  message String
+
+  isDeleted Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([createdAt])
+}
+
+model ChatBan {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  bannedById String
+  bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
+
+  type ChatBanType
+
+  reason String?
+
+  expiresAt DateTime?
+
+  isActive Boolean @default(true)
 
   createdAt DateTime @default(now())
 
   @@index([userId])
+  @@index([bannedById])
+  @@index([isActive])
+  @@index([expiresAt])
+}
+
+enum AuthProvider {
+  credential
+  google
+  apple
 }
 
 enum UserRole {
@@ -22,16 +156,10 @@ enum UserRole {
   USER
 }
 
-enum AuthProvider {
-  GOOGLE
-  APPLE
-  EMAIL
-}
-
 enum SubscriptionType {
-  FREE
-  BASIC
+  STANDARD
   PREMIUM
+  ELITE
 }
 
 enum SubscriptionStatus {
@@ -74,43 +202,11 @@ enum ModerationAction {
   USER_ROLE_UPDATED
 }
 
-model LiveChat {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  message String
-
-  isDeleted Boolean @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([createdAt])
-}
-
-model ChatBan {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  bannedById String
-  bannedBy   User   @relation("BannedBy", fields: [bannedById], references: [id])
-
-  type ChatBanType
-
-  reason String?
-
-  expiresAt DateTime?
-
-  isActive Boolean @default(true)
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([isActive])
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  PENDING
 }
 
 model ModerationLog {
@@ -131,120 +227,34 @@ model ModerationLog {
   createdAt DateTime @default(now())
 
   @@index([moderatorId])
+  @@index([targetUserId])
   @@index([action])
   @@index([createdAt])
 }
 
-model PaymentHistory {
+model UserProfile {
   id String @id @default(cuid())
 
-  userId String
+  userId String @unique
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  subscriptionId String?
-  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
-
-  provider PaymentProvider
-
-  transactionId String @unique
-
-  amount Decimal @db.Decimal(10, 2)
-
-  currency String @default("BDT")
-
-  status PaymentStatus
-
-  paymentMethod String?
-
-  paidAt DateTime?
-
-  failureReason String?
-
-  metadata Json?
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([transactionId])
-  @@index([status])
-}
-
-generator client {
-  provider = "prisma-client-js"
-  output   = "../../src/generated"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User {
-  id String @id @default(cuid())
-
-  name          String?
-  username      String?   @unique
-  email         String?   @unique
-  emailVerified DateTime?
+  displayName String?
 
   avatar String?
   banner String?
 
-  passwordHash String?
+  bio String?
 
-  isActive   Boolean @default(true)
-  isBanned   Boolean @default(false)
-  isVerified Boolean @default(false)
+  country  String?
+  language String?
 
-  lastLoginAt DateTime?
-  lastSeenAt  DateTime?
+  // Social links
+  facebookUrl String?
+  youtubeUrl  String?
+  discordUrl  String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  accounts Account[]
-  sessions Session[]
-  roles    UserRoleMapping[]
-
-  // profile
-  profile UserProfile?
-
-  // subscription
-  subscriptions Subscription[]
-
-  // live chat
-  messages       LiveChat[]
-  chatBans       ChatBan[]
-  bannedByUsers  ChatBan[]       @relation("BannedBy")
-  moderatorLogs  ModerationLog[] @relation("ModeratorLogs")
-  targetUserLogs ModerationLog[] @relation("TargetUserLogs")
-
-  // payment
-  payments PaymentHistory[]
-
-  @@index([email])
-}
-
-model Account {
-  id String @id @default(cuid())
-
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  provider AuthProvider
-
-  providerAccountId String
-
-  password String?
-
-  accessToken  String?
-  refreshToken String?
-
-  tokenExpiresAt DateTime?
-
-  createdAt DateTime @default(now())
-
-  @@unique([provider, providerAccountId])
-  @@index([userId])
 }
 
 model Role {
@@ -289,36 +299,45 @@ model UserRoleMapping {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   role Role @relation(fields: [roleId], references: [id], onDelete: Cascade)
 
+  assignedAt DateTime @default(now())
+
   @@unique([userId, roleId])
   @@index([userId])
   @@index([roleId])
 }
 
-model UserProfile {
-  id String @id @default(cuid())
+generator client {
+  provider = "prisma-client-js"
+  output   = "../../src/generated"
+}
 
-  userId String @unique
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+datasource db {
+  provider = "postgresql"
+}
 
-  username    String  @unique
-  displayName String?
+// ============================================================
+// subscriber.prisma
+// Model: Subscriber
+// Tracks newsletter and marketing mailing list signups.
+// ============================================================
 
-  avatar String?
-  banner String?
+model Subscriber {
+  id    String  @id @default(cuid())
+  email String  @unique
+  name  String?
 
-  bio String?
+  // Linking to User if they decide to register later
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
 
-  country  String?
-  language String?
-
-  facebookUrl String?
-  youtubeUrl  String?
-  discordUrl  String?
+  status SubscriberStatus @default(ACTIVE)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([username])
+  @@index([email])
+  @@index([status])
+  @@index([userId])
 }
 
 model Subscription {
@@ -330,8 +349,8 @@ model Subscription {
   plan   SubscriptionType
   status SubscriptionStatus
 
-  price    Float
-  currency String
+  price    Decimal @db.Decimal(10, 2)
+  currency String  @default("BDT")
 
   startDate   DateTime
   endDate     DateTime
@@ -345,4 +364,37 @@ model Subscription {
   @@index([userId])
   @@index([status])
   @@index([endDate])
+}
+
+model PaymentHistory {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  subscriptionId String?
+  subscription   Subscription? @relation(fields: [subscriptionId], references: [id])
+
+  provider PaymentProvider
+
+  transactionId String @unique
+
+  amount   Decimal @db.Decimal(10, 2)
+  currency String  @default("BDT")
+
+  status PaymentStatus
+
+  paymentMethod String?
+
+  paidAt        DateTime?
+  failureReason String?
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([subscriptionId])
+  @@index([transactionId])
+  @@index([status])
 }

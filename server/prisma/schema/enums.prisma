@@ -1,19 +1,19 @@
+enum AuthProvider {
+  credential
+  google
+  apple
+}
+
 enum UserRole {
   ADMIN
   MODERATOR
   USER
 }
 
-enum AuthProvider {
-  GOOGLE
-  APPLE
-  EMAIL
-}
-
 enum SubscriptionType {
-  FREE
-  BASIC
+  STANDARD
   PREMIUM
+  ELITE
 }
 
 enum SubscriptionStatus {
@@ -54,4 +54,11 @@ enum ModerationAction {
   MOVIE_UPDATED
   MOVIE_DELETED
   USER_ROLE_UPDATED
+}
+
+enum SubscriberStatus {
+  ACTIVE
+  UNSUBSCRIBED
+  BOUNCED
+  PENDING
 }

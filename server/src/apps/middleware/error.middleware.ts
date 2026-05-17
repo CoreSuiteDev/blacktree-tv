@@ -12,6 +12,11 @@ export const errorMiddleware = (
   const statusCode = err.statusCode || 500;
   const status = err.status || "error";
 
+  // ALWAYS log the error to console in development to see what's failing
+  if (config.nodeEnv === "development") {
+    console.error("DEBUG ERROR 💥:", err);
+  }
+
   if (config.nodeEnv === "development") {
     res.status(statusCode).json({
       status,

@@ -1,7 +1,6 @@
 import React from "react";
 import { ChevronRight } from "lucide-react";
 import { SUB_GENRES } from "@/constants/genres";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
 
 export default function TrendingSubGenres() {

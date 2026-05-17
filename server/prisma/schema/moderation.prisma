@@ -16,6 +16,7 @@ model ModerationLog {
   createdAt DateTime @default(now())
 
   @@index([moderatorId])
+  @@index([targetUserId])
   @@index([action])
   @@index([createdAt])
 }

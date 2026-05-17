@@ -11,6 +11,7 @@ model LiveChat {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([userId])
   @@index([createdAt])
 }
 
@@ -34,5 +35,7 @@ model ChatBan {
   createdAt DateTime @default(now())
 
   @@index([userId])
+  @@index([bannedById])
   @@index([isActive])
+  @@index([expiresAt])
 }
