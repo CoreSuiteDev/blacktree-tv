@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig } from "axios";
 import { axiosInstance } from "./axios";
-import { env } from "@/types/env/env";
+
 import { handleApiError } from "./error-handler";
 
 // Augment Axios config to allow the custom _retry property
@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         await axios.post(
-          `${env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
+          `${process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" ? window.location.origin + "/api" : "http://localhost:5000/api")}/auth/refresh-token`,
           {},
           { withCredentials: true }
         );

@@ -113,6 +113,7 @@ const Footer = () => {
                   <Link
                     key={linkIdx}
                     href={link.href}
+                    prefetch={false}
                     className="hover:text-[#E50914] transition-colors text-zinc-500"
                   >
                     {link.label}
@@ -138,7 +139,7 @@ const Footer = () => {
               />
               <Button
                 type="submit"
-                className="bg-[#E50914] hover:bg-[#b20710] text-white rounded-l-none h-11 px-3 shadow-none flex-shrink-0"
+                className="bg-[#E50914] hover:bg-[#b20710] text-white rounded-l-none h-11 px-3 shadow-none shrink-0"
               >
                 <SendHorizontal className="w-5 h-5" />
               </Button>

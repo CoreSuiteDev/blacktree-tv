@@ -1,8 +1,7 @@
 import axios from "axios";
-import { env } from "@/types/env/env";
 
 export const axiosInstance = axios.create({
-  baseURL: env.NEXT_PUBLIC_API_URL,
+  baseURL: process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" ? window.location.origin + "/api" : "http://localhost:5000/api"),
 
   withCredentials: true,
 

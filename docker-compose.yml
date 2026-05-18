@@ -1,0 +1,73 @@
+version: "3.8"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    container_name: blacktree-nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+      - server
+    networks:
+      - blacktree-network
+
+  web:
+    build:
+      context: ./web
+    container_name: blacktree-web
+    restart: always
+    expose:
+      - "3000"
+    env_file:
+      - ./web/.env
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+    depends_on:
+      - server
+    extra_hosts:
+      - "localhost:host-gateway"
+    networks:
+      - blacktree-network
+
+  server:
+    build:
+      context: ./server
+    container_name: blacktree-server
+    restart: always
+    expose:
+      - "5000"
+    env_file:
+      - ./server/.env
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      BETTER_AUTH_URL: http://localhost/api/auth
+      FRONTEND_URL: http://localhost
+      CORS_ORIGIN: http://localhost
+      SOCKET_CORS_ORIGIN: http://localhost
+    depends_on:
+      - redis
+    networks:
+      - blacktree-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: blacktree-redis
+    restart: always
+    volumes:
+      - redis-data:/data
+    networks:
+      - blacktree-network
+
+volumes:
+  redis-data:
+
+networks:
+  blacktree-network:
+    driver: bridge
