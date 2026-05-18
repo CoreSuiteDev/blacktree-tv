@@ -28,7 +28,8 @@
     "rate-limit-redis": "^5.0.0",
     "redis": "^5.12.1",
     "socket.io": "^4.8.3",
-    "zod": "^4.4.3"
+    "prisma": "^7.8.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
@@ -41,7 +42,6 @@
     "@types/node": "^25.6.2",
     "@types/nodemailer": "^8.0.0",
     "@types/pg": "^8.20.0",
-    "prisma": "^7.8.0",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.21.0",
     "typescript": "^6.0.3"
