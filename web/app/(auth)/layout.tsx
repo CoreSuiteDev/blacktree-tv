@@ -9,8 +9,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="relative flex min-h-screen flex-col pt-16 md:pt-20">
-      <Navbar />
+    <div className="relative flex min-h-screen flex-col ">
       <main className="relative flex-1 flex flex-col items-center justify-center overflow-hidden bg-[#050505]">
         {/* Background Image with Overlay - Restricted to Main Page Content */}
         <div className="absolute inset-0 z-0">
@@ -31,7 +30,6 @@ export default function PublicLayout({
 
         <div className="relative z-10 w-full py-20 md:py-30">{children}</div>
       </main>
-      <Footer />
     </div>
   );
 }
