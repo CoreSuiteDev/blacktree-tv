@@ -95,10 +95,10 @@ const SubscriptionSection = () => {
           <div className="relative group w-full md:max-w-md">
             <div className="absolute -inset-16 bg-primary/20 blur-[120px] rounded-full opacity-50 group-hover:opacity-70 transition-opacity duration-700"></div>
 
-            <div className="absolute -inset-4 bg-gradient-to-br from-primary/30 to-transparent blur-3xl rounded-[50px] opacity-40"></div>
+            <div className="absolute -inset-4 bg-linear-to-br from-primary/30 to-transparent blur-3xl rounded-[50px] opacity-40"></div>
 
             <Card
-              className="relative bg-foreground/[0.02] backdrop-blur-3xl rounded-[30px] shadow-2xl overflow-hidden border border-foreground/10"
+              className="relative bg-foreground/2 backdrop-blur-3xl rounded-[30px] shadow-2xl overflow-hidden border border-foreground/10"
               style={{
                 backgroundImage:
                   "radial-gradient(circle at 10% 10%, rgba(239, 68, 68, 0.15) 0%, transparent 50%), radial-gradient(circle at 90% 90%, rgba(239, 68, 68, 0.1) 0%, transparent 50%)",
@@ -140,7 +140,7 @@ const SubscriptionSection = () => {
                         <div className="bg-primary rounded-full p-0.5 shadow-[0_0_15px_rgba(239,68,68,0.4)] flex items-center justify-center shrink-0">
                           <IconComponent
                             size={12}
-                            className="text-foreground lg:w-[14px]"
+                            className="text-foreground lg:w-3.5"
                             strokeWidth={4}
                           />
                         </div>

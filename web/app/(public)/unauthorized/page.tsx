@@ -21,8 +21,8 @@ export default function UnauthorizedPage() {
       </div>
 
       {/* Decorative Glows */}
-      <div className="fixed right-[-5%] top-[-5%] h-[500px] w-[500px] rounded-full bg-orange-950/10 blur-[120px] pointer-events-none z-1" />
-      <div className="fixed left-[-5%] bottom-[-5%] h-[500px] w-[500px] rounded-full bg-primary/5 blur-[120px] pointer-events-none z-1" />
+      <div className="fixed right-[-5%] top-[-5%] h-125 w-125 rounded-full bg-orange-950/10 blur-[120px] pointer-events-none z-1" />
+      <div className="fixed left-[-5%] bottom-[-5%] h-125 w-125 rounded-full bg-primary/5 blur-[120px] pointer-events-none z-1" />
 
       <div className="relative z-10 w-full max-w-2xl px-6">
         <div className="relative overflow-hidden rounded-[2.5rem] border border-white/5 bg-white/2 p-8 md:p-16 backdrop-blur-2xl shadow-2xl">
@@ -45,7 +45,7 @@ export default function UnauthorizedPage() {
               <h1 className="text-3xl md:text-5xl font-black tracking-tight uppercase">
                 Restricted Content
               </h1>
-              <p className="text-sm md:text-lg text-zinc-400 leading-relaxed max-w-[400px] mx-auto font-medium">
+              <p className="text-sm md:text-lg text-zinc-400 leading-relaxed max-w-100 mx-auto font-medium">
                 This screening is exclusive to our premium subscribers. Please
                 authenticate to continue your experience.
               </p>

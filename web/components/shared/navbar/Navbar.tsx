@@ -33,7 +33,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 1);
+      setIsScrolled(window.scrollY > 5);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -62,7 +62,7 @@ export function Navbar() {
           className={cn(
             "shrink-0 flex items-center transition-all duration-500 z-130",
             isSearchOpen
-              ? "opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto"
+              ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto"
               : "opacity-100",
           )}
         >
@@ -79,10 +79,10 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* MIDDLE: DESKTOP MENU */}
+        {/* MIDDLE: DESKTOP MENU - Adjusted responsive visibility for tablets */}
         <nav
           className={cn(
-            "hidden md:flex items-center justify-center gap-1 absolute left-1/2 -translate-x-1/2 transition-all duration-500 w-full max-w-[45%] lg:max-w-[55%]",
+            "hidden lg:flex items-center justify-center gap-1 absolute left-1/2 -translate-x-1/2 transition-all duration-500 w-full max-w-[45%] lg:max-w-[55%]",
             isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100",
           )}
         >
@@ -110,7 +110,7 @@ export function Navbar() {
           className={cn(
             "flex items-center gap-2 md:gap-4 shrink-0 relative z-130 transition-all duration-500",
             isSearchOpen
-              ? "opacity-0 md:opacity-100 pointer-events-none md:pointer-events-auto"
+              ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto"
               : "opacity-100",
           )}
         >
@@ -161,7 +161,8 @@ export function Navbar() {
             </div>
           )}
 
-          <div className="md:hidden">
+          {/* Mobile and Tablet Menu Trigger Container */}
+          <div className="lg:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenu}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="h-9 w-9">

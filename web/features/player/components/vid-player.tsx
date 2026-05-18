@@ -77,8 +77,8 @@ const CinematicControls = () => {
             <Volume2 className="w-4 h-4 md:w-5 md:h-5 hidden group-data-[state='high']:block" />
           </MuteButton>
 
-          <VolumeSlider.Root className="group relative mx-[7.5px] hidden md:inline-flex h-10 w-full min-w-[80px] cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
-            <VolumeSlider.Track className="relative ring-sky-400 z-0 h-[5px] w-full rounded-sm bg-white/30 group-data-focus:ring-[3px]">
+          <VolumeSlider.Root className="group relative mx-[7.5px] hidden md:inline-flex h-10 w-full min-w-20 cursor-pointer touch-none select-none items-center outline-none aria-hidden:hidden">
+            <VolumeSlider.Track className="relative ring-sky-400 z-0 h-1.25 w-full rounded-sm bg-white/30 group-data-focus:ring-[3px]">
               <VolumeSlider.TrackFill className="bg-indigo-400 absolute h-full w-(--slider-fill) rounded-sm will-change-[width]" />
             </VolumeSlider.Track>
 
@@ -89,7 +89,7 @@ const CinematicControls = () => {
               <VolumeSlider.Value className="rounded-sm bg-black px-2 py-px text-[13px] font-medium text-white" />
             </VolumeSlider.Preview>
 
-            <VolumeSlider.Thumb className="absolute left-(--slider-fill) top-1/2 z-20 h-[15px] w-[15px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-active:opacity-100 group-data-dragging:ring-4 will-change-[left]" />
+            <VolumeSlider.Thumb className="absolute left-(--slider-fill) top-1/2 z-20 h-3.75 w-3.75 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#cacaca] bg-white opacity-0 ring-white/40 transition-opacity group-data-active:opacity-100 group-data-dragging:ring-4 will-change-[left]" />
           </VolumeSlider.Root>
         </div>
 
@@ -140,7 +140,7 @@ const CinematicControls = () => {
                 <Settings className="h-4 md:h-5 md:w-5 transform transition-transform duration-200 ease-out group-data-open:rotate-90" />
               </Menu.Button>
               <Menu.Items
-                className="animate-out fade-out slide-out-to-bottom-2 data-open:animate-in data-open:fade-in data-open:slide-in-from-bottom-4 flex h-(--menu-height) max-h-[400px] min-w-[260px] flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-resizing:overflow-hidden"
+                className="animate-out fade-out slide-out-to-bottom-2 data-open:animate-in data-open:fade-in data-open:slide-in-from-bottom-4 flex h-(--menu-height) max-h-100 min-w-65 flex-col overflow-y-auto overscroll-y-contain rounded-md border border-white/10 bg-black/95 p-2.5 font-sans text-[15px] font-medium outline-none backdrop-blur-sm transition-[height] duration-300 will-change-[height] data-resizing:overflow-hidden"
                 placement="top"
                 offset={0}
               >
@@ -306,11 +306,11 @@ function SubmenuButton({
       className="ring-sky-400 parent left-0 z-10 flex w-full cursor-pointer select-none items-center justify-start rounded-sm bg-black/60 p-2.5 outline-none ring-inset data-open:sticky data-open:-top-2.5 data-hocus:bg-white/10 data-focus:ring-[3px] disabled:opacity-50 disabled:cursor-not-allowed"
       disabled={disabled}
     >
-      <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-[18px] w-[18px]" />
+      <ChevronLeftIcon className="parent-data-[open]:block -ml-0.5 mr-1.5 hidden h-4.5 w-4.5" />
       <Icon className="w-5 h-5 parent-data-[open]:hidden" />
       <span className="ml-1.5 parent-data-[open]:ml-0">{label}</span>
       <span className="ml-auto text-sm text-white/50">{hint}</span>
-      <ChevronRightIcon className="parent-data-[open]:hidden ml-0.5 h-[18px] w-[18px] text-sm text-white/50" />
+      <ChevronRightIcon className="parent-data-[open]:hidden ml-0.5 h-4.5 w-4.5 text-sm text-white/50" />
     </Menu.Button>
   );
 }

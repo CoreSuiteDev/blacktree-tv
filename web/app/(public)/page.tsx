@@ -13,7 +13,7 @@ import { INTERVIEW_SPORTLIGHT } from "@/constants/intervirew";
 
 export default function Home() {
   return (
-    <main className="relative w-full">
+    <main className="relative w-full  overflow-hidden">
       <div
         className="min-h-screen w-full bg-cover bg-center bg-no-repeat flex flex-col"
         style={{
