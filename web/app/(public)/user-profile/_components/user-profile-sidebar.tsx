@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import {
   User,
@@ -8,102 +9,78 @@ import {
   Bookmark,
   LogOut,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-type TabType = "details" | "watchlist" | "billing" | "playback" | "security";
+export type TabType =
+  | "details"
+  | "watchlist"
+  | "billing"
+  | "playback"
+  | "security";
 
 interface UserProfileSidebarProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
+  onLogout?: () => void; // Added for flexible authentication lifecycle management
 }
 
 const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({
   activeTab,
   setActiveTab,
+  onLogout,
 }) => {
+  // Navigation matrix map to optimize rendering lines
+  const navigationItems = [
+    { id: "details", label: "Overview", icon: User },
+    { id: "billing", label: "Membership", icon: CreditCard },
+    { id: "security", label: "Security & Privacy", icon: ShieldCheck },
+    { id: "playback", label: "Preferences", icon: Sliders },
+    { id: "watchlist", label: "Watchlist", icon: Bookmark },
+  ] as const;
+
   return (
-    <div className="lg:col-span-3 bg-[#0c0c0c] border border-neutral-900 rounded-xl p-4 space-y-1.5 min-h-[380px] flex flex-col justify-between">
+    <div className="lg:col-span-3 bg-card border border-border rounded-xl p-4 h-full min-h-[380px] flex flex-col justify-between shadow-sm">
+      {/* SECTION 1: INTERACTIVE NAVIGATION TABS */}
       <div className="space-y-1">
-        <button
-          onClick={() => setActiveTab("details")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 ${
-            activeTab === "details"
-              ? "bg-neutral-900/90 text-white border-l-2 border-red-600 pl-3"
-              : "text-neutral-400 hover:text-white hover:bg-neutral-900/30"
-          }`}
-        >
-          <User
-            size={16}
-            className={activeTab === "details" ? "text-red-500" : ""}
-          />
-          Overview
-        </button>
+        {navigationItems.map((item) => {
+          const IconComponent = item.icon;
+          const isActive = activeTab === item.id;
 
-        <button
-          onClick={() => setActiveTab("billing")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 ${
-            activeTab === "billing"
-              ? "bg-neutral-900/90 text-white border-l-2 border-red-600 pl-3"
-              : "text-neutral-400 hover:text-white hover:bg-neutral-900/30"
-          }`}
-        >
-          <CreditCard
-            size={16}
-            className={activeTab === "billing" ? "text-red-500" : ""}
-          />
-          Membership
-        </button>
-
-        <button
-          onClick={() => setActiveTab("security")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 ${
-            activeTab === "security"
-              ? "bg-neutral-900/90 text-white border-l-2 border-red-600 pl-3"
-              : "text-neutral-400 hover:text-white hover:bg-neutral-900/30"
-          }`}
-        >
-          <ShieldCheck
-            size={16}
-            className={activeTab === "security" ? "text-red-500" : ""}
-          />
-          Security & Privacy
-        </button>
-
-        <button
-          onClick={() => setActiveTab("playback")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 ${
-            activeTab === "playback"
-              ? "bg-neutral-900/90 text-white border-l-2 border-red-600 pl-3"
-              : "text-neutral-400 hover:text-white hover:bg-neutral-900/30"
-          }`}
-        >
-          <Sliders
-            size={16}
-            className={activeTab === "playback" ? "text-red-500" : ""}
-          />
-          Preferences
-        </button>
-
-        <button
-          onClick={() => setActiveTab("watchlist")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-semibold tracking-wide transition-all duration-200 ${
-            activeTab === "watchlist"
-              ? "bg-neutral-900/90 text-white border-l-2 border-red-600 pl-3"
-              : "text-neutral-400 hover:text-white hover:bg-neutral-900/30"
-          }`}
-        >
-          <Bookmark
-            size={16}
-            className={activeTab === "watchlist" ? "text-red-500" : ""}
-          />
-          Watchlist
-        </button>
+          return (
+            <button
+              key={item.id}
+              onClick={() => setActiveTab(item.id)}
+              className={cn(
+                "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold tracking-wide font-sans transition-all duration-200",
+                isActive
+                  ? "bg-muted text-foreground border-l-2 border-primary pl-3"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
+              )}
+            >
+              <IconComponent
+                size={15}
+                className={cn(
+                  "transition-colors shrink-0",
+                  isActive ? "text-primary" : "text-muted-foreground/70",
+                )}
+              />
+              {item.label}
+            </button>
+          );
+        })}
       </div>
 
-      {/* Logout Action Module */}
-      <div className="border-t border-neutral-900/80 mt-4 pt-3">
-        <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-neutral-400 hover:text-red-500 hover:bg-red-950/10 transition-all duration-200 uppercase tracking-widest text-[11px]">
-          <LogOut size={15} /> Terminate Session
-        </button>
+      {/* SECTION 2: GLOBAL SESSION TERMINATION INTERFACE */}
+      <div className="border-t border-border/60 pt-3 mt-4">
+        <Button
+          variant="ghost"
+          onClick={onLogout}
+          className="w-full flex items-center justify-start gap-3 px-4 py-3 h-auto rounded-lg text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 uppercase tracking-wider font-sans"
+        >
+          <LogOut size={14} className="shrink-0" />
+          logout
+        </Button>
       </div>
     </div>
   );

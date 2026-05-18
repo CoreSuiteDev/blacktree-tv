@@ -9,7 +9,7 @@ export interface Device {
 }
 
 export interface PlaylistItem {
-  id: string; // The ID is a string here ('m1', 'm2')
+  id: string;
   title: string;
   image: string;
   year: number;
@@ -31,9 +31,27 @@ export interface UserProfileData {
 
 interface UserProfileState {
   profile: UserProfileData;
+  // Form input states managed in store
+  editName: string;
+  editEmail: string;
+  editPhone: string;
+  timezone: string;
+  countdownText: string;
+
+  // Actions
   setProfile: (updates: Partial<UserProfileData>) => void;
+  setEditFields: (
+    fields: Partial<{
+      editName: string;
+      editEmail: string;
+      editPhone: string;
+      timezone: string;
+    }>,
+  ) => void;
+  setCountdownText: (text: string) => void;
+  savePersonalDetails: () => void;
   revokeDevice: (id: number) => void;
-  removeFromWatchlist: (id: string) => void; // --- FIXED: Changed from number to string ---
+  removeFromWatchlist: (id: string) => void;
 }
 
 export const useUserProfileStore = create<UserProfileState>((set) => ({
@@ -41,7 +59,7 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
     name: "Asif Hosen",
     email: "asif@blacktv.com",
     phone: "+880 1711-223344",
-    avatar: "", // Empty string represents fallback icon placeholder
+    avatar: "",
     membershipTier: "Premium Ultra HD",
     expirationDate: new Date(
       Date.now() + 18 * 24 * 60 * 60 * 1000,
@@ -88,10 +106,40 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
       },
     ],
   },
+
+  // Initializing edit form fields with default store profile records
+  editName: "Asif Hosen",
+  editEmail: "asif@blacktv.com",
+  editPhone: "+880 1711-223344",
+  timezone: "Bangladesh Time (BST)",
+  countdownText: "Calculating...",
+
   setProfile: (updates) =>
     set((state) => ({
       profile: { ...state.profile, ...updates },
     })),
+
+  setEditFields: (fields) =>
+    set((state) => ({
+      ...state,
+      ...fields,
+    })),
+
+  setCountdownText: (text) => set({ countdownText: text }),
+
+  savePersonalDetails: () =>
+    set((state) => {
+      alert("Personal modifications saved successfully!");
+      return {
+        profile: {
+          ...state.profile,
+          name: state.editName,
+          email: state.editEmail,
+          phone: state.editPhone,
+        },
+      };
+    }),
+
   revokeDevice: (id) =>
     set((state) => ({
       profile: {
@@ -99,9 +147,8 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
         devices: state.profile.devices.filter((device) => device.id !== id),
       },
     })),
-  removeFromWatchlist: (
-    id, // --- FIXED: id is now correctly filtered as a string ---
-  ) =>
+
+  removeFromWatchlist: (id) =>
     set((state) => ({
       profile: {
         ...state.profile,

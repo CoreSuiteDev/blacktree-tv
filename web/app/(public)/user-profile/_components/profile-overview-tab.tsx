@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import Image from "next/image";
 import {
   User,
@@ -31,51 +31,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface ProfileData {
-  avatar?: string;
-  name?: string;
-  email?: string;
-  phone?: string;
-  membershipTier?: string;
-  isSubscribed?: boolean;
-}
+import { useUserProfileStore } from "@/store/public/use-user-profile-store";
 
-interface ProfileOverviewProps {
-  profile: ProfileData;
-  setProfile:
-    | React.Dispatch<React.SetStateAction<ProfileData>>
-    | ((data: ProfileData) => void);
-}
-
-const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
+const ProfileOverview = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Local Form States
-  const [editName, setEditName] = useState<string>(
-    () => profile?.name || "Asif Hosen",
-  );
-  const [editEmail, setEditEmail] = useState<string>(
-    () => profile?.email || "asif@blacktv.com",
-  );
-  const [editPhone, setEditPhone] = useState<string>(
-    () => profile?.phone || "+880 1711-223344",
-  );
-  const [timezone, setTimezone] = useState<string>("Bangladesh Time (BST)");
+  // Binding everything directly from Zustand central hub
+  const {
+    profile,
+    editName,
+    editEmail,
+    editPhone,
+    timezone,
+    countdownText,
+    setProfile,
+    setEditFields,
+    setCountdownText,
+    savePersonalDetails,
+  } = useUserProfileStore();
 
-  // Plan Expiration / Renewal Target
-  const targetRenewalDate = "2026-06-12T00:00:00";
-  const [countdownText, setCountdownText] = useState<string>("Calculating...");
+  const hasActiveSubscription = !!profile?.membershipTier;
 
-  // Check if user has an active premium tier or explicit subscription flag
-  const hasActiveSubscription =
-    profile?.isSubscribed ?? !!profile?.membershipTier;
-
-  // Handle Expiration Live Countdown
+  // Handle Expiration Live Countdown synced directly to store metadata
   useEffect(() => {
-    if (!hasActiveSubscription) return;
+    if (!hasActiveSubscription || !profile.expirationDate) return;
 
     const updateCountdown = () => {
-      const difference = +new Date(targetRenewalDate) - +new Date();
+      const difference = +new Date(profile.expirationDate) - +new Date();
 
       if (difference <= 0) {
         setCountdownText("Expired");
@@ -93,24 +75,14 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
     updateCountdown();
     const interval = setInterval(updateCountdown, 1000);
     return () => clearInterval(interval);
-  }, [targetRenewalDate, hasActiveSubscription]);
+  }, [profile.expirationDate, hasActiveSubscription, setCountdownText]);
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const localUrl = URL.createObjectURL(file);
-      setProfile({ ...profile, avatar: localUrl });
+      setProfile({ avatar: localUrl });
     }
-  };
-
-  const savePersonalDetails = () => {
-    setProfile({
-      ...profile,
-      name: editName,
-      email: editEmail,
-      phone: editPhone,
-    });
-    alert("Personal modifications saved successfully!");
   };
 
   return (
@@ -119,7 +91,6 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
       <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
         {/* Left Side: Premium Avatar & Status Card */}
         <Card className="md:col-span-4 bg-card border-border flex flex-col items-center text-center justify-between p-6 min-h-[420px] relative overflow-hidden shadow-md">
-          {/* Subtle Accent Top Border */}
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary to-destructive" />
 
           <div className="flex flex-col items-center mt-4 w-full">
@@ -154,7 +125,7 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
             </div>
 
             <h2 className="text-lg font-bold tracking-tight text-foreground font-sans truncate max-w-full">
-              {editName || "Asif Hosen"}
+              {profile.name || "Asif Hosen"}
             </h2>
 
             <span
@@ -165,7 +136,7 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
               }`}
             >
               {hasActiveSubscription
-                ? profile.membershipTier || "Premium Ultra HD"
+                ? profile.membershipTier
                 : "No Active Tier"}
             </span>
           </div>
@@ -237,7 +208,7 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
                 <Input
                   type="text"
                   value={editName}
-                  onChange={(e) => setEditName(e.target.value)}
+                  onChange={(e) => setEditFields({ editName: e.target.value })}
                   className="bg-background/50 border-border focus-visible:ring-primary h-10 text-sm text-foreground"
                 />
               </div>
@@ -249,7 +220,7 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
                 <Input
                   type="email"
                   value={editEmail}
-                  onChange={(e) => setEditEmail(e.target.value)}
+                  onChange={(e) => setEditFields({ editEmail: e.target.value })}
                   className="bg-background/50 border-border focus-visible:ring-primary h-10 text-sm text-foreground"
                 />
               </div>
@@ -261,7 +232,7 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
                 <Input
                   type="text"
                   value={editPhone}
-                  onChange={(e) => setEditPhone(e.target.value)}
+                  onChange={(e) => setEditFields({ editPhone: e.target.value })}
                   className="bg-background/50 border-border focus-visible:ring-primary h-10 text-sm text-foreground"
                 />
               </div>
@@ -270,7 +241,10 @@ const ProfileOverview = ({ profile, setProfile }: ProfileOverviewProps) => {
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
                   Timezone
                 </label>
-                <Select value={timezone} onValueChange={setTimezone}>
+                <Select
+                  value={timezone}
+                  onValueChange={(val) => setEditFields({ timezone: val })}
+                >
                   <SelectTrigger className="bg-background/50 border-border focus:ring-primary h-10 text-sm text-muted-foreground">
                     <div className="flex items-center gap-2">
                       <Globe size={14} className="text-muted-foreground/70" />

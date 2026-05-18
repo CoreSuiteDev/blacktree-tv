@@ -8,34 +8,7 @@ import SecurityTab from "./security-tab";
 import BillingTab from "./billing-tab";
 import ProfileOverview from "./profile-overview-tab";
 import UserProfileSidebar from "./user-profile-sidebar";
-
-const TAB_META = {
-  details: {
-    title: "Account Overview",
-    description:
-      "Manage your premium identity parameters, system data synchronization, and contact configurations.",
-  },
-  billing: {
-    title: "Membership & Billing",
-    description:
-      "Review automated premium invoices, switch network plan nodes, or view historical tracking metadata.",
-  },
-  security: {
-    title: "Security & Privacy Settings",
-    description:
-      "Secure operational login systems, check valid sessions, and optimize configuration metrics.",
-  },
-  playback: {
-    title: "Streaming Preferences",
-    description:
-      "Adjust localization profiles, default content formats, sound signatures, and system parameters.",
-  },
-  watchlist: {
-    title: "Your Watchlist Workspace",
-    description:
-      "Organize, execute, or clear bookmarks customized for temporary viewing segments.",
-  },
-};
+import { TAB_META } from "@/constants/profile";
 
 const UserProfileDetails = () => {
   const { profile } = useUserProfileStore();
@@ -57,8 +30,8 @@ const UserProfileDetails = () => {
   }
 
   return (
-    <section className="w-full min-h-screen bg-black mt-16 text-white py-12 px-4 md:px-8 font-sans antialiased selection:bg-red-600 selection:text-white">
-      <div className="max-w-[1400px] mx-auto space-y-6">
+    <section className="w-full  min-h-screen bg-black mt-16 text-white py-12 px-4 md:px-0  font-sans antialiased selection:bg-red-600 selection:text-white">
+      <div className="container mx-auto space-y-6">
         {/* Dynamic Context Header Section */}
         <div className="border-b border-neutral-900 pb-5 transition-all duration-300">
           <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
@@ -81,13 +54,10 @@ const UserProfileDetails = () => {
           <div className="lg:col-span-9">
             {activeTab === "details" ? (
               /* High Density Combined Overview Component Panel */
-              <ProfileOverview
-                profile={profile}
-                setProfile={useUserProfileStore.getState().setProfile}
-              />
+              <ProfileOverview />
             ) : (
               /* Secondary Tab Canvas Layout Wrapper */
-              <div className="bg-[#0c0c0c] border border-neutral-900 rounded-xl p-6 min-h-[450px] animate-in fade-in duration-200">
+              <div className="bg-[#0c0c0c] border border-neutral-900 rounded-xl p-6 min-h-112.5 animate-in fade-in duration-200">
                 {activeTab === "watchlist" && <WatchlistTab />}
                 {activeTab === "billing" && <BillingTab />}
                 {activeTab === "playback" && <PlaybackTab />}
