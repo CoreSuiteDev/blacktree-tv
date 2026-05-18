@@ -10,7 +10,7 @@ export default function UnauthorizedPage() {
       {/* Cinematic Background Layer */}
       <div className="fixed inset-0 z-0">
         <Image
-          src="/assets/images/auth-bg.png"
+          src={authBg}
           alt="background"
           fill
           className="object-cover opacity-20 sepia-[0.3]"
