@@ -4,6 +4,8 @@ import type { Request, Response } from "express";
 
 import { asyncHandler } from "../../../utils/asyncHandler";
 import { auth } from "./auth.config";
+import prisma from "../../../infrastructure/database/connection";
+import { sendOTPEmail } from "./auth.service";
 
 export const signIn = asyncHandler(async (req: Request, res: Response) => {
   try {
@@ -321,3 +323,170 @@ export const resendOtpCode = asyncHandler(async (req: Request, res: Response) =>
   }
 );
 
+export const verifyEmailOTP = asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const { email, otp } = req.body;
+
+      const result = await auth.api.verifyEmailOTP({
+        body: {
+          email,
+          otp,
+        },
+        headers: fromNodeHeaders(req.headers),
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "Email OTP verified successfully",
+        data: result,
+      });
+    } catch (error) {
+      if (error instanceof APIError) {
+        return res.status(Number(error.status) || 400).json({
+          success: false,
+          message: error.message,
+          code: error.body?.code || "AUTH_ERROR",
+        });
+      }
+
+      console.error(error);
+
+      return res.status(500).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  }
+);
+
+export const loginInitiate = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
+    // 1. Verify credentials by invoking Better Auth programmatically (without client headers/cookies)
+    try {
+      await auth.api.signInEmail({
+        body: {
+          email,
+          password,
+        },
+      });
+    } catch (err: any) {
+      // If Better Auth throws an error, the credentials are invalid
+      return res.status(401).json({
+        success: false,
+        message: err.message || "Invalid email or password",
+      });
+    }
+
+    // 2. Credentials are correct! Let's generate a 6-digit secure numeric OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+    // 3. Save the OTP to the Verification table (expire in 5 minutes)
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    const identifier = `login-otp:${email}`;
+
+    // Clean up any existing login OTPs for this email first
+    await prisma.verification.deleteMany({
+      where: { identifier },
+    });
+
+    await prisma.verification.create({
+      data: {
+        identifier,
+        value: otp,
+        expiresAt,
+      },
+    });
+
+    // 4. Send the OTP to the user's email
+    await sendOTPEmail(email, otp, "sign-in");
+
+    return res.status(200).json({
+      success: true,
+      message: "OTP sent to your email. Please verify OTP to complete login.",
+      data: {
+        email,
+        requireOTP: true,
+      },
+    });
+  } catch (error) {
+    console.error("Login initiate error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+export const loginVerify = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { email, password, otp, rememberMe } = req.body;
+
+    if (!email || !password || !otp) {
+      return res.status(400).json({
+        success: false,
+        message: "Email, password, and OTP are required",
+      });
+    }
+
+    // 1. Find the OTP record in the Verification table
+    const identifier = `login-otp:${email}`;
+    const verification = await prisma.verification.findFirst({
+      where: {
+        identifier,
+        value: otp,
+        expiresAt: { gt: new Date() },
+      },
+    });
+
+    if (!verification) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid or expired OTP code",
+      });
+    }
+
+    // 2. OTP is valid! Delete the verification record to prevent replay attacks
+    await prisma.verification.delete({
+      where: { id: verification.id },
+    });
+
+    // 3. Complete the login using Better Auth (passing actual client headers to set session cookies)
+    const result = await auth.api.signInEmail({
+      body: {
+        email,
+        password,
+        rememberMe: !!rememberMe,
+      },
+      headers: fromNodeHeaders(req.headers),
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof APIError) {
+      return res.status(Number(error.status) || 400).json({
+        success: false,
+        message: error.message,
+        code: error.body?.code || "AUTH_ERROR",
+      });
+    }
+
+    console.error("Login verify error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
