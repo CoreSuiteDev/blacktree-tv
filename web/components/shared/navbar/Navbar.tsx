@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input"; // Shadcn Input added
+import { Input } from "@/components/ui/input";
 import {
   Sheet,
   SheetContent,
@@ -31,6 +31,7 @@ export function Navbar() {
   // State to track scroll position
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // 1. Monitor window scroll position
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 5);
@@ -40,6 +41,19 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // 2. Automatically close the mobile sidebar menu if the screen resizes to desktop width
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenu(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [setMobileMenu]);
+
+  // 3. Focus search input when search bar opens
   useEffect(() => {
     if (isSearchOpen) {
       const timeout = setTimeout(() => searchInputRef.current?.focus(), 400);
@@ -61,6 +75,7 @@ export function Navbar() {
         <div
           className={cn(
             "shrink-0 flex items-center transition-all duration-500 z-130",
+            // Removed layout scaling/opacity on desktop for search status
             isSearchOpen
               ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto"
               : "opacity-100",
@@ -79,11 +94,13 @@ export function Navbar() {
           </Link>
         </div>
 
-        {/* MIDDLE: DESKTOP MENU - Adjusted responsive visibility for tablets */}
+        {/* MIDDLE: DESKTOP MENU */}
         <nav
           className={cn(
             "hidden lg:flex items-center justify-center gap-1 absolute left-1/2 -translate-x-1/2 transition-all duration-500 w-full max-w-[45%] lg:max-w-[55%]",
-            isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100",
+            isSearchOpen
+              ? "opacity-0 pointer-events-none scale-95"
+              : "opacity-100",
           )}
         >
           {NAVIGATION_ITEMS.map((item) => (
@@ -109,6 +126,7 @@ export function Navbar() {
         <div
           className={cn(
             "flex items-center gap-2 md:gap-4 shrink-0 relative z-130 transition-all duration-500",
+            // Actions stay contextually present and interactive on desktop layout streams
             isSearchOpen
               ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto"
               : "opacity-100",
@@ -130,7 +148,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <Button
               onClick={() => router.push("/subscription")}
-              className="px-5 py-5 rounded-lg hover:scale-105 hover:bg-primary/90 duration-300 ease-in-out transition-colors  text-white backdrop-blur-sm cursor-pointer"
+              className="px-5 py-5 rounded-lg hover:scale-105 hover:bg-primary/90 duration-300 ease-in-out transition-colors text-white backdrop-blur-sm cursor-pointer"
             >
               Subscribe Now
             </Button>
@@ -165,7 +183,11 @@ export function Navbar() {
           <div className="lg:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenu}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="h-9 w-9">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-9 w-9 cursor-pointer"
+                >
                   {isMobileMenuOpen ? (
                     <X className="h-6 w-6 text-primary" />
                   ) : (
@@ -206,13 +228,15 @@ export function Navbar() {
         {/* DYNAMIC SEARCH BAR OVERLAY */}
         <div
           className={cn(
-            "absolute inset-0 z-140 flex items-center justify-center px-4 transition-all duration-500",
+            // On mobile, it covers the whole row. On desktop (lg), it sits exactly where the nav links were.
+            "absolute inset-y-0 z-140 flex items-center justify-center transition-all duration-500",
+            "inset-x-4 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[45%] lg:max-w-[55%]",
             isSearchOpen
               ? "opacity-100 translate-y-0 pointer-events-auto"
-              : "opacity-0 -translate-y-full pointer-events-none",
+              : "opacity-0 -translate-y-4 pointer-events-none",
           )}
         >
-          <div className="w-full max-w-xl flex items-center gap-3 bg-background border border-primary/40 rounded-full px-4 h-11 shadow-lg overflow-hidden">
+          <div className="w-full flex items-center gap-3 bg-background border border-primary/40 rounded-full px-4 h-11 shadow-lg overflow-hidden">
             <Search className="h-5 w-5 text-primary shrink-0" />
             <Input
               ref={searchInputRef}
@@ -224,7 +248,7 @@ export function Navbar() {
               variant="ghost"
               size="icon"
               onClick={() => setSearch(false)}
-              className="h-8 w-8 rounded-full hover:bg-primary/10 shrink-0"
+              className="h-8 w-8 rounded-full hover:bg-primary/10 shrink-0 cursor-pointer"
             >
               <X className="h-5 w-5" />
             </Button>
