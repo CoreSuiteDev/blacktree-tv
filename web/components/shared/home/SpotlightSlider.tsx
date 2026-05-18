@@ -58,19 +58,19 @@ export function ExclusiveInterview({ items }: SpotlightSliderProps) {
         opts={{
           loop: true,
         }}
-        className="w-full container mx-auto overflow-hidden rounded-2xl shadow-2xl"
+        className="w-full container mx-auto overflow-hidden md:rounded-2xl shadow-2xl"
       >
         <CarouselContent className="ml-0">
           {items.map((item) => (
             <CarouselItem key={item.id} className="pl-0">
               {/* ... baki content thik thakbe ... */}
               <Link href="/interviews">
-                <div className="relative w-full h-[300px] md:h-[420px] lg:h-[480px] bg-zinc-950">
+                <div className="relative w-full h-75 md:h-105 lg:h-120 bg-zinc-950">
                   <div
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-1000"
                     style={{ backgroundImage: `url(${item.image})` }}
                   >
-                    <div className="absolute inset-0 bg-gradient-to-r from-black via-black/40 to-transparent" />
+                    <div className="absolute inset-0 bg-linear-to-r from-black via-black/40 to-transparent" />
                   </div>
 
                   <div className="relative h-full flex flex-col justify-center px-10 md:px-20">

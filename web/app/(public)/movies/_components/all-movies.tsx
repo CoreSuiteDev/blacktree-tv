@@ -43,7 +43,7 @@ export default function AllMoviesSection() {
     <section className="w-full py-10 ">
       <div ref={sectionRef} className="scroll-mt-24" />
 
-      <div className="container px-4 md:px-0 mx-auto space-y-12">
+      <div className="container px-4 md:px-0 mx-auto space-y-6 md:space-y-8 lg:space-y-12">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {currentMovies.map((movie) => (
             <MovieCard key={movie.id} movie={movie} />

@@ -50,7 +50,7 @@ const ActorSlider = ({ title, actors }: ActorSliderProps) => {
   const displayActors = actors.length < 10 ? [...actors, ...actors] : actors;
 
   return (
-    <section className="w-full py-14 px-4 md:px-0 transition-colors duration-300">
+    <section className="w-full py-8 md:py-10 lg:py-14 px-4 md:px-0 transition-colors duration-300">
       <div className="container mx-auto">
         <Carousel
           opts={{
@@ -93,7 +93,7 @@ const ActorSlider = ({ title, actors }: ActorSliderProps) => {
             {displayActors.map((actor, index) => (
               <CarouselItem
                 key={`${actor.id}-${index}`}
-                className="pl-4 basis-full sm:basis-1/2 md:basis-[31%] lg:basis-[24%] xl:basis-1/5"
+                className="pl-4 basis-1/2 sm:basis-1/2 md:basis-[31%] lg:basis-[24%] xl:basis-1/5"
               >
                 <ActorCard actor={actor} />
               </CarouselItem>

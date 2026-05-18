@@ -33,9 +33,9 @@ const ActorCard = ({ actor }: ActorCardProps) => {
       href={`/actors/${actor.slug}`}
       className="block w-full max-w-[350px] mx-auto"
     >
-      <Card className="group relative overflow-hidden outline-none border-none bg-transparent shadow-none cursor-pointer p-0">
+      <Card className="group relative overflow-hidden outline-none border-none bg-transparent shadow-none cursor-pointer w-full max-w-[350px] mx-auto p-0">
         <CardContent className="p-0">
-          <div className="relative w-full rounded-[23px] overflow-hidden h-[350px] md:h-[400px]">
+          <div className="relative w-full rounded-[23px] overflow-hidden h-[300px] sm:h-[350px] md:h-[400px] ">
             <Image
               src={actor.image}
               alt={actor.name}
