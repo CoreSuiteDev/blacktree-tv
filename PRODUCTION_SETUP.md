@@ -7,6 +7,7 @@ Welcome to the official production deployment guide. This document details how t
 ## 🏗️ Production Architecture Overview
 
 The system runs on a highly secured, private-network container topology:
+
 * **Gateway (Public):** Nginx on port `80` (and `443` for SSL) routing traffic, compressing assets, and caching static Next.js pages directly from disk.
 * **Frontend (Private):** Next.js running standalone under **Bun** (Port 3000), fully hidden from direct internet access.
 * **Backend (Private):** Express.js API running under **Bun** (Port 5000), fully hidden from direct internet access.
@@ -41,10 +42,13 @@ cd /var/www/blacktree-tv
 ```
 
 ### Step 2: Set Up Secure Environment Variables
+
 Create your production `.env` files for both frontend and backend. 
 
 #### 📂 Backend Environment
+
 Create the file `/var/www/blacktree-tv/server/.env` and configure your credentials:
+
 ```env
 NODE_ENV=production
 PORT=5000
@@ -74,8 +78,11 @@ EMAIL_FROM=Blacktree TV <noreply@blacktree.tv>
 ```
 
 #### 📂 Frontend Environment
+
 Create the file `/var/www/blacktree-tv/web/.env` (Even if empty, this must exist so Docker Compose doesn't throw warnings, or you can add Clerk keys here if needed at runtime):
+
 ```env
+
 # Clerk Authentication Configuration
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_xxxxxxxxxx
 CLERK_SECRET_KEY=sk_live_xxxxxxxxxx
@@ -84,13 +91,17 @@ CLERK_SECRET_KEY=sk_live_xxxxxxxxxx
 ---
 
 ### Step 3: Start the Cluster
+
 Build and start your containers in background (detached) mode:
+
 ```bash
 docker compose up --build -d
 ```
+
 *Docker will automatically download the lightweight Alpine images, execute multi-stage cache compiles under Bun, and launch all services safely behind Nginx.*
 
 To verify that all containers are online and healthy:
+
 ```bash
 docker compose ps
 ```
@@ -98,8 +109,11 @@ docker compose ps
 ---
 
 ### Step 4: Run Database Migrations & Seeds
+
 Once the container cluster is online, sync your Prisma schema with the live Neon production database and apply seed data:
+
 ```bash
+
 # Push database migrations
 docker compose exec server bunx prisma migrate deploy
 
@@ -114,14 +128,19 @@ docker compose exec server bunx prisma db seed
 Running on HTTP (port 80) is highly insecure. In production, you must set up SSL certificates using Certbot.
 
 ### 1. Install Certbot
+
 On your host machine, install Certbot:
+
 ```bash
 sudo apt install -y certbot
 ```
 
 ### 2. Obtain SSL Certificates
+
 Generate Let's Encrypt certificates by temporarily stopping your docker Nginx container so Certbot can verify your domain:
+
 ```bash
+
 # Stop Docker Compose
 docker compose down
 
@@ -133,9 +152,11 @@ docker compose up -d
 ```
 
 ### 3. Update Nginx Config to Enable HTTPS
+
 Update your Nginx configuration at `docker/nginx/nginx.conf` to handle HTTPS traffic:
 
 Modify the `server` block in `docker/nginx/nginx.conf` to bind to port 443 and connect the certificates:
+
 ```nginx
 server {
     listen 80;
@@ -189,7 +210,9 @@ server {
 ```
 
 ### 4. Mount Certificates into Nginx
+
 Update the `nginx` service inside your `docker-compose.yml` to mount the certificate files directly inside the Nginx container:
+
 ```yaml
   nginx:
     build:
