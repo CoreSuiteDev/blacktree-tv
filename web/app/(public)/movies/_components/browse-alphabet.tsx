@@ -11,7 +11,7 @@ export function BrowseAlphabet() {
   const [selectedLetter, setSelectedLetter] = React.useState("#");
 
   return (
-    <section className="w-full bg-background  py-4">
+    <section className="w-full bg-background px-4 md:px-0  py-4">
       <div className="container mx-auto space-y-6">
         {/* Header Section */}
         <header className="flex items-center justify-between">

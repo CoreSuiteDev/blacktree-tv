@@ -103,7 +103,7 @@ export const UPCOMING_MOVIES: Movie[] = [
     subtitle: "The Multiverse Collapses",
     description:
       "A new era of the MCU begins as Doctor Doom rises to reshape reality. The remaining heroes must unite for the ultimate stand against the void.",
-    image: "/assets/images/movie-baner!.jpg",
+    image: "/assets/images/avengers-doom-2.jpg",
     releaseDate: "01/05/2026",
     year: 2026,
     duration: "2h 45m",
@@ -121,7 +121,7 @@ export const UPCOMING_MOVIES: Movie[] = [
     subtitle: "Deep in the Shadows",
     description:
       "Robert Pattinson returns as the Dark Knight. As Gotham faces a chilling new threat, Bruce Wayne must decide what he's willing to sacrifice for justice.",
-    image: "/assets/images/movie-baner2.jpg",
+    image: "/assets/images/the-batman-2a (2).webp",
     releaseDate: "02/10/2026",
     year: 2026,
     duration: "2h 50m",
@@ -139,7 +139,7 @@ export const UPCOMING_MOVIES: Movie[] = [
     subtitle: "The Desert War",
     description:
       "Paul Atreides continues his journey as the leader of the Fremen, navigating political intrigue and mystical visions on the sands of Arrakis.",
-    image: "/assets/images/movie-baner-3.jpg",
+    image: "/assets/images/dune-prophecy-.jpg",
     releaseDate: "18/12/2026",
     year: 2026,
     duration: "2h 35m",

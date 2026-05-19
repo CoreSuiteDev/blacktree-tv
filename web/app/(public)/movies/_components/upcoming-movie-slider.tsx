@@ -3,7 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Autoplay from "embla-carousel-autoplay";
-import {  ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 
 import {
   Carousel,
@@ -69,7 +69,7 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
                 <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent z-10" />
 
                 {/* Content Container */}
-                <div className="relative z-20 h-full container mx-auto flex flex-col justify-end pb-20 md:justify-center px-4">
+                <div className="relative z-20 h-full container mx-auto flex flex-col justify-end pb-20 md:justify-center px-4 md:px-0">
                   <header className="max-w-3xl space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-1000">
                     {/* Title Section */}
                     <div className="space-y-1">
