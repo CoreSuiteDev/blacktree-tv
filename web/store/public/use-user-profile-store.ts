@@ -18,11 +18,12 @@ export interface PlaylistItem {
 
 export interface UserProfileData {
   name: string;
+  username: string; // Added to match form UI
   email: string;
   phone: string;
   avatar: string;
   membershipTier: string;
-  expirationDate: string; // ISO string format
+  expirationDate: string;
   autoplay: boolean;
   matureContent: boolean;
   devices: Device[];
@@ -31,8 +32,8 @@ export interface UserProfileData {
 
 interface UserProfileState {
   profile: UserProfileData;
-  // Form input states managed in store
   editName: string;
+  editUsername: string; // Added
   editEmail: string;
   editPhone: string;
   timezone: string;
@@ -43,11 +44,13 @@ interface UserProfileState {
   setEditFields: (
     fields: Partial<{
       editName: string;
+      editUsername: string;
       editEmail: string;
       editPhone: string;
       timezone: string;
     }>,
   ) => void;
+  initializeForm: () => void; // Syncs profile -> form fields
   setCountdownText: (text: string) => void;
   savePersonalDetails: () => void;
   revokeDevice: (id: number) => void;
@@ -55,64 +58,28 @@ interface UserProfileState {
 }
 
 export const useUserProfileStore = create<UserProfileState>((set) => ({
+  // Mocking initial values for demonstration
   profile: {
     name: "Asif Hosen",
-    email: "asif@blacktv.com",
-    phone: "+880 1711-223344",
+    username: "asifhosen",
+    email: "asif@example.com",
+    phone: "+8801700000000",
     avatar: "",
-    membershipTier: "Premium Ultra HD",
+    membershipTier: "Premium Tier",
     expirationDate: new Date(
-      Date.now() + 18 * 24 * 60 * 60 * 1000,
-    ).toISOString(), // Exactly 18 days left from current generation
+      Date.now() + 10 * 24 * 60 * 60 * 1000,
+    ).toISOString(), // 10 days from now
     autoplay: true,
     matureContent: false,
-    devices: [
-      {
-        id: 1,
-        name: "Sony BRAVIA 4K TV",
-        location: "Dhaka, BD",
-        icon: "Tv",
-        current: true,
-      },
-      {
-        id: 2,
-        name: "iPhone 15 Pro Max",
-        location: "Mymensingh, BD",
-        icon: "Smartphone",
-        current: false,
-      },
-      {
-        id: 3,
-        name: "MacBook Pro M3",
-        location: "Dhaka, BD",
-        icon: "Laptop",
-        current: false,
-      },
-    ],
-    watchlist: [
-      {
-        id: "m1",
-        title: "Black Panther: Wakanda Forever",
-        image: "/movies/panther.jpg",
-        year: 2022,
-        rating: "8.4",
-      },
-      {
-        id: "m2",
-        title: "Doctor Strange in the Multiverse of Madness",
-        image: "/movies/strange.jpg",
-        year: 2022,
-        rating: "7.9",
-      },
-    ],
+    devices: [],
+    watchlist: [],
   },
-
-  // Initializing edit form fields with default store profile records
-  editName: "Asif Hosen",
-  editEmail: "asif@blacktv.com",
-  editPhone: "+880 1711-223344",
-  timezone: "Bangladesh Time (BST)",
-  countdownText: "Calculating...",
+  editName: "",
+  editUsername: "",
+  editEmail: "",
+  editPhone: "",
+  timezone: "Asia/Dhaka",
+  countdownText: "",
 
   setProfile: (updates) =>
     set((state) => ({
@@ -125,26 +92,32 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
       ...fields,
     })),
 
+  initializeForm: () =>
+    set((state) => ({
+      editName: state.profile.name,
+      editUsername: state.profile.username,
+      editEmail: state.profile.email,
+      editPhone: state.profile.phone,
+    })),
+
   setCountdownText: (text) => set({ countdownText: text }),
 
   savePersonalDetails: () =>
-    set((state) => {
-      alert("Personal modifications saved successfully!");
-      return {
-        profile: {
-          ...state.profile,
-          name: state.editName,
-          email: state.editEmail,
-          phone: state.editPhone,
-        },
-      };
-    }),
+    set((state) => ({
+      profile: {
+        ...state.profile,
+        name: state.editName,
+        username: state.editUsername,
+        email: state.editEmail,
+        phone: state.editPhone,
+      },
+    })),
 
   revokeDevice: (id) =>
     set((state) => ({
       profile: {
         ...state.profile,
-        devices: state.profile.devices.filter((device) => device.id !== id),
+        devices: state.profile.devices.filter((d) => d.id !== id),
       },
     })),
 
