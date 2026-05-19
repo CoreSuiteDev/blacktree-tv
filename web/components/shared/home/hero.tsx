@@ -47,7 +47,7 @@ export function HeroSection() {
                 : "h-0 lg:h-auto w-0 lg:w-0 opacity-0 translate-y-10 lg:translate-x-10 pointer-events-none"
             }`}
           >
-            <Card className="border border-[#FFFFFF1A] bg-[#100F0F]  flex flex-col min-w-full  h-[400px]  md:h-[570px]    rounded-lg shadow-2xl overflow-hidden">
+            <Card className="border border-[#FFFFFF1A] bg-[#100F0F]  flex flex-col min-w-full  h-[400px]  md:h-[575px]    rounded-lg shadow-2xl overflow-hidden">
               {/* Chat Header */}
               <div className="flex items-center justify-between px-4 py-5 border-b border-[#FFFFFF1A]">
                 <div className="flex items-center gap-2">
