@@ -51,17 +51,17 @@ export function HeroSection() {
               {/* Chat Header */}
               <div className="flex items-center justify-between px-4 py-5 border-b border-[#FFFFFF1A]">
                 <div className="flex items-center gap-2">
-                  <CardTitle className="text-lg font-bold text-white">
+                  <CardTitle className="text-lg font-bold text-frontground">
                     Live Chat
                   </CardTitle>
-                  <Badge className="bg-white/10 text-white/60 hover:bg-white/20 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
+                  <Badge className="bg-frontground/10 text-frontground/60 hover:bg-frontground/20 border-none px-2 py-0.5 text-[10px] uppercase font-bold tracking-wider">
                     Top Chat
                   </Badge>
                 </div>
 
                 <X
                   onClick={toggleChat}
-                  className="w-6 h-6 cursor-pointer hover:text-white transition-colors"
+                  className="w-6 h-6 cursor-pointer hover:text-frontground transition-colors"
                 />
               </div>
 
