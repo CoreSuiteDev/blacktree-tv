@@ -1,6 +1,8 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   User,
   CreditCard,
@@ -12,45 +14,55 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export type TabType =
-  | "details"
-  | "watchlist"
-  | "billing"
-  | "playback"
-  | "security";
+const UserProfileSidebar = () => {
+  const pathname = usePathname();
 
-interface UserProfileSidebarProps {
-  activeTab: TabType;
-  setActiveTab: (tab: TabType) => void;
-  onLogout?: () => void; // Added for flexible authentication lifecycle management
-}
-
-const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({
-  activeTab,
-  setActiveTab,
-  onLogout,
-}) => {
-  // Navigation matrix map to optimize rendering lines
+  // Navigation matrix map with official routing paths
   const navigationItems = [
-    { id: "details", label: "Overview", icon: User },
-    { id: "billing", label: "Membership", icon: CreditCard },
-    { id: "security", label: "Security & Privacy", icon: ShieldCheck },
-    { id: "playback", label: "Preferences", icon: Sliders },
-    { id: "watchlist", label: "Watchlist", icon: Bookmark },
+    { id: "details", label: "Overview", icon: User, path: "/user-profile" },
+    {
+      id: "billing",
+      label: "Membership",
+      icon: CreditCard,
+      path: "/user-profile/billing",
+    },
+    {
+      id: "security",
+      label: "Security & Privacy",
+      icon: ShieldCheck,
+      path: "/user-profile/security",
+    },
+    {
+      id: "playback",
+      label: "Preferences",
+      icon: Sliders,
+      path: "/user-profile/playback",
+    },
+    {
+      id: "watchlist",
+      label: "Watchlist",
+      icon: Bookmark,
+      path: "/user-profile/watchlist",
+    },
   ] as const;
+
+  const handleLogout = () => {
+    console.log("Logging out...");
+  };
 
   return (
     <div className="lg:col-span-3 bg-card border border-border rounded-xl p-4 h-full min-h-[380px] flex flex-col justify-between shadow-sm">
-      {/* SECTION 1: INTERACTIVE NAVIGATION TABS */}
+      {/* SECTION 1: INTERACTIVE NAVIGATION LINKS */}
       <div className="space-y-1">
         {navigationItems.map((item) => {
           const IconComponent = item.icon;
-          const isActive = activeTab === item.id;
+
+          const isActive = pathname === item.path;
 
           return (
-            <button
+            <Link
               key={item.id}
-              onClick={() => setActiveTab(item.id)}
+              href={item.path}
               className={cn(
                 "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold tracking-wide font-sans transition-all duration-200",
                 isActive
@@ -66,7 +78,7 @@ const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({
                 )}
               />
               {item.label}
-            </button>
+            </Link>
           );
         })}
       </div>
@@ -74,9 +86,8 @@ const UserProfileSidebar: React.FC<UserProfileSidebarProps> = ({
       {/* SECTION 2: GLOBAL SESSION TERMINATION INTERFACE */}
       <div className="border-t border-border/60 pt-3 mt-4">
         <Button
-          variant="ghost"
-          onClick={onLogout}
-          className="w-full flex items-center justify-start gap-3 px-4 py-3 h-auto rounded-lg text-[10px] font-bold text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-200 uppercase tracking-wider font-sans"
+          onClick={handleLogout}
+          className="w-full flex items-center bg-primary/90 justify-start gap-3 px-4 py-3 h-auto rounded-lg text-[10px] font-bold text-muted-foreground  hover:bg-primary transition-all duration-200 uppercase tracking-wider font-sans"
         >
           <LogOut size={14} className="shrink-0" />
           logout

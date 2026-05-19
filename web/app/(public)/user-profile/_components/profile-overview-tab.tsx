@@ -11,7 +11,6 @@ import {
   AlertCircle,
   CalendarDays,
   Hourglass,
-  Globe,
 } from "lucide-react";
 import {
   Card,
@@ -23,26 +22,19 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 import { useUserProfileStore } from "@/store/public/use-user-profile-store";
 
 const ProfileOverview = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Binding everything directly from Zustand central hub
+  // Binding data and methods directly from the Zustand store
   const {
     profile,
     editName,
     editEmail,
     editPhone,
-    timezone,
+    editUsername,
     countdownText,
     setProfile,
     setEditFields,
@@ -201,6 +193,7 @@ const ProfileOverview = () => {
             <Separator className="bg-border" />
 
             <CardContent className="pt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+              {/* Field 1: Full Name */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
                   Full Name
@@ -213,6 +206,25 @@ const ProfileOverview = () => {
                 />
               </div>
 
+              {/* Field 2: Username */}
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
+                  Username
+                </label>
+                <div className="relative flex items-center">
+                  <Input
+                    type="text"
+                    value={editUsername || ""}
+                    onChange={(e) =>
+                      setEditFields({ editUsername: e.target.value })
+                    }
+                    className="bg-background/50 border-border focus-visible:ring-primary h-10 text-sm text-foreground"
+                    placeholder="e.g. asifhosen"
+                  />
+                </div>
+              </div>
+
+              {/* Field 3: Email Address */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
                   Email Address
@@ -225,6 +237,7 @@ const ProfileOverview = () => {
                 />
               </div>
 
+              {/* Field 4: Phone Number */}
               <div className="space-y-1.5">
                 <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
                   Phone Number
@@ -235,34 +248,6 @@ const ProfileOverview = () => {
                   onChange={(e) => setEditFields({ editPhone: e.target.value })}
                   className="bg-background/50 border-border focus-visible:ring-primary h-10 text-sm text-foreground"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider pl-0.5">
-                  Timezone
-                </label>
-                <Select
-                  value={timezone}
-                  onValueChange={(val) => setEditFields({ timezone: val })}
-                >
-                  <SelectTrigger className="bg-background/50 border-border focus:ring-primary h-10 text-sm text-muted-foreground">
-                    <div className="flex items-center gap-2">
-                      <Globe size={14} className="text-muted-foreground/70" />
-                      <SelectValue placeholder="Select Timezone" />
-                    </div>
-                  </SelectTrigger>
-                  <SelectContent className="bg-popover border-border text-popover-foreground">
-                    <SelectItem value="Bangladesh Time (BST)">
-                      Bangladesh Time (BST)
-                    </SelectItem>
-                    <SelectItem value="Pacific Time (PT)">
-                      Pacific Time (PT)
-                    </SelectItem>
-                    <SelectItem value="Central European Time (CET)">
-                      Central European Time (CET)
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </CardContent>
           </div>
