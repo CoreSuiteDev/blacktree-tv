@@ -17,6 +17,7 @@ authRouter.post("/change-password", protect, express.json(), authController.chan
 authRouter.post("/verify-otp", express.json(), authController.verifyOtpCode);
 authRouter.post("/verify-email-otp", express.json(), authController.verifyEmailOTP);
 authRouter.post("/resend-otp", express.json(), authController.resendOtpCode);
+authRouter.post("/test-email", express.json(), authController.testEmail);
 
 // 3. Get current user (protected)
 authRouter.get("/me", protect, (req, res) => {

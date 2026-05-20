@@ -5,7 +5,9 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../../../utils/asyncHandler";
 import { auth } from "./auth.config";
 import prisma from "../../../infrastructure/database/connection";
-import { sendOTPEmail } from "./auth.service";
+import { sendOTPEmail } from "@/infrastructure/email/auth.email";
+import emailService from "../../../infrastructure/email/email";
+
 
 export const signIn = asyncHandler(async (req: Request, res: Response) => {
   try {
@@ -148,7 +150,7 @@ export const forgotPassword = asyncHandler(async (req: Request, res: Response) =
           email,
           type: "forget-password",
         },
-
+        
         headers: fromNodeHeaders(req.headers),
       });
 
@@ -178,28 +180,45 @@ export const forgotPassword = asyncHandler(async (req: Request, res: Response) =
 
 export const resetPassword = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const { token, password } = req.body;
+      const { token, email, otp, password } = req.body;
 
-      const result = await auth.api.resetPassword({
-        body: {
-          token,
-          newPassword: password,
-        },
-
-        headers: fromNodeHeaders(req.headers),
-      });
+      let result;
+      if (otp && email) {
+        // OTP-based password reset (Better Auth emailOTP plugin)
+        result = await (auth.api as any).resetPasswordEmailOTP({
+          body: {
+            email,
+            otp,
+            password,
+          },
+          headers: fromNodeHeaders(req.headers),
+        });
+      } else {
+        // Token-based password reset (standard emailAndPassword link-based reset)
+        result = await auth.api.resetPassword({
+          body: {
+            token,
+            newPassword: password,
+          },
+          headers: fromNodeHeaders(req.headers),
+        });
+      }
 
       return res.status(200).json({
         success: true,
         message: "Reset password successful",
         data: result,
       });
-    } catch (error) {
-      if (error instanceof APIError) {
-        return res.status(Number(error.status) || 400).json({
+    } catch (error: any) {
+      const isApiError = error instanceof APIError || (error && typeof error === 'object' && ('statusCode' in error || 'status' in error));
+      
+      if (isApiError) {
+        const status = error.statusCode || error.status || 400;
+        const body = error.body || {};
+        return res.status(Number(status) || 400).json({
           success: false,
-          message: error.message,
-          code: error.body?.code || "AUTH_ERROR",
+          message: error.message || "Failed to reset password",
+          code: body.code || "AUTH_ERROR",
         });
       }
 
@@ -252,12 +271,20 @@ export const changePassword = asyncHandler(async (req: Request, res: Response) =
 
 export const verifyOtpCode = asyncHandler(async (req: Request, res: Response) => {
     try {
-      const { email, code, type } = req.body;
+      const { email, code, otp, type } = req.body;
+      const finalOtp = code || otp;
+
+      if (!finalOtp) {
+        return res.status(400).json({
+          success: false,
+          message: "OTP code is required",
+        });
+      }
 
       const result = await auth.api.verifyEmailOTP({
         body: {
           email,
-          otp: code,
+          otp: finalOtp,
         },
 
         headers: fromNodeHeaders(req.headers),
@@ -268,12 +295,16 @@ export const verifyOtpCode = asyncHandler(async (req: Request, res: Response) =>
         message: "OTP code verified successfully",
         data: result,
       });
-    } catch (error) {
-      if (error instanceof APIError) {
-        return res.status(Number(error.status) || 400).json({
+    } catch (error: any) {
+      const isApiError = error instanceof APIError || (error && typeof error === 'object' && ('statusCode' in error || 'status' in error));
+      
+      if (isApiError) {
+        const status = error.statusCode || error.status || 400;
+        const body = error.body || {};
+        return res.status(Number(status) || 400).json({
           success: false,
-          message: error.message,
-          code: error.body?.code || "AUTH_ERROR",
+          message: error.message || "Verification failed",
+          code: body.code || "AUTH_ERROR",
         });
       }
 
@@ -487,6 +518,47 @@ export const loginVerify = asyncHandler(async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: "Internal server error",
+    });
+  }
+});
+
+export const testEmail = asyncHandler(async (req: Request, res: Response) => {
+  try {
+    const { to, service } = req.body;
+    if (!to) {
+      return res.status(400).json({
+        success: false,
+        message: "Recipient email (to) is required",
+      });
+    }
+
+    if (service === "generic") {
+      await emailService.sendEmail({
+        to,
+        subject: "Test Generic Email - Blacktree TV",
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;">
+            <h2 style="color: #E50914; text-align: center;">Blacktree TV</h2>
+            <p>This is a test email sent from the Blacktree TV generic email service.</p>
+            <p>The service is configured and working perfectly!</p>
+          </div>
+        `,
+        text: "This is a test email sent from the Blacktree TV generic email service.",
+      });
+    } else {
+      await sendOTPEmail(to, "987654", "email-verification");
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: `Test email (${service || "auth"}) sent successfully to ${to}`,
+    });
+  } catch (error: any) {
+    console.error("Test email failed:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to send test email",
+      error: error.message || error,
     });
   }
 });

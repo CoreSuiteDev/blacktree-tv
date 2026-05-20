@@ -1,18 +1,18 @@
 "use client";
-import React, { useState } from "react";
 import { useUserProfileStore } from "@/store/public/use-user-profile-store";
+import { useState } from "react";
 
-import WatchlistTab from "./watchlist-tab";
-import PlaybackTab from "./playback-tab";
-import SecurityTab from "./security-tab";
-import BillingTab from "./billing-tab";
-import ProfileOverview from "./profile-overview-tab";
-import UserProfileSidebar from "./user-profile-sidebar";
 import { TAB_META } from "@/constants/profile";
+import BillingTab from "./billing-tab";
+import PlaybackTab from "./playback-tab";
+import ProfileOverview from "./profile-overview-tab";
+import SecurityTab from "./security-tab";
+import { UserProfileSidebar } from "./user-profile-sidebar";
+import WatchlistTab from "./watchlist-tab";
 
 const UserProfileDetails = () => {
   const { profile } = useUserProfileStore();
-  const [activeTab, setActiveTab] = useState<
+  const [activeTab] = useState<
     "details" | "watchlist" | "billing" | "playback" | "security"
   >("details");
 
@@ -45,10 +45,7 @@ const UserProfileDetails = () => {
         {/* Master Screen Component Split Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* COLUMN 1: INTERACTIVE NAVIGATION HUB (Called from separation component) */}
-          <UserProfileSidebar
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-          />
+          <UserProfileSidebar />
 
           {/* COLUMN 2: DYNAMIC LAYOUT DISPLAY FIELD */}
           <div className="lg:col-span-9">

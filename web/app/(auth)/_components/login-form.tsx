@@ -28,15 +28,24 @@ import {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { useAuth } from "@/hooks/useAuth";
+import { Loader2 } from "lucide-react";
 import { authClient } from "@/lib/auth/auth-client";
 
 import { ZCAuthLogin, ZTAuthLogin } from "@/types/zod/auth";
-import { useRouter } from "next/navigation";
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
+  const [showOtpInput, setShowOtpInput] = React.useState(false);
+  const [otp, setOtp] = React.useState("");
 
-  const router = useRouter();
+  
+  const { signInInitiate, signInVerify, isSigningInInitiate, isSigningInVerify } = useAuth();
 
   const form = useForm<ZTAuthLogin>({
     resolver: zodResolver(ZCAuthLogin),
@@ -50,25 +59,20 @@ export const LoginForm = () => {
   const onSubmit = async (data: ZTAuthLogin) => {
     try {
       const { email, password, rememberMe } = data;
-      const { error } = await authClient.signIn.email({
-        email,
-        password,
-        rememberMe,
-      });
-
-      if (error) {
-        toast.error(error.message || "Login failed");
-        return;
+      
+      if (!showOtpInput) {
+        const res = await signInInitiate({ email, password });
+        if (res?.success && res?.data?.requireOTP) {
+          setShowOtpInput(true);
+        }
+      } else {
+        if (!otp || otp.length !== 6) {
+          toast.error("Please enter a valid 6-digit OTP code");
+          return;
+        }
+        signInVerify({ email, password, otp, rememberMe });
       }
-
-      toast.success("Login successful!", {
-        position: "bottom-right",
-      });
-
-      // Redirect or update UI state here
-      router.push("/");
     } catch (error) {
-      toast.error("An unexpected error occurred");
       console.error(error);
     }
   };
@@ -137,55 +141,92 @@ export const LoginForm = () => {
                 )}
               />
 
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field
-                    data-invalid={fieldState.invalid}
-                    className="space-y-2"
-                  >
-                    <FieldLabel
-                      htmlFor="form-password"
-                      className="text-sm font-medium text-zinc-300"
+              {!showOtpInput ? (
+                <Controller
+                  name="password"
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field
+                      data-invalid={fieldState.invalid}
+                      className="space-y-2"
                     >
-                      Password
-                    </FieldLabel>
-
-                    <div className="relative">
-                      <Input
-                        {...field}
-                        id="form-password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="••••••••"
-                        autoComplete="current-password"
-                        aria-invalid={fieldState.invalid}
-                        className={`h-12 rounded-lg border border-[#FFFFFF1A] bg-transparent! px-4 pr-12 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-[#FFFFFF1A] ${
-                          !showPassword && field.value
-                            ? "font-mono tracking-[0.25em]"
-                            : ""
-                        }`}
-                      />
-
-                      <button
-                        type="button"
-                        onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300"
+                      <FieldLabel
+                        htmlFor="form-password"
+                        className="text-sm font-medium text-zinc-300"
                       >
-                        {showPassword ? (
-                          <EyeOff className="h-5 w-5" />
-                        ) : (
-                          <Eye className="h-5 w-5" />
-                        )}
-                      </button>
-                    </div>
+                        Password
+                      </FieldLabel>
 
-                    {fieldState.invalid && (
-                      <FieldError errors={[fieldState.error]} />
-                    )}
-                  </Field>
-                )}
-              />
+                      <div className="relative">
+                        <Input
+                          {...field}
+                          id="form-password"
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          autoComplete="current-password"
+                          aria-invalid={fieldState.invalid}
+                          className={`h-12 rounded-lg border border-[#FFFFFF1A] bg-transparent! px-4 pr-12 text-white placeholder:text-zinc-500 focus-visible:ring-1 focus-visible:ring-[#FFFFFF1A] ${
+                            !showPassword && field.value
+                              ? "font-mono tracking-[0.25em]"
+                              : ""
+                          }`}
+                        />
+
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300"
+                        >
+                          {showPassword ? (
+                            <EyeOff className="h-5 w-5" />
+                          ) : (
+                            <Eye className="h-5 w-5" />
+                          )}
+                        </button>
+                      </div>
+
+                      {fieldState.invalid && (
+                        <FieldError errors={[fieldState.error]} />
+                      )}
+                    </Field>
+                  )}
+                />
+              ) : (
+                <Field className="space-y-4 flex flex-col items-center">
+                  <div className="w-full flex items-center justify-between">
+                    <FieldLabel className="text-sm font-medium text-zinc-300">
+                      Enter Security Code
+                    </FieldLabel>
+                    <button
+                      type="button"
+                      onClick={() => setShowOtpInput(false)}
+                      className="text-xs text-zinc-500 hover:text-zinc-300 underline underline-offset-2"
+                    >
+                      Change credentials
+                    </button>
+                  </div>
+                  
+                  <InputOTP
+                    maxLength={6}
+                    value={otp}
+                    onChange={setOtp}
+                    className="w-full flex justify-center"
+                  >
+                    <InputOTPGroup className="gap-2 flex items-center justify-center">
+                      {[0, 1, 2, 3, 4, 5].map((index) => (
+                        <InputOTPSlot
+                          key={index}
+                          index={index}
+                          className="h-12 w-12 rounded-lg border border-[#FFFFFF1A] bg-transparent text-center text-lg font-semibold text-white focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]"
+                        />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                  <p className="text-xs text-zinc-400 text-center">
+                    We sent a 6-digit verification code to your email.
+                  </p>
+                </Field>
+              )}
             </FieldGroup>
 
             <FieldGroup className="space-y-1">
@@ -222,9 +263,19 @@ export const LoginForm = () => {
 
               <Button
                 type="submit"
-                className="mt-2 h-12 w-full cursor-pointer rounded-lg bg-[#E50914] text-sm font-semibold text-white transition-all duration-300 ease-in-out hover:scale-101 hover:bg-[#c40812]"
+                disabled={isSigningInInitiate || isSigningInVerify}
+                className="mt-2 h-12 w-full cursor-pointer rounded-lg bg-[#E50914] text-sm font-semibold text-white transition-all duration-300 ease-in-out hover:scale-101 hover:bg-[#c40812] flex items-center justify-center gap-2"
               >
-                Sign In
+                {isSigningInInitiate || isSigningInVerify ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    {isSigningInInitiate ? "Sending OTP..." : "Verifying..."}
+                  </>
+                ) : showOtpInput ? (
+                  "Verify & Sign In"
+                ) : (
+                  "Sign In"
+                )}
               </Button>
             </FieldGroup>
 

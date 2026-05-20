@@ -1,10 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Eye, EyeOff, Lock } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Lock, Loader2 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useSearchParams } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -27,6 +34,11 @@ import { ZCAuthResetPassword, ZTAuthResetPassword } from "@/types/zod/auth";
 export const ResetPasswordForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
+  const [otp, setOtp] = React.useState("");
+
+  const searchParams = useSearchParams();
+  const email = searchParams?.get("email") || "";
+  const { resetPassword, isResettingPassword } = useAuth();
 
   const form = useForm<ZTAuthResetPassword>({
     resolver: zodResolver(ZCAuthResetPassword),
@@ -36,12 +48,13 @@ export const ResetPasswordForm = () => {
     },
   });
 
-  function onSubmit(data: ZTAuthResetPassword) {
-    console.log("Reset Password Form Values:", data);
-    toast("Password has been reset successfully", {
-      position: "bottom-right",
-    });
-  }
+  const onSubmit = async (data: ZTAuthResetPassword) => {
+    if (!otp || otp.length !== 6) {
+      toast.error("Please enter the 6-digit OTP code");
+      return;
+    }
+    resetPassword({ email, otp, password: data.password });
+  };
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4 gap-8">
@@ -61,6 +74,27 @@ export const ResetPasswordForm = () => {
         <CardContent className="space-y-6 pb-8">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FieldGroup className="space-y-4">
+              <Field className="space-y-2 flex flex-col items-center w-full">
+                <FieldLabel className="text-sm font-medium text-zinc-300 self-start">
+                  Verification Code (OTP)
+                </FieldLabel>
+                <InputOTP
+                  maxLength={6}
+                  value={otp}
+                  onChange={setOtp}
+                  className="w-full flex justify-center"
+                >
+                  <InputOTPGroup className="gap-2 flex items-center justify-center">
+                    {[0, 1, 2, 3, 4, 5].map((index) => (
+                      <InputOTPSlot
+                        key={index}
+                        index={index}
+                        className="h-12 w-12 rounded-lg border border-[#FFFFFF1A] bg-transparent text-center text-lg font-semibold text-white focus:border-[#E50914] focus:ring-1 focus:ring-[#E50914]"
+                      />
+                    ))}
+                  </InputOTPGroup>
+                </InputOTP>
+              </Field>
               <Controller
                 name="password"
                 control={form.control}
@@ -148,9 +182,17 @@ export const ResetPasswordForm = () => {
 
             <Button
               type="submit"
-              className="h-12 w-full rounded-lg bg-primary text-sm font-bold text-white cursor-pointer mt-2 hover:scale-101 duration-300 ease-in-out hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)]"
+              disabled={isResettingPassword}
+              className="h-12 w-full rounded-lg bg-primary text-sm font-bold text-white cursor-pointer mt-2 hover:scale-101 duration-300 ease-in-out hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)] flex items-center justify-center gap-2"
             >
-              Confirm
+              {isResettingPassword ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Confirming...
+                </>
+              ) : (
+                "Confirm"
+              )}
             </Button>
           </form>
         </CardContent>

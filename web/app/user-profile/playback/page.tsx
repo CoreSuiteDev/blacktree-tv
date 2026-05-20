@@ -1,5 +1,3 @@
-import { Play } from "next/font/google";
-import React from "react";
 import PlaybackTab from "../_components/playback-tab";
 
 const PlayBack = () => {

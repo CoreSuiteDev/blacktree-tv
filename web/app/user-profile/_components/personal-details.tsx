@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { User, Mail } from "lucide-react";
+import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useUserProfileStore } from "@/store/public/use-user-profile-store";
 
