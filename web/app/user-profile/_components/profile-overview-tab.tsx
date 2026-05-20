@@ -177,7 +177,7 @@ const ProfileOverview = () => {
         {/* Right Side: Core Personal Information Form */}
         <Card className="md:col-span-8 bg-card border-border flex flex-col justify-between min-h-[380px] shadow-md">
           <div>
-            <CardHeader className="space-y-1 pb-4">
+            <CardHeader className="space-y-1 py-4">
               <div className="flex items-center gap-2 text-foreground font-semibold text-sm">
                 <User size={16} className="text-primary" />
                 <CardTitle className="text-base tracking-tight font-sans">
@@ -256,7 +256,7 @@ const ProfileOverview = () => {
             <Button
               onClick={savePersonalDetails}
               size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-bold px-6 py-5 rounded-lg tracking-wider uppercase shadow-sm transition-all"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 text-xs font-bold px-6 py-5 mb-4 rounded-lg tracking-wider uppercase shadow-sm transition-all"
             >
               Save Changes
             </Button>
