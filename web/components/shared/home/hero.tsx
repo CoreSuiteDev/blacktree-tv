@@ -26,7 +26,7 @@ export function HeroSection() {
   }, [messages]);
 
   return (
-    <section className="text-foreground overflow-hidden">
+    <section className="text-foreground mt-3 overflow-hidden">
       <Container>
         {/* items-stretch forces identical height dynamically across all screen sizes */}
         <div className="flex flex-col lg:grid lg:grid-cols-3 gap-4 transition-all duration-500 ease-in-out items-stretch">
@@ -48,7 +48,7 @@ export function HeroSection() {
           <div
             className={`grid transition-all duration-500 ease-in-out ${
               isChatOpen
-                ? "flex-1 lg:col-span-1 opacity-100 grid-rows-[1fr] min-h-[450px] h-[450px] lg:min-h-0 lg:h-auto"
+                ? "flex-1 lg:col-span-1 opacity-100 grid-rows-[1fr] min-h-112.5 h-112.5 lg:min-h-0 lg:h-auto"
                 : "grid-rows-[0fr] opacity-0 h-0 pointer-events-none lg:h-auto lg:w-0 overflow-hidden"
             }`}
           >
@@ -73,7 +73,7 @@ export function HeroSection() {
 
               {/* Chat Messages */}
               {/* FIXED: 'h-full' wrappers assigned on the viewport anchor window to avoid shrinking */}
-              <div className="flex-1 w-full  h-full min-h-[200px] relative">
+              <div className="flex-1 w-full  h-full min-h-50 relative">
                 <CardContent
                   ref={scrollRef}
                   className="absolute inset-0 space-y-5 overflow-y-auto p-4 custom-scrollbar"
@@ -104,7 +104,7 @@ export function HeroSection() {
                             {msg.isMod && <Shield className="w-3.5 h-3.5" />}
                             <span className="text-[15px] font-bold">:</span>
                           </span>
-                          <span className="text-[14px] text-white font-normal leading-relaxed break-words">
+                          <span className="text-[14px] text-white font-normal leading-relaxed wrap-break-word">
                             {msg.message}
                           </span>
                         </div>
