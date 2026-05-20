@@ -88,7 +88,7 @@ export const ForgotPasswordForm = () => {
 
             <Button
               type="submit"
-              className="h-12 md:h-14 w-full rounded-lg bg-primary text-sm md:text-base font-bold text-white transition hover:bg-primary/90 cursor-pointer shadow-lg"
+              className="h-12 md:h-14 w-full rounded-lg bg-primary text-sm md:text-base font-bold text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-101 hover:bg-primary/90 shadow-lg"
             >
               Send
             </Button>
@@ -98,7 +98,7 @@ export const ForgotPasswordForm = () => {
         <CardFooter className="flex justify-center pb-10 pt-4">
           <Link
             href="/login"
-            className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest transition-colors hover:text-white group"
+            className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest cursor-pointer transition-colors hover:text-white group"
           >
             <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
             Back to Login

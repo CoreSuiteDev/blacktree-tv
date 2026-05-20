@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { FaFacebook } from "react-icons/fa6";
 import { toast } from "sonner";
 
 import { Eye, EyeOff } from "lucide-react";
@@ -72,7 +73,7 @@ export const LoginForm = () => {
     }
   };
 
-  const handleSocialLogin = async (provider: "google" | "apple") => {
+  const handleSocialLogin = async (provider: "google" | "facebook") => {
     try {
       await authClient.signIn.social({
         provider,
@@ -86,7 +87,7 @@ export const LoginForm = () => {
 
   return (
     <div className="w-full flex items-center justify-center px-4">
-      <Card className="w-full max-w-[440px] border border-[#FFFFFF0D] bg-[#141414] text-white shadow-2xl rounded-2xl">
+      <Card className="w-full max-w-[440px] lg:max-w-[500px] xl:max-w-[586px] border border-[#FFFFFF0D] bg-[#141414] text-white shadow-2xl rounded-2xl">
         <CardHeader className="space-y-3 pb-6 pt-8">
           <CardTitle className="text-center text-3xl font-bold tracking-tight">
             Sign In
@@ -221,7 +222,7 @@ export const LoginForm = () => {
 
               <Button
                 type="submit"
-                className="mt-2 h-12 w-full rounded-lg bg-[#E50914] text-sm font-semibold text-white transition hover:bg-[#c40812]"
+                className="mt-2 h-12 w-full cursor-pointer rounded-lg bg-[#E50914] text-sm font-semibold text-white transition-all duration-300 ease-in-out hover:scale-101 hover:bg-[#c40812]"
               >
                 Sign In
               </Button>
@@ -242,7 +243,7 @@ export const LoginForm = () => {
                 type="button"
                 variant="outline"
                 onClick={() => handleSocialLogin("google")}
-                className="h-12 w-full rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition hover:bg-[#FFFFFF0D] hover:text-white"
+                className="h-12 w-full cursor-pointer rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition-all hover:scale-101 duration-300 ease-in-out hover:bg-[#FFFFFF0D] hover:text-white"
               >
                 <svg className="mr-2 h-5 w-5" viewBox="0 0 24 24">
                   <path
@@ -267,13 +268,11 @@ export const LoginForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() => handleSocialLogin("apple")}
-                className="h-12 w-full rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition hover:bg-[#FFFFFF0D] hover:text-white"
+                onClick={() => handleSocialLogin("facebook")}
+                className="h-12 w-full cursor-pointer rounded-lg border-[#FFFFFF1A] bg-transparent text-sm font-medium text-white transition-all duration-300 ease-in-out hover:scale-101 hover:bg-[#FFFFFF0D] hover:text-white"
               >
-                <svg className="mr-2 h-5 w-5 fill-white" viewBox="0 0 24 24">
-                  <path d="M17.05 20.28c-.96.95-2.04 2.13-3.4 2.13-1.33 0-1.77-.83-3.32-.83-1.57 0-2.06.81-3.32.81-1.32 0-2.43-1.15-3.42-2.15-1.99-1.99-3.52-5.63-3.52-8.87 0-5.11 3.2-7.81 6.23-7.81 1.58 0 2.92.93 3.82.93.9 0 2.45-1.09 4.33-1.09.79 0 3.03.29 4.49 2.43-.12.07-2.68 1.56-2.68 4.67 0 3.73 3.23 5.04 3.29 5.06-.02.07-.51 1.76-1.5 3.32zM12.03 4.22c-.08-1.9 1.53-3.55 3.33-3.69.19 2.18-2.07 3.96-3.33 3.69z" />
-                </svg>
-                Apple
+                <FaFacebook />
+                Facebook
               </Button>
             </div>
           </form>

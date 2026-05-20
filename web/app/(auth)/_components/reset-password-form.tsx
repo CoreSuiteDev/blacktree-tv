@@ -45,7 +45,7 @@ export const ResetPasswordForm = () => {
 
   return (
     <div className="w-full flex flex-col items-center justify-center px-4 gap-8">
-      <Card className="w-full max-w-[440px] border border-[#FFFFFF0D] bg-[#141414] text-white shadow-2xl rounded-2xl px-2 md:px-4">
+      <Card className="w-full md:max-w-[440px] lg:max-w-[500px] xl:max-w-[586px] border border-[#FFFFFF0D] bg-[#141414] text-white shadow-2xl rounded-2xl px-2 md:px-4">
         <CardHeader className="space-y-3 pb-6 pt-10 flex flex-col items-center">
           <div className="bg-red-500/10 p-4 rounded-xl border border-red-500/20 mb-1">
             <Lock className="h-7 w-7 text-red-500" />
@@ -59,16 +59,16 @@ export const ResetPasswordForm = () => {
         </CardHeader>
 
         <CardContent className="space-y-6 pb-8">
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-5"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FieldGroup className="space-y-4">
               <Controller
                 name="password"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="space-y-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="space-y-2"
+                  >
                     <FieldLabel
                       htmlFor="new-password"
                       className="text-sm font-medium text-zinc-300"
@@ -87,7 +87,7 @@ export const ResetPasswordForm = () => {
                       <button
                         type="button"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer"
                       >
                         {showPassword ? (
                           <EyeOff className="h-5 w-5" />
@@ -107,7 +107,10 @@ export const ResetPasswordForm = () => {
                 name="confirmPassword"
                 control={form.control}
                 render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid} className="space-y-2">
+                  <Field
+                    data-invalid={fieldState.invalid}
+                    className="space-y-2"
+                  >
                     <FieldLabel
                       htmlFor="confirm-password"
                       className="text-sm font-medium text-zinc-300"
@@ -126,7 +129,7 @@ export const ResetPasswordForm = () => {
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 transition-colors hover:text-zinc-300 cursor-pointer"
                       >
                         {showConfirmPassword ? (
                           <EyeOff className="h-5 w-5" />
@@ -145,9 +148,9 @@ export const ResetPasswordForm = () => {
 
             <Button
               type="submit"
-              className="h-12 w-full rounded-lg bg-primary text-sm font-bold text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)] cursor-pointer mt-2"
+              className="h-12 w-full rounded-lg bg-primary text-sm font-bold text-white cursor-pointer mt-2 hover:scale-101 duration-300 ease-in-out hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)]"
             >
-              Next
+              Confirm
             </Button>
           </form>
         </CardContent>
@@ -155,7 +158,7 @@ export const ResetPasswordForm = () => {
 
       <Link
         href="/login"
-        className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest transition-all hover:text-white group"
+        className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest transition-all hover:text-white group cursor-pointer"
       >
         <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
         Back to Login

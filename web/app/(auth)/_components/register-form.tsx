@@ -208,7 +208,7 @@ export const RegisterForm = () => {
 
             <Button
               type="submit"
-              className="mt-2 h-12 w-full rounded-lg bg-primary text-sm font-semibold text-white transition hover:bg-primary/80 cursor-pointer"
+              className="mt-2 h-12 w-full rounded-lg bg-primary text-sm font-semibold text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-101 hover:bg-primary/90"
             >
               Sign Up
             </Button>
@@ -228,7 +228,7 @@ export const RegisterForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 cursor-pointer"
+                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 cursor-pointer transition-all duration-300 ease-in-out hover:scale-101"
                 onClick={() => handleSocialLogin("google")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -254,7 +254,7 @@ export const RegisterForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11"
+                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 transition-all duration-300 ease-in-out hover:scale-101"
                 onClick={() => handleSocialLogin("facebook")}
               >
                 <svg className="mr-2 h-4 w-4 fill-white" viewBox="0 0 24 24">
