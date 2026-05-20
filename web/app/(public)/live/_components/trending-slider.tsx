@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import { trendingChannels } from "@/constants/chanels";
 import ChannelCard from "../../live/_components/channel-card";
+import { Container } from "@/components/shared/container";
 
 export interface Channel {
   id: number | string;
@@ -31,7 +32,7 @@ const TrendingSlider = () => {
 
   return (
     <section className="w-full py-10 px-4 md:px-0 bg-black">
-      <div className="container mx-auto">
+      <Container>
         <Carousel
           opts={{
             align: "start",
@@ -83,7 +84,7 @@ const TrendingSlider = () => {
             ))}
           </CarouselContent>
         </Carousel>
-      </div>
+      </Container>
     </section>
   );
 };

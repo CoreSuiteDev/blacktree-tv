@@ -9,11 +9,12 @@ import { Calendar, Trophy, Film, ArrowRight, Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Container } from "@/components/shared/container";
 
 const UpcomingEvents = () => {
   return (
     <section className="w-full py-12 bg-background text-foreground">
-      <div className="container mx-auto px-4 md:px-0">
+      <Container>
         {/* Section Header */}
         <div className="mb-8">
           <h2 className="text-2xl md:text-3xl tracking-tight font-bold">
@@ -150,7 +151,7 @@ const UpcomingEvents = () => {
             </Card>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

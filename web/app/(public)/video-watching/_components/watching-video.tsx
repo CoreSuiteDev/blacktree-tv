@@ -4,11 +4,12 @@ import { Bookmark } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import VidPlayer from "@/features/player/components/vid-player";
 import { cn } from "@/lib/utils";
+import { Container } from "@/components/shared/container";
 
 const WatchingVideo = () => {
   return (
     <section className="w-full bg-[#0a0a0a] text-white mt-24 font-sans selection:bg-red-600 selection:text-white">
-      <div className="container mx-auto px-4 lg:px-0">
+      <Container>
         {/* Using items-stretch to ensure player and chat have the same height */}
         <div className=" mt-6 transition-all duration-500 ease-in-out items-stretch">
           {/* --- LEFT SIDE: VIDEO & INFO --- */}
@@ -48,7 +49,7 @@ const WatchingVideo = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

@@ -24,6 +24,7 @@ import ActorCard from "@/components/shared/actor-card";
 import { usePaginationStore } from "@/store/public/use-pagination-store";
 import { useActorStore } from "@/store/public/use-actor-store";
 import { cn } from "@/lib/utils";
+import { Container } from "@/components/shared/container";
 
 const sortOptions = [
   { label: "Name (A-Z)", value: "az" },
@@ -99,191 +100,196 @@ export default function Actors() {
 
   return (
     <main className="min-h-screen text-white py-10" ref={sectionRef}>
-      <div className="container mx-auto px-4 md:px-0">
-        {/* Header */}
-        <div className="mb-6 text-center lg:text-left">
-          <h1 className="text-4xl font-bold mb-3 uppercase tracking-tight">
-            The Stars of <span className="text-primary">CineLens</span>
-          </h1>
-          <p className="text-gray-400 lg:max-w-2xl text-sm md:text-base leading-relaxed">
-            Explore the definitive directory of legendary performers. From
-            silent era icons to modern-day luminaries, browse the casts that
-            have defined the history of motion pictures.
-          </p>
-        </div>
-
-        {/* Filter & Search Bar */}
-        <div className="mb-12 space-y-6 border-b border-white/10 pb-10">
-          <div className="w-full">
-            <div className="flex flex-wrap justify-center lg:justify-start gap-1">
-              <BrowseAlphabet />
-            </div>
+      <Container>
+        <div className="">
+          {/* Header */}
+          <div className="mb-6 text-center lg:text-left">
+            <h1 className="text-4xl font-bold mb-3 uppercase tracking-tight">
+              The Stars of <span className="text-primary">CineLens</span>
+            </h1>
+            <p className="text-gray-400 lg:max-w-2xl text-sm md:text-base leading-relaxed">
+              Explore the definitive directory of legendary performers. From
+              silent era icons to modern-day luminaries, browse the casts that
+              have defined the history of motion pictures.
+            </p>
           </div>
 
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Search Input */}
-            <div className="w-full md:max-w-md relative group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
-              <Input
-                placeholder="Search actor name..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  setCurrentPage(1);
-                }}
-                className="bg-[#0A0A0A] border-zinc-800/60 pl-11 pr-4 focus:border-primary/40 focus:ring-1 focus:ring-primary/10 text-white h-11 rounded-xl w-full text-sm transition-all"
-              />
+          {/* Filter & Search Bar */}
+          <div className="mb-12 space-y-6 border-b border-white/10 pb-10">
+            <div className="w-full">
+              <div className="flex flex-wrap justify-center lg:justify-start gap-1">
+                <BrowseAlphabet />
+              </div>
             </div>
 
-            {/* Sort Dropdown */}
-            <div className="w-full md:w-auto shrink-0">
-              <Popover open={open} onOpenChange={setOpen}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="bg-[#0A0A0A] text-zinc-400 text-sm border-zinc-800/60 rounded-xl h-11 w-full md:w-48 justify-between hover:bg-[#0f0f0f] hover:text-zinc-300 focus:ring-1 focus:ring-primary/20 focus:border-primary/40 transition-all px-4 shadow-none"
-                  >
-                    <span className="truncate">
-                      {currentSortLabel || "Sort by"}
-                    </span>
-                    <ChevronDown
-                      className={cn(
-                        "ml-2 h-4 w-4 shrink-0 opacity-50 transition-transform duration-200",
-                        open ? "rotate-180" : "rotate-0",
-                      )}
-                    />
-                  </Button>
-                </PopoverTrigger>
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+              {/* Search Input */}
+              <div className="w-full md:max-w-md relative group">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500 group-focus-within:text-primary transition-colors" />
+                <Input
+                  placeholder="Search actor name..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="bg-[#0A0A0A] border-zinc-800/60 pl-11 pr-4 focus:border-primary/40 focus:ring-1 focus:ring-primary/10 text-white h-11 rounded-xl w-full text-sm transition-all"
+                />
+              </div>
 
-                <PopoverContent
-                  className="w-[var(--radix-popover-trigger-width)] p-1 bg-[#0A0A0A] border-zinc-800 text-zinc-400 shadow-2xl"
-                  align="end"
-                  sideOffset={6}
-                >
-                  <div className="flex flex-col gap-1">
-                    {sortOptions.map((option) => (
-                      <button
-                        key={option.value}
-                        onClick={() => {
-                          setSortBy(option.value);
-                          setOpen(false);
-                        }}
-                        className={cn(
-                          "w-full text-left px-3 py-2.5 text-sm rounded-lg transition-colors cursor-pointer outline-none",
-                          sortBy === option.value
-                            ? "bg-primary text-white font-medium"
-                            : "hover:bg-zinc-800/50 hover:text-zinc-200",
-                        )}
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-        </div>
-
-        {/* Actors Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-6">
-          {currentActors.length > 0 ? (
-            currentActors.map((actor) => (
-              <ActorCard key={actor.id} actor={actor} />
-            ))
-          ) : (
-            <div className="col-span-full py-24 text-center">
-              <p className="text-zinc-500 text-lg">
-                No stars found matching {searchQuery}
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* Pagination */}
-        <Pagination className="mt-10">
-          <PaginationContent className="gap-2 border-none bg-transparent">
-            {/* Previous Button */}
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage > 1) {
-                    setCurrentPage(currentPage - 1);
-                    scrollToSection();
-                  }
-                }}
-                className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
-                  currentPage === 1
-                    ? "opacity-50 pointer-events-none"
-                    : "cursor-pointer"
-                }`}
-              />
-            </PaginationItem>
-
-            {/* Page Numbers */}
-            {[...Array(totalPages)].map((_, i) => {
-              const page = i + 1;
-              const isActive = currentPage === page;
-
-              if (
-                page === 1 ||
-                page === totalPages ||
-                (page >= currentPage - 1 && page <= currentPage + 1)
-              ) {
-                return (
-                  <PaginationItem key={page}>
-                    <PaginationLink
-                      href="#"
-                      // isActive prop soriye dewa hoyeche jate Shadcn internal style clash na kore
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setCurrentPage(page);
-                        scrollToSection();
-                      }}
-                      className={`w-10 h-10 border-none rounded-lg transition-all flex items-center justify-center font-bold ${
-                        isActive
-                          ? "bg-primary  text-white hover:bg-primary  hover:cursor-pointer hover:text-white pointer-events-none shadow-lg"
-                          : "bg-[#121212] text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer"
-                      }`}
+              {/* Sort Dropdown */}
+              <div className="w-full md:w-auto shrink-0">
+                <Popover open={open} onOpenChange={setOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="bg-[#0A0A0A] text-zinc-400 text-sm border-zinc-800/60 rounded-xl h-11 w-full md:w-48 justify-between hover:bg-[#0f0f0f] hover:text-zinc-300 focus:ring-1 focus:ring-primary/20 focus:border-primary/40 transition-all px-4 shadow-none"
                     >
-                      {page}
-                    </PaginationLink>
-                  </PaginationItem>
-                );
-              } else if (page === currentPage - 2 || page === currentPage + 2) {
-                return (
-                  <PaginationItem key={page}>
-                    <PaginationEllipsis className="text-zinc-500" />
-                  </PaginationItem>
-                );
-              }
-              return null;
-            })}
+                      <span className="truncate">
+                        {currentSortLabel || "Sort by"}
+                      </span>
+                      <ChevronDown
+                        className={cn(
+                          "ml-2 h-4 w-4 shrink-0 opacity-50 transition-transform duration-200",
+                          open ? "rotate-180" : "rotate-0",
+                        )}
+                      />
+                    </Button>
+                  </PopoverTrigger>
 
-            {/* Next Button */}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (currentPage < totalPages) {
-                    setCurrentPage(currentPage + 1);
-                    scrollToSection();
-                  }
-                }}
-                className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
-                  currentPage === totalPages
-                    ? "opacity-50 pointer-events-none"
-                    : "cursor-pointer"
-                }`}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+                  <PopoverContent
+                    className="w-[var(--radix-popover-trigger-width)] p-1 bg-[#0A0A0A] border-zinc-800 text-zinc-400 shadow-2xl"
+                    align="end"
+                    sideOffset={6}
+                  >
+                    <div className="flex flex-col gap-1">
+                      {sortOptions.map((option) => (
+                        <button
+                          key={option.value}
+                          onClick={() => {
+                            setSortBy(option.value);
+                            setOpen(false);
+                          }}
+                          className={cn(
+                            "w-full text-left px-3 py-2.5 text-sm rounded-lg transition-colors cursor-pointer outline-none",
+                            sortBy === option.value
+                              ? "bg-primary text-white font-medium"
+                              : "hover:bg-zinc-800/50 hover:text-zinc-200",
+                          )}
+                        >
+                          {option.label}
+                        </button>
+                      ))}
+                    </div>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </div>
+          </div>
+
+          {/* Actors Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-12 gap-x-6">
+            {currentActors.length > 0 ? (
+              currentActors.map((actor) => (
+                <ActorCard key={actor.id} actor={actor} />
+              ))
+            ) : (
+              <div className="col-span-full py-24 text-center">
+                <p className="text-zinc-500 text-lg">
+                  No stars found matching {searchQuery}
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Pagination */}
+          <Pagination className="mt-10">
+            <PaginationContent className="gap-2 border-none bg-transparent">
+              {/* Previous Button */}
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage > 1) {
+                      setCurrentPage(currentPage - 1);
+                      scrollToSection();
+                    }
+                  }}
+                  className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
+                    currentPage === 1
+                      ? "opacity-50 pointer-events-none"
+                      : "cursor-pointer"
+                  }`}
+                />
+              </PaginationItem>
+
+              {/* Page Numbers */}
+              {[...Array(totalPages)].map((_, i) => {
+                const page = i + 1;
+                const isActive = currentPage === page;
+
+                if (
+                  page === 1 ||
+                  page === totalPages ||
+                  (page >= currentPage - 1 && page <= currentPage + 1)
+                ) {
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationLink
+                        href="#"
+                        // isActive prop soriye dewa hoyeche jate Shadcn internal style clash na kore
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setCurrentPage(page);
+                          scrollToSection();
+                        }}
+                        className={`w-10 h-10 border-none rounded-lg transition-all flex items-center justify-center font-bold ${
+                          isActive
+                            ? "bg-primary  text-white hover:bg-primary  hover:cursor-pointer hover:text-white pointer-events-none shadow-lg"
+                            : "bg-[#121212] text-zinc-400 hover:bg-zinc-800 hover:text-white cursor-pointer"
+                        }`}
+                      >
+                        {page}
+                      </PaginationLink>
+                    </PaginationItem>
+                  );
+                } else if (
+                  page === currentPage - 2 ||
+                  page === currentPage + 2
+                ) {
+                  return (
+                    <PaginationItem key={page}>
+                      <PaginationEllipsis className="text-zinc-500" />
+                    </PaginationItem>
+                  );
+                }
+                return null;
+              })}
+
+              {/* Next Button */}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    if (currentPage < totalPages) {
+                      setCurrentPage(currentPage + 1);
+                      scrollToSection();
+                    }
+                  }}
+                  className={`bg-[#121212] text-zinc-400 uppercase border-none rounded-lg px-4 hover:bg-zinc-800 hover:text-white transition-colors ${
+                    currentPage === totalPages
+                      ? "opacity-50 pointer-events-none"
+                      : "cursor-pointer"
+                  }`}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      </Container>
     </main>
   );
 }

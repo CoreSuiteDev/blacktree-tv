@@ -1,4 +1,5 @@
 "use client";
+import { Container } from "@/components/shared/container";
 import React, { useState } from "react";
 
 // --- MOCK SCHEDULE DATA ---
@@ -35,7 +36,7 @@ const ProgramSchedule = () => {
 
   return (
     <section className="w-full bg-[#0a0a0a] text-white py-12 font-sans selection:bg-red-600 selection:text-white">
-      <div className="container mx-auto px-4 lg:px-0">
+      <Container>
         {/* Section Header */}
         <div className="flex items-center gap-3 mb-8">
           {/* Rounded Left Pill Bar */}
@@ -98,7 +99,7 @@ const ProgramSchedule = () => {
             );
           })}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

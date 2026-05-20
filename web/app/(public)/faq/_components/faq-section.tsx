@@ -13,7 +13,7 @@ import { FAQ_DATA } from "@/constants/faq";
 export function FAQSection() {
   return (
     <section className="w-full py-12 min-h-screen flex flex-col justify-center items-center md:py-24 bg-background">
-      <div className="container mx-auto px-4 max-w-3xl">
+      <div className=" max-w-3xl">
         {/* Section Header */}
         <div className="text-center mb-10">
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

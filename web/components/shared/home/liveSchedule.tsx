@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Container } from "../container";
 
 const SCHEDULE_DATA = {
   nowPlaying: {
@@ -39,131 +40,133 @@ const SCHEDULE_DATA = {
 
 const LiveSchedule = () => {
   return (
-    <section className="w-full px-4  py-8">
-      <Card className="container mx-auto p-0 border-none shadow-none bg-card rounded-xl overflow-hidden">
-        <CardContent className="p-6 md:p-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
-          {/* Section 1: NOW PLAYING */}
-          <div className="w-full lg:w-[35%] flex flex-col justify-center lg:pr-8">
-            <CardTitle className="text-primary font-bold text-[15px] uppercase  mb-4">
-              Now Playing
-            </CardTitle>
-            <div className="flex gap-4 items-center">
-              <div className="relative flex-shrink-0 w-36 h-24 rounded-lg overflow-hidden border border-border shadow-sm">
-                <Image
-                  src={SCHEDULE_DATA.nowPlaying.image}
-                  alt={SCHEDULE_DATA.nowPlaying.title}
-                  fill
-                  className="object-cover"
-                  sizes="144px"
-                />
-              </div>
-              <div className="flex flex-col">
-                <h3 className="text-xl font-bold leading-tight">
-                  {SCHEDULE_DATA.nowPlaying.title}
-                </h3>
-                <p className="text-muted-foreground text-sm font-medium">
-                  {SCHEDULE_DATA.nowPlaying.episode}
-                </p>
-                <div className="flex items-center gap-3 mt-2">
-                  <span className="text-muted-foreground text-xs font-mono">
-                    {SCHEDULE_DATA.nowPlaying.time}
-                  </span>
-                  <Badge
-                    variant="outline"
-                    className="text-primary border-primary/50 bg-primary/10 px-2 py-0 h-5 text-[10px] uppercase font-bold"
-                  >
-                    Live
-                  </Badge>
+    <section className="w-full  py-8">
+      <Container>
+        <Card className=" border-none shadow-none bg-card rounded-xl overflow-hidden">
+          <CardContent className="p-6 md:p-10 flex flex-col lg:flex-row items-center gap-8 lg:gap-0">
+            {/* Section 1: NOW PLAYING */}
+            <div className="w-full lg:w-[35%] flex flex-col justify-center lg:pr-8">
+              <CardTitle className="text-primary font-bold text-[15px] uppercase  mb-4">
+                Now Playing
+              </CardTitle>
+              <div className="flex gap-4 items-center">
+                <div className="relative flex-shrink-0 w-36 h-24 rounded-lg overflow-hidden border border-border shadow-sm">
+                  <Image
+                    src={SCHEDULE_DATA.nowPlaying.image}
+                    alt={SCHEDULE_DATA.nowPlaying.title}
+                    fill
+                    className="object-cover"
+                    sizes="144px"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-xl font-bold leading-tight">
+                    {SCHEDULE_DATA.nowPlaying.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm font-medium">
+                    {SCHEDULE_DATA.nowPlaying.episode}
+                  </p>
+                  <div className="flex items-center gap-3 mt-2">
+                    <span className="text-muted-foreground text-xs font-mono">
+                      {SCHEDULE_DATA.nowPlaying.time}
+                    </span>
+                    <Badge
+                      variant="outline"
+                      className="text-primary border-primary/50 bg-primary/10 px-2 py-0 h-5 text-[10px] uppercase font-bold"
+                    >
+                      Live
+                    </Badge>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Separator 1 (Visible only on Desktop) */}
-          <Separator
-            orientation="vertical"
-            className="hidden lg:block h-40 bg-border mx-2"
-          />
+            {/* Separator 1 (Visible only on Desktop) */}
+            <Separator
+              orientation="vertical"
+              className="hidden lg:block h-40 bg-border mx-2"
+            />
 
-          {/* Section 2: UP NEXT */}
-          <div className="w-full lg:w-[30%] flex flex-col justify-center lg:px-8">
-            <h2 className="text-muted-foreground font-bold text-[15px] uppercase  mb-4">
-              Up Next
-            </h2>
-            <div className="flex gap-4 items-center">
-              <div className="relative flex-shrink-0 w-36 h-24 rounded-lg overflow-hidden border border-border shadow-sm">
-                <Image
-                  src={SCHEDULE_DATA.upNext.image}
-                  alt={SCHEDULE_DATA.upNext.title}
-                  fill
-                  className="object-cover"
-                  sizes="144px"
-                />
-              </div>
-              <div className="flex flex-col">
-                <h3 className="text-xl font-bold leading-tight">
-                  {SCHEDULE_DATA.upNext.title}
-                </h3>
-                <p className="text-muted-foreground text-sm mt-1 font-mono uppercase tracking-tighter">
-                  {SCHEDULE_DATA.upNext.time}
-                </p>
+            {/* Section 2: UP NEXT */}
+            <div className="w-full lg:w-[30%] flex flex-col justify-center lg:px-8">
+              <h2 className="text-muted-foreground font-bold text-[15px] uppercase  mb-4">
+                Up Next
+              </h2>
+              <div className="flex gap-4 items-center">
+                <div className="relative flex-shrink-0 w-36 h-24 rounded-lg overflow-hidden border border-border shadow-sm">
+                  <Image
+                    src={SCHEDULE_DATA.upNext.image}
+                    alt={SCHEDULE_DATA.upNext.title}
+                    fill
+                    className="object-cover"
+                    sizes="144px"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <h3 className="text-xl font-bold leading-tight">
+                    {SCHEDULE_DATA.upNext.title}
+                  </h3>
+                  <p className="text-muted-foreground text-sm mt-1 font-mono uppercase tracking-tighter">
+                    {SCHEDULE_DATA.upNext.time}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Separator 2 (Visible only on Desktop) */}
-          <Separator
-            orientation="vertical"
-            className="hidden lg:block h-40 bg-border mx-2"
-          />
+            {/* Separator 2 (Visible only on Desktop) */}
+            <Separator
+              orientation="vertical"
+              className="hidden lg:block h-40 bg-border mx-2"
+            />
 
-          {/* Section 3: REQUEST FOR NEXT MOVIE */}
-          <div className="w-full lg:w-[35%] flex flex-col justify-center lg:pl-8 space-y-4">
-            <h2 className="text-muted-foreground font-bold text-[15px] uppercase ">
-              Request For Next Movie
-            </h2>
+            {/* Section 3: REQUEST FOR NEXT MOVIE */}
+            <div className="w-full lg:w-[35%] flex flex-col justify-center lg:pl-8 space-y-4">
+              <h2 className="text-muted-foreground font-bold text-[15px] uppercase ">
+                Request For Next Movie
+              </h2>
 
-            <div className="space-y-3">
-              {SCHEDULE_DATA.requests.map((movie) => (
-                <div key={movie.id} className="flex items-center gap-3">
-                  <div className="relative w-14 h-9 rounded overflow-hidden flex-shrink-0 border border-border">
-                    <Image
-                      src={movie.image}
-                      alt={movie.name}
-                      fill
-                      className="object-cover"
-                      sizes="56px"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between text-[10px] mb-1 font-bold">
-                      <span className="text-foreground/80 uppercase tracking-tight">
-                        {movie.name}
-                      </span>
-                      <span className="text-muted-foreground">
-                        {movie.percentage}%
-                      </span>
+              <div className="space-y-3">
+                {SCHEDULE_DATA.requests.map((movie) => (
+                  <div key={movie.id} className="flex items-center gap-3">
+                    <div className="relative w-14 h-9 rounded overflow-hidden flex-shrink-0 border border-border">
+                      <Image
+                        src={movie.image}
+                        alt={movie.name}
+                        fill
+                        className="object-cover"
+                        sizes="56px"
+                      />
                     </div>
-                    <Progress
-                      value={movie.percentage}
-                      className="h-1 bg-border [&>div]:bg-primary"
-                    />
+                    <div className="flex-1">
+                      <div className="flex justify-between text-[10px] mb-1 font-bold">
+                        <span className="text-foreground/80 uppercase tracking-tight">
+                          {movie.name}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {movie.percentage}%
+                        </span>
+                      </div>
+                      <Progress
+                        value={movie.percentage}
+                        className="h-1 bg-border [&>div]:bg-primary"
+                      />
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className="relative group pt-1">
-              <Input
-                type="text"
-                placeholder="Type Here..."
-                className="w-full bg-background border-border rounded-md py-4 pr-10 ted:text-mu5ed-foreground  focus-visible:ring-primary/20"
-              />
-              <SendHorizontal className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors cursor-pointer" />
+              <div className="relative group pt-1">
+                <Input
+                  type="text"
+                  placeholder="Type Here..."
+                  className="w-full bg-background border-border rounded-md py-4 pr-10 ted:text-mu5ed-foreground  focus-visible:ring-primary/20"
+                />
+                <SendHorizontal className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors cursor-pointer" />
+              </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </Container>
     </section>
   );
 };

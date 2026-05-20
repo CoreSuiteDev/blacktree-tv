@@ -12,6 +12,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { cn } from "@/lib/utils";
+import { Container } from "@/components/shared/container";
 
 interface SpotlightItem {
   id: string | number;
@@ -68,52 +69,54 @@ export function UpComingMovieSlider({ items }: UpComingMovieSliderProps) {
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent z-10" />
                 <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/20 to-transparent z-10" />
 
-                {/* Content Container */}
-                <div className="relative z-20 h-full container mx-auto flex flex-col justify-end pb-20 md:justify-center px-4 md:px-0">
-                  <header className="max-w-3xl space-y-3 animate-in fade-in slide-in-from-bottom-4 duration-1000">
-                    {/* Title Section */}
-                    <div className="space-y-1">
-                      <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
-                        {item.label || "New Release"}
-                      </span>
-                      <h2 className="text-4xl md:text-5xl mt-2 text-foreground ">
-                        {item.title}
-                      </h2>
-                    </div>
+                {/* Content Container - Added h-full to fill slide space */}
+                <Container className="h-full">
+                  {/* Fixed centering: Added items-start (or items-center if you want absolute middle) and h-full */}
+                  <div className="relative z-20 h-full flex flex-col justify-end pb-24 md:justify-center md:pb-0">
+                    <header className="max-w-3xl space-y-5 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+                      {/* Title Section */}
+                      <div className="space-y-2">
+                        <span className="inline-block px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest">
+                          {item.label || "New Release"}
+                        </span>
+                        <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+                          {item.title}
+                        </h2>
+                      </div>
 
-                    {/* Description Section */}
-                    <div className="space-y-2">
-                      <p className="text-muted-foreground text-[14px] font-bold uppercase tracking-[0.2em]">
-                        Description
-                      </p>
-                      <p className="text-muted-foreground max-w-xl text-[14px]  leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
+                      {/* Description Section */}
+                      <div className="space-y-1">
+                        <p className="text-muted-foreground text-[11px] font-bold uppercase tracking-[0.2em]">
+                          Description
+                        </p>
+                        <p className="text-muted-foreground max-w-xl text-[14px] leading-relaxed">
+                          {item.description}
+                        </p>
+                      </div>
 
-                    {/* Footer Section: Horizontal Layout */}
+                      {/* Footer Section: Actually fixed your side-by-side flex layout */}
+                      <div className="pt-2 flex flex-wrap items-center gap-6">
+                        {/* Read More - Simple Side Button */}
+                        <button className="flex items-center gap-1 text-primary transition-colors font-bold text-xs uppercase tracking-widest outline-none group/btn">
+                          Read More
+                          <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                        </button>
 
-                    {/* Read More - Simple Side Button */}
-                    <button className="flex items-center gap-1 text-primary transition-colors font-bold text-xs uppercase tracking-widest outline-none group/btn">
-                      Read More
-                      <ChevronRight className="h-4 w-4 mb-1 group-hover:translate-y-0.5 transition-transform" />
-                    </button>
-
-                    {/* Release Date - Side by Side & Yellow */}
-                    <div>
-                      {item.releaseDate && (
-                        <div className="flex items-center gap-2">
-                          <span className="text-yellow-500 text-[12px] tracking-wider font-bold">
-                            Release Date:
-                          </span>
-                          <span className="text-yellow-500 text-[12px] ">
-                            {item.releaseDate}
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  </header>
-                </div>
+                        {/* Release Date - Side by Side & Yellow */}
+                        {item.releaseDate && (
+                          <div className="flex items-center gap-2 border-l border-border pl-6 h-4">
+                            <span className="text-yellow-500 text-[12px] tracking-wider font-bold uppercase">
+                              Release Date:
+                            </span>
+                            <span className="text-yellow-500 text-[12px] font-medium">
+                              {item.releaseDate}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    </header>
+                  </div>
+                </Container>
               </div>
             </CarouselItem>
           ))}

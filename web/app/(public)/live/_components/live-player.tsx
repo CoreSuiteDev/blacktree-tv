@@ -18,6 +18,7 @@ import VidPlayer from "@/features/player/components/vid-player";
 import { useHeroStore } from "@/store/public/use-hero-store";
 import { usePlayerStore } from "@/features/player/store/player.store";
 import { ChatInput } from "@/components/shared/home/chat-input";
+import { Container } from "@/components/shared/container";
 
 export function LivePlayer() {
   const { messages } = useHeroStore();
@@ -32,8 +33,8 @@ export function LivePlayer() {
   }, [messages]);
 
   return (
-    <section className="bg-black text-foreground p-4 lg:p-8 min-h-screen">
-      <div className="container mx-auto">
+    <section className="bg-black text-foreground py-4 lg:p-8 min-h-screen">
+      <Container>
         <FilterBar />
 
         {/* Using items-stretch to ensure player and chat have the same height */}
@@ -154,7 +155,7 @@ export function LivePlayer() {
             </Card>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import ActorCard from "./actor-card";
+import { Container } from "./container";
 
 export interface ActorDetails {
   born: string;
@@ -50,8 +51,8 @@ const ActorSlider = ({ title, actors }: ActorSliderProps) => {
   const displayActors = actors.length < 10 ? [...actors, ...actors] : actors;
 
   return (
-    <section className="w-full py-8 md:py-10 lg:py-14 px-4 md:px-0 transition-colors duration-300">
-      <div className="container mx-auto">
+    <section className="w-full py-8 md:py-10 lg:py-14  transition-colors duration-300">
+      <Container>
         <Carousel
           opts={{
             align: "start",
@@ -100,7 +101,7 @@ const ActorSlider = ({ title, actors }: ActorSliderProps) => {
             ))}
           </CarouselContent>
         </Carousel>
-      </div>
+      </Container>
     </section>
   );
 };

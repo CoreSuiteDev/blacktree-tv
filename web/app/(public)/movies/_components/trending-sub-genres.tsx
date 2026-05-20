@@ -2,11 +2,12 @@ import React from "react";
 import { ChevronRight } from "lucide-react";
 import { SUB_GENRES } from "@/constants/genres";
 import Image from "next/image";
+import { Container } from "@/components/shared/container";
 
 export default function TrendingSubGenres() {
   return (
-    <section className="w-full py-16 px-4 md:px-10 lg:px-20 bg-background text-frontground">
-      <div className="container mx-auto">
+    <section className="w-full py-16    bg-background text-frontground">
+      <Container>
         {/* Header Section */}
         <div className="mb-10 space-y-2">
           <h2 className="text-3xl md:text-4xl font-semibold tracking-tighter flex items-center gap-2">
@@ -81,7 +82,7 @@ export default function TrendingSubGenres() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

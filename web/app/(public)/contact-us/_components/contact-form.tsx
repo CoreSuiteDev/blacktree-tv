@@ -32,9 +32,9 @@ export default function ContactForm() {
   };
 
   return (
-    <div className="min-h-screen bg-black mt-10 text-white flex flex-col items-center justify-center p-4 font-sans">
+    <div className="min-h-screen bg-black mt-18 md:mt-22 text-white flex flex-col items-center justify-center p-4 font-sans">
       {/* Header Section */}
-      <div className="text-center max-w-xl mb-10">
+      <div className="text-center max-w-xl mb-6">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
           Get in Touch
         </h1>

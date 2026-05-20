@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/popover";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Container } from "@/components/shared/container";
 
 interface FilterDropdownProps {
   label: string;
@@ -18,7 +19,7 @@ interface FilterDropdownProps {
 export function FilterControls() {
   return (
     <section className="w-full py-4">
-      <div className="container px-4 md:px-0 mx-auto">
+      <Container>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-center justify-items-stretch">
           <Button className="w-full py-5 bg-primary/90 hover:bg-primary text-foreground font-bold uppercase tracking-wider rounded-lg transition-all shadow-md">
             ALL
@@ -34,7 +35,7 @@ export function FilterControls() {
             items={["English", "Spanish", "French"]}
           />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
