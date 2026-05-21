@@ -64,11 +64,11 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-popover text-white antialiased font-sans selection:bg-primary selection:text-white flex flex-col">
       {/* Premium Header/Navbar */}
-      <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center bg-black border-b border-neutral-900/80 backdrop-blur-md px-4 sm:px-6 lg:px-12">
+      <header className="sticky top-0 z-50 flex py-2 shrink-0 items-center bg-black border-b border-neutral-900/80 backdrop-blur-md px-4 sm:px-6 lg:px-12">
         <div className="flex container mx-auto w-full items-center justify-between">
           {/* Logo on Left */}
           <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-            <div className="relative overflow-hidden flex items-center justify-center shrink-0 h-10 w-10">
+            <div className="relative overflow-hidden flex items-center justify-center shrink-0 h-14 w-14">
               <Image
                 src="/assets/images/BTTV New Logo2 2.png"
                 alt="BlackTree TV Logo"
@@ -77,9 +77,6 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                 priority
               />
             </div>
-            <span className="font-bold text-base tracking-wider text-white uppercase hidden sm:inline-block">
-              BlackTree TV
-            </span>
           </Link>
 
           {/* User Profile Dropdown on Right */}
@@ -105,7 +102,6 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                       "US"}
                   </AvatarFallback>
                 </Avatar>
-                <ChevronsUpDown className="size-3.5 text-neutral-400 shrink-0" />
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent

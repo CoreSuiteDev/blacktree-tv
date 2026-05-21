@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { History, Trash2, Film, Star, Calendar, RefreshCw } from "lucide-react";
+import { History, Trash2, Film, Star, Calendar } from "lucide-react";
 import { useUserProfileStore } from "@/store/public/use-user-profile-store";
 import { Button } from "@/components/ui/button";
 
