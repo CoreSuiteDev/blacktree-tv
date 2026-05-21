@@ -15,7 +15,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  ChevronsUpDown,
   LogOut,
   Sparkles,
   User,
@@ -62,27 +61,27 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="min-h-screen bg-popover text-white antialiased font-sans selection:bg-primary selection:text-white flex flex-col">
+    <div className="min-h-screen bg-black text-white antialiased font-sans selection:bg-primary selection:text-white flex flex-col">
       {/* Premium Header/Navbar */}
-      <header className="sticky top-0 z-50 flex py-2 shrink-0 items-center bg-black border-b border-neutral-900/80 backdrop-blur-md px-4 sm:px-6 lg:px-12">
-        <div className="flex container mx-auto w-full items-center justify-between">
+      <header className="sticky top-0 z-100 w-full border-b bg-background/80 backdrop-blur-md py-0 shadow-sm">
+        <div className="container mx-auto px-4 md:px-6 flex h-16 md:h-20 items-center justify-between relative">
           {/* Logo on Left */}
-          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-            <div className="relative overflow-hidden flex items-center justify-center shrink-0 h-14 w-14">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="relative h-14 w-14 md:h-16 md:w-16 overflow-hidden rounded-xl bg-card/50 shadow-sm">
               <Image
                 src="/assets/images/BTTV New Logo2 2.png"
-                alt="BlackTree TV Logo"
+                alt="Logo"
                 fill
-                className="object-cover"
+                className="object-cover p-1"
                 priority
               />
             </div>
           </Link>
 
           {/* User Profile Dropdown on Right */}
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2.5 px-3 py-1.5 hover:bg-neutral-900/50 rounded-xl cursor-pointer text-left transition-all duration-200 outline-none select-none border border-transparent hover:border-neutral-800 bg-neutral-950/40">
+              <button className="flex items-center gap-2 p-0.5 md:p-1 sm:px-3 sm:py-1.5 border border-white/20 sm:border-transparent hover:border-primary/50 sm:hover:border-neutral-800 rounded-full sm:rounded-xl cursor-pointer text-left transition-all duration-200 hover:scale-105 sm:hover:scale-100 active:scale-95 sm:active:scale-100 outline-none select-none bg-black/10 sm:bg-neutral-950/40 backdrop-blur-sm sm:backdrop-blur-none shadow-sm">
                 <div className="hidden sm:grid text-right text-[11px] leading-tight min-w-0 pr-1">
                   <span className="truncate font-semibold text-white">
                     {user?.name || "User"}
@@ -91,7 +90,7 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                     {user?.email}
                   </span>
                 </div>
-                <Avatar className="h-8 w-8 shrink-0 shadow-sm">
+                <Avatar className="h-8 w-8 md:h-9 md:w-9 shrink-0 shadow-sm">
                   <AvatarImage
                     src={user?.image}
                     alt={user?.name || "User Avatar"}
@@ -105,10 +104,11 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-              className="w-56 rounded-xl bg-neutral-950 border border-neutral-900 text-neutral-200 p-1.5 animate-in fade-in-50 slide-in-from-top-1 shadow-2xl"
+              className="w-58 rounded-xl bg-neutral-950 border border-neutral-900 text-neutral-200 p-1.5 animate-in fade-in-50 slide-in-from-top-4 shadow-2xl"
               side="bottom"
-              align="end"
-              sideOffset={8}
+              align="center"
+              sideOffset={16}
+              collisionPadding={16}
             >
               <DropdownMenuLabel className="p-0 font-normal">
                 <div className="flex items-center gap-2 px-2.5 py-2 text-left text-xs">
@@ -136,9 +136,17 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
               <DropdownMenuGroup>
-                <DropdownMenuItem className="focus:bg-neutral-900 focus:text-white cursor-pointer gap-2 text-xs py-2.5 px-3 rounded-lg">
-                  <Sparkles size={14} className="text-yellow-500" />
-                  <span>Upgrade to Pro</span>
+                <DropdownMenuItem
+                  asChild
+                  className="focus:bg-neutral-900 focus:text-white cursor-pointer gap-2 text-xs py-2.5 px-3 rounded-lg"
+                >
+                  <Link
+                    href="/subscription"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <Sparkles size={14} className="text-yellow-500" />
+                    <span>Upgrade to Pro</span>
+                  </Link>
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
@@ -161,7 +169,6 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                     <span>Watch History</span>
                   </Link>
                 </DropdownMenuItem>
-
               </DropdownMenuGroup>
               <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
               <DropdownMenuItem

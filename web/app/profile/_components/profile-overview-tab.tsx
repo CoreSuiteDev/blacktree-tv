@@ -183,7 +183,7 @@ const ProfileOverview = () => {
     <div className="w-full space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 container mx-auto pb-10">
       {/* HEADER SECTION */}
       <div className="space-y-1.5 pb-2">
-        <h1 className="text-3xl font-extrabold tracking-tight text-white font-sans sm:text-4xl">
+        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-sans sm:text-4xl">
           Account Settings
         </h1>
         <p className="text-xs sm:text-sm text-neutral-400 font-sans tracking-wide">
@@ -193,7 +193,7 @@ const ProfileOverview = () => {
       </div>
 
       {/* SECTION 1: MEMBERSHIP & BILLING (Netflix Style Row) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900 pt-6 gap-6 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900/60 pt-6 gap-6 md:gap-4">
         {/* Left Column: Row Title */}
         <div className="md:col-span-3 space-y-1">
           <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-300 font-sans">
@@ -205,18 +205,22 @@ const ProfileOverview = () => {
         </div>
 
         {/* Right Column: Row Action Card */}
-        <div className="md:col-span-9 bg-neutral-950/40 backdrop-blur-md border border-neutral-900 p-5 rounded-2xl space-y-4 shadow-xl">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-900 pb-3 gap-2">
-            <div className="flex items-center gap-2 text-yellow-500">
-              <Zap size={16} />
-              <span className="text-xs font-extrabold uppercase tracking-widest font-mono">
+        <div className="md:col-span-9 bg-neutral-900/40 backdrop-blur-md border border-neutral-800/60 p-5 rounded-2xl space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.6),0_0_20px_rgba(220,38,38,0.02)] hover:border-red-500/25 hover:shadow-[0_8px_30px_rgb(0,0,0,0.8),0_0_25px_rgba(220,38,38,0.06)] transition-all duration-300">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-neutral-900/60 pb-3 gap-2">
+            <div className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg border font-sans text-xs font-extrabold uppercase tracking-wider transition-all duration-300 ${
+              hasActiveSubscription 
+                ? "text-amber-400 bg-amber-400/10 border-amber-400/20 shadow-[0_0_12px_rgba(245,158,11,0.1)]" 
+                : "text-neutral-400 bg-neutral-900/30 border-neutral-800"
+            }`}>
+              <Zap size={13} className={hasActiveSubscription ? "text-amber-400 animate-pulse" : "text-neutral-400"} />
+              <span>
                 {hasActiveSubscription
                   ? profile.membershipTier
                   : "No Active Plan"}
               </span>
             </div>
             {hasActiveSubscription && (
-              <span className="text-[10px] font-mono text-red-500 font-bold bg-red-500/10 px-2 py-0.5 rounded border border-red-500/25">
+              <span className="text-[10px] font-mono text-rose-400 font-bold bg-rose-500/10 px-2.5 py-1 rounded-lg border border-rose-500/20 shadow-[0_0_10px_rgba(244,63,94,0.05)]">
                 Next renewal: June 12, 2026 ({countdownText} left)
               </span>
             )}
@@ -224,21 +228,21 @@ const ProfileOverview = () => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans">
             {/* Price Item */}
-            <div className="space-y-1">
-              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">
+            <div className="space-y-1 p-3.5 bg-neutral-900/20 border border-neutral-900/60 rounded-xl hover:border-neutral-850 hover:bg-neutral-900/30 transition-all duration-300 shadow-inner">
+              <span className="text-[9px] uppercase tracking-wider text-neutral-450 block font-semibold">
                 Plan Cost
               </span>
-              <span className="text-white font-bold">
+              <span className="text-white font-extrabold text-sm tracking-wide">
                 {hasActiveSubscription ? "$14.99 / Month" : "$0.00"}
               </span>
             </div>
 
             {/* Screen Capacity */}
-            <div className="space-y-1">
-              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">
+            <div className="space-y-1 p-3.5 bg-neutral-900/20 border border-neutral-900/60 rounded-xl hover:border-neutral-850 hover:bg-neutral-900/30 transition-all duration-300 shadow-inner">
+              <span className="text-[9px] uppercase tracking-wider text-neutral-455 block font-semibold">
                 Concurrent Screens
               </span>
-              <span className="text-white font-bold">
+              <span className="text-white font-extrabold text-sm tracking-wide">
                 {hasActiveSubscription
                   ? "4 Screens Simultaneously"
                   : "0 Screens Available"}
@@ -246,13 +250,13 @@ const ProfileOverview = () => {
             </div>
 
             {/* Payment Method */}
-            <div className="space-y-1 flex items-center justify-between sm:justify-start gap-4">
+            <div className="space-y-1 p-3.5 bg-neutral-900/20 border border-neutral-900/60 rounded-xl hover:border-neutral-850 hover:bg-neutral-900/30 transition-all duration-300 shadow-inner flex items-center justify-between sm:justify-start gap-4">
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-neutral-300 block">
+                <span className="text-[9px] uppercase tracking-wider text-neutral-450 block font-semibold">
                   Payment Method
                 </span>
-                <span className="text-white font-bold flex items-center gap-1.5">
-                  <CreditCard size={12} className="text-neutral-400" />
+                <span className="text-white font-extrabold text-sm tracking-wide flex items-center gap-1.5">
+                  <CreditCard size={13} className="text-rose-500" />
                   {hasActiveSubscription
                     ? "Visa •••• 4242"
                     : "No payment method"}
@@ -264,7 +268,7 @@ const ProfileOverview = () => {
       </div>
 
       {/* SECTION 2: PERSONAL PROFILE DETAILS */}
-      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900 pt-6 gap-6 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900/60 pt-6 gap-6 md:gap-4">
         {/* Left Column: Row Title */}
         <div className="md:col-span-3 space-y-1">
           <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-300 font-sans">
@@ -276,11 +280,11 @@ const ProfileOverview = () => {
         </div>
 
         {/* Right Column: Row Action Card */}
-        <div className="md:col-span-9 bg-neutral-950/40 backdrop-blur-md border border-neutral-900 p-5 rounded-2xl space-y-6 shadow-xl">
+        <div className="md:col-span-9 bg-neutral-900/40 backdrop-blur-md border border-neutral-800/60 p-5 rounded-2xl space-y-6 shadow-[0_8px_30px_rgb(0,0,0,0.6),0_0_20px_rgba(220,38,38,0.02)] hover:border-red-500/25 hover:shadow-[0_8px_30px_rgb(0,0,0,0.8),0_0_25px_rgba(220,38,38,0.06)] transition-all duration-300">
           <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 pb-2 border-b border-neutral-900/60">
             {/* Avatar block */}
-            <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-neutral-800 p-1 group">
-              <div className="relative w-full h-full bg-neutral-900 rounded-full overflow-hidden">
+            <div className="relative w-20 h-20 rounded-full flex items-center justify-center border border-neutral-800 group-hover:border-red-500/30 p-1 group shadow-inner hover:shadow-[0_0_15px_rgba(239,68,68,0.15)] transition-all duration-300">
+              <div className="relative w-full h-full bg-neutral-950 rounded-full overflow-hidden">
                 {profile.avatar ? (
                   <Image
                     src={profile.avatar}
@@ -317,7 +321,9 @@ const ProfileOverview = () => {
               <h3 className="text-sm font-bold text-white tracking-wide">
                 {editName || "Asif Hosen"}
               </h3>
-              <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-mono">
+              <p className={`text-[10px] uppercase tracking-widest font-mono font-semibold transition-colors duration-300 ${
+                hasActiveSubscription ? "text-amber-400" : "text-neutral-400"
+              }`}>
                 {hasActiveSubscription
                   ? profile.membershipTier
                   : "Standard Tier"}
@@ -329,7 +335,7 @@ const ProfileOverview = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
             {/* Field: Full Name */}
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-0.5">
+              <label className="text-[10px] font-bold text-neutral-450 uppercase tracking-wider pl-0.5">
                 Full Name
               </label>
               <div className="relative group">
@@ -340,7 +346,7 @@ const ProfileOverview = () => {
                   type="text"
                   value={editName}
                   onChange={(e) => setEditFields({ editName: e.target.value })}
-                  className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-9 rounded-xl transition-all"
+                  className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-9 rounded-xl transition-all duration-300 shadow-inner"
                   placeholder="Your Full Name"
                 />
               </div>
@@ -348,7 +354,7 @@ const ProfileOverview = () => {
 
             {/* Field: Username */}
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-0.5">
+              <label className="text-[10px] font-bold text-neutral-455 uppercase tracking-wider pl-0.5">
                 Username
               </label>
               <div className="relative group">
@@ -361,7 +367,7 @@ const ProfileOverview = () => {
                   onChange={(e) =>
                     setEditFields({ editUsername: e.target.value })
                   }
-                  className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-9 rounded-xl transition-all"
+                  className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-9 rounded-xl transition-all duration-300 shadow-inner"
                   placeholder="username"
                 />
               </div>
@@ -369,7 +375,7 @@ const ProfileOverview = () => {
 
             {/* Field: Email */}
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-0.5">
+              <label className="text-[10px] font-bold text-neutral-450 uppercase tracking-wider pl-0.5">
                 Email Address
               </label>
               <div className="relative group">
@@ -380,7 +386,7 @@ const ProfileOverview = () => {
                   type="email"
                   value={editEmail}
                   onChange={(e) => setEditFields({ editEmail: e.target.value })}
-                  className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-9 rounded-xl transition-all"
+                  className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-9 rounded-xl transition-all duration-300 shadow-inner"
                   placeholder="email@example.com"
                 />
               </div>
@@ -388,7 +394,7 @@ const ProfileOverview = () => {
 
             {/* Field: Phone */}
             <div className="space-y-1.5">
-              <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider pl-0.5">
+              <label className="text-[10px] font-bold text-neutral-455 uppercase tracking-wider pl-0.5">
                 Phone Number
               </label>
               <div className="relative group">
@@ -399,7 +405,7 @@ const ProfileOverview = () => {
                   type="text"
                   value={editPhone}
                   onChange={(e) => setEditFields({ editPhone: e.target.value })}
-                  className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-9 rounded-xl transition-all"
+                  className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-9 rounded-xl transition-all duration-300 shadow-inner"
                   placeholder="+8801700000000"
                 />
               </div>
@@ -410,7 +416,7 @@ const ProfileOverview = () => {
             <Button
               onClick={handleSaveDetails}
               disabled={isSavingDetails}
-              className="bg-linear-to-r from-red-600 to-rose-700 text-white font-extrabold hover:from-red-700 hover:to-rose-800 text-xs px-6 py-4.5 rounded-xl tracking-wider uppercase hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 cursor-pointer"
+              className="bg-linear-to-r from-red-600 via-rose-600 to-rose-700 hover:from-red-500 hover:via-rose-500 hover:to-rose-600 text-white font-extrabold text-xs px-6 py-4.5 rounded-xl tracking-wider uppercase shadow-[0_4px_15px_rgba(220,38,38,0.15)] hover:shadow-[0_4px_25px_rgba(220,38,38,0.35)] transition-all duration-300 cursor-pointer border border-red-500/20"
             >
               {isSavingDetails ? "Saving..." : "Save Profile Details"}
             </Button>
@@ -419,7 +425,7 @@ const ProfileOverview = () => {
       </div>
 
       {/* SECTION 3: SECURITY CREDENTIALS */}
-      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900 pt-6 gap-6 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900/60 pt-6 gap-6 md:gap-4">
         {/* Left Column: Row Title */}
         <div className="md:col-span-3 space-y-1">
           <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-300 font-sans">
@@ -431,7 +437,7 @@ const ProfileOverview = () => {
         </div>
 
         {/* Right Column: Row Action Card */}
-        <div className="md:col-span-9 bg-neutral-950/40 backdrop-blur-md border border-neutral-900 p-5 rounded-2xl space-y-4 shadow-xl">
+        <div className="md:col-span-9 bg-neutral-900/40 backdrop-blur-md border border-neutral-800/60 p-5 rounded-2xl space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.6),0_0_20px_rgba(220,38,38,0.02)] hover:border-red-500/25 hover:shadow-[0_8px_30px_rgb(0,0,0,0.8),0_0_25px_rgba(220,38,38,0.06)] transition-all duration-300">
           <div className="flex items-start justify-between">
             <div className="space-y-1">
               <h4 className="text-xs font-bold tracking-tight text-white font-sans">
@@ -446,7 +452,7 @@ const ProfileOverview = () => {
               <Button
                 variant="outline"
                 onClick={() => setShowPasswordForm(true)}
-                className="h-9 px-4 text-xs font-bold border-neutral-800 bg-neutral-900/20 hover:border-neutral-750 text-white transition-all duration-300 rounded-xl"
+                className="h-9 px-4 text-xs font-bold border border-neutral-850 bg-neutral-900/40 hover:border-red-500/30 hover:bg-red-500/5 hover:text-red-400 text-white transition-all duration-300 rounded-xl shadow-md"
               >
                 Change Password
               </Button>
@@ -472,7 +478,7 @@ const ProfileOverview = () => {
                       type={showPasswords ? "text" : "password"}
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all font-sans"
+                      className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all duration-300 shadow-inner font-sans"
                       placeholder="••••••••"
                       required
                     />
@@ -499,7 +505,7 @@ const ProfileOverview = () => {
                       type={showPasswords ? "text" : "password"}
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all font-sans"
+                      className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all duration-300 shadow-inner font-sans"
                       placeholder="Min. 8 characters"
                       required
                     />
@@ -519,7 +525,7 @@ const ProfileOverview = () => {
                       type={showPasswords ? "text" : "password"}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all font-sans"
+                      className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500/60 focus-visible:ring-2 focus-visible:ring-red-500/10 hover:bg-neutral-900/40 hover:border-neutral-700/80 h-10 text-xs text-white pl-10 pr-10 rounded-xl transition-all duration-300 shadow-inner font-sans"
                       placeholder="Confirm password"
                       required
                     />
@@ -537,14 +543,14 @@ const ProfileOverview = () => {
                     setNewPassword("");
                     setConfirmPassword("");
                   }}
-                  className="h-9 px-4 text-xs font-bold text-neutral-400 hover:text-white hover:bg-neutral-900/60 rounded-xl"
+                  className="h-9 px-4 text-xs font-bold text-neutral-400 hover:text-white hover:bg-neutral-900/50 border border-transparent hover:border-neutral-800/85 transition-all duration-300 rounded-xl"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
                   disabled={isUpdatingPassword}
-                  className="h-9 px-5 text-xs font-extrabold bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-700 hover:to-rose-800 text-white rounded-xl uppercase tracking-wider transition-all duration-300 cursor-pointer"
+                  className="h-9 px-5 text-xs font-extrabold bg-linear-to-r from-red-600 via-rose-600 to-rose-700 hover:from-red-500 hover:via-rose-500 hover:to-rose-600 text-white rounded-xl uppercase tracking-wider shadow-[0_4px_12px_rgba(220,38,38,0.15)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.35)] transition-all duration-300 cursor-pointer border border-red-500/20"
                 >
                   {isUpdatingPassword ? "Updating..." : "Save Password"}
                 </Button>
@@ -555,10 +561,10 @@ const ProfileOverview = () => {
       </div>
 
       {/* SECTION 4: DANGER ZONE (Delete Profile) */}
-      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900 pt-6 gap-6 md:gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-12 border-t border-neutral-900/60 pt-6 gap-6 md:gap-4">
         {/* Left Column: Row Title */}
         <div className="md:col-span-3 space-y-1">
-          <h2 className="text-xs font-bold uppercase tracking-wider text-red-500 font-sans">
+          <h2 className="text-xs font-bold uppercase tracking-wider text-red-550 font-sans">
             Danger Zone
           </h2>
           <p className="text-[10px] text-neutral-400 hidden md:block">
@@ -567,7 +573,7 @@ const ProfileOverview = () => {
         </div>
 
         {/* Right Column: Row Action Card */}
-        <div className="md:col-span-9 bg-red-950/5 border border-red-950/20 p-5 rounded-2xl space-y-4 shadow-xl transition-all duration-300 hover:border-red-900/30">
+        <div className="md:col-span-9 bg-red-950/10 hover:bg-red-950/15 border border-red-950/40 hover:border-red-500/35 p-5 rounded-2xl space-y-4 shadow-[0_8px_30px_rgb(0,0,0,0.6),0_0_20px_rgba(220,38,38,0.03)] hover:shadow-[0_8px_30px_rgb(0,0,0,0.8),0_0_25px_rgba(220,38,38,0.08)] transition-all duration-300">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div className="space-y-1">
               <h4 className="text-xs font-bold tracking-tight text-white font-sans">
@@ -581,7 +587,7 @@ const ProfileOverview = () => {
             <Button
               variant="destructive"
               onClick={() => setShowDeleteModal(true)}
-              className="h-9 px-5 text-xs font-extrabold font-sans transition-all duration-300 shrink-0 bg-red-600 hover:bg-red-700 text-white rounded-xl uppercase tracking-wider hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] self-start sm:self-center"
+              className="h-9 px-5 text-xs font-extrabold bg-red-600 hover:bg-red-505 active:bg-red-700 text-white rounded-xl uppercase tracking-wider transition-all duration-300 shadow-[0_4px_12px_rgba(220,38,38,0.15)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.35)] shrink-0 self-start sm:self-center border border-red-500/20 cursor-pointer"
             >
               Delete Profile
             </Button>
@@ -591,8 +597,8 @@ const ProfileOverview = () => {
 
       {/* DELETE ACCOUNT CONFIRMATION MODAL OVERLAY */}
       {showDeleteModal && (
-        <div className="fixed inset-0 z-150 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200">
-          <div className="bg-neutral-950 border border-neutral-900 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-5 animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-150 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-in fade-in duration-300">
+          <div className="bg-neutral-950/90 border border-red-500/25 rounded-2xl max-w-md w-full p-6 shadow-[0_0_50px_rgba(220,38,38,0.15)] space-y-5 animate-in zoom-in-95 duration-300 backdrop-blur-xl">
             <div className="flex items-center gap-3 text-red-500">
               <div className="p-2 bg-red-500/10 rounded-lg">
                 <AlertTriangle size={20} />
@@ -621,7 +627,7 @@ const ProfileOverview = () => {
                 value={deleteConfirmText}
                 onChange={(e) => setDeleteConfirmText(e.target.value)}
                 placeholder="DELETE"
-                className="bg-neutral-900/40 border-neutral-800 focus-visible:border-red-500 focus-visible:ring-1 focus-visible:ring-red-500 h-10 text-xs text-white rounded-xl font-mono text-center tracking-widest"
+                className="bg-neutral-900/20 border-neutral-800 focus-visible:bg-neutral-950/60 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/10 h-10 text-xs text-white rounded-xl font-mono text-center tracking-widest transition-all duration-300 shadow-inner"
               />
             </div>
 
@@ -632,14 +638,14 @@ const ProfileOverview = () => {
                   setDeleteConfirmText("");
                 }}
                 disabled={isDeleting}
-                className="h-9 px-4 text-xs font-bold bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white hover:bg-neutral-850 rounded-xl transition-all"
+                className="h-9 px-4 text-xs font-bold bg-neutral-900/40 border border-neutral-800/80 text-neutral-400 hover:text-white hover:bg-neutral-950 rounded-xl transition-all duration-300"
               >
                 Cancel
               </Button>
               <Button
                 onClick={handleDeleteAccount}
                 disabled={deleteConfirmText !== "DELETE" || isDeleting}
-                className="h-9 px-5 text-xs font-extrabold bg-red-600 hover:bg-red-700 disabled:bg-neutral-900 disabled:text-neutral-600 disabled:border-transparent disabled:cursor-not-allowed text-white rounded-xl uppercase tracking-wider transition-all duration-300"
+                className="h-9 px-5 text-xs font-extrabold bg-red-600 hover:bg-red-500 disabled:bg-neutral-900 disabled:text-neutral-600 disabled:border-transparent disabled:cursor-not-allowed text-white rounded-xl uppercase tracking-wider transition-all duration-300 border border-red-500/20 shadow-[0_4px_12px_rgba(220,38,38,0.15)] hover:shadow-[0_4px_20px_rgba(220,38,38,0.35)] cursor-pointer"
               >
                 {isDeleting ? "Deleting..." : "Confirm Deletion"}
               </Button>
