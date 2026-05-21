@@ -1,30 +1,26 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
-import Image from "next/image";
-import {
-  User,
-  Camera,
-  CreditCard,
-  Tv,
-  Zap,
-  CheckCircle2,
-  AlertCircle,
-  CalendarDays,
-  Hourglass,
-  Mail,
-  Phone,
-  AtSign,
-  Lock,
-  Eye,
-  EyeOff,
-  AlertTriangle,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useUserProfileStore } from "@/store/public/use-user-profile-store";
 import { useAuth } from "@/hooks/useAuth";
 import api from "@/lib/axios";
+import { useUserProfileStore } from "@/store/public/use-user-profile-store";
+import {
+  AlertTriangle,
+  AtSign,
+  Camera,
+  CreditCard,
+  Eye,
+  EyeOff,
+  Lock,
+  Mail,
+  Phone,
+  User,
+  Zap,
+} from "lucide-react";
+import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { toast } from "sonner";
+import { getErrorMessage } from "@/lib/utils";
 
 const ProfileOverview = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -118,8 +114,8 @@ const ProfileOverview = () => {
         });
       }
       toast.success("Profile details updated successfully!");
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Saved locally, but failed to sync online.");
+    } catch (error: unknown) {
+      toast.error(getErrorMessage(error, "Saved locally, but failed to sync online."));
     } finally {
       setIsSavingDetails(false);
     }
@@ -150,8 +146,8 @@ const ProfileOverview = () => {
       } else {
         toast.error(response.data.message || "Failed to update password.");
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "An error occurred while changing password.");
+    } catch (error: unknown) {
+      toast.error(getErrorMessage(error, "An error occurred while changing password."));
     } finally {
       setIsUpdatingPassword(false);
     }
@@ -175,8 +171,8 @@ const ProfileOverview = () => {
       } else {
         toast.error(response.data.message || "Failed to delete account.");
       }
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "An error occurred while deleting your account.");
+    } catch (error: unknown) {
+      toast.error(getErrorMessage(error, "An error occurred while deleting your account."));
     } finally {
       setIsDeleting(false);
       setShowDeleteModal(false);
@@ -185,14 +181,14 @@ const ProfileOverview = () => {
 
   return (
     <div className="w-full space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 container mx-auto pb-10">
-      
       {/* HEADER SECTION */}
       <div className="space-y-1.5 pb-2">
         <h1 className="text-3xl font-extrabold tracking-tight text-white font-sans sm:text-4xl">
           Account Settings
         </h1>
         <p className="text-xs sm:text-sm text-neutral-400 font-sans tracking-wide">
-          Manage your personal identifiers, subscription plan details, billing, and system credentials.
+          Manage your personal identifiers, subscription plan details, billing,
+          and system credentials.
         </p>
       </div>
 
@@ -214,7 +210,9 @@ const ProfileOverview = () => {
             <div className="flex items-center gap-2 text-yellow-500">
               <Zap size={16} />
               <span className="text-xs font-extrabold uppercase tracking-widest font-mono">
-                {hasActiveSubscription ? profile.membershipTier : "No Active Plan"}
+                {hasActiveSubscription
+                  ? profile.membershipTier
+                  : "No Active Plan"}
               </span>
             </div>
             {hasActiveSubscription && (
@@ -227,23 +225,37 @@ const ProfileOverview = () => {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs font-sans">
             {/* Price Item */}
             <div className="space-y-1">
-              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">Plan Cost</span>
-              <span className="text-white font-bold">{hasActiveSubscription ? "$14.99 / Month" : "$0.00"}</span>
+              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">
+                Plan Cost
+              </span>
+              <span className="text-white font-bold">
+                {hasActiveSubscription ? "$14.99 / Month" : "$0.00"}
+              </span>
             </div>
 
             {/* Screen Capacity */}
             <div className="space-y-1">
-              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">Concurrent Screens</span>
-              <span className="text-white font-bold">{hasActiveSubscription ? "4 Screens Simultaneously" : "0 Screens Available"}</span>
+              <span className="text-[9px] uppercase tracking-wider text-neutral-400 block">
+                Concurrent Screens
+              </span>
+              <span className="text-white font-bold">
+                {hasActiveSubscription
+                  ? "4 Screens Simultaneously"
+                  : "0 Screens Available"}
+              </span>
             </div>
 
             {/* Payment Method */}
             <div className="space-y-1 flex items-center justify-between sm:justify-start gap-4">
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-neutral-300 block">Payment Method</span>
+                <span className="text-[9px] uppercase tracking-wider text-neutral-300 block">
+                  Payment Method
+                </span>
                 <span className="text-white font-bold flex items-center gap-1.5">
                   <CreditCard size={12} className="text-neutral-400" />
-                  {hasActiveSubscription ? "Visa •••• 4242" : "No payment method"}
+                  {hasActiveSubscription
+                    ? "Visa •••• 4242"
+                    : "No payment method"}
                 </span>
               </div>
             </div>
@@ -302,9 +314,13 @@ const ProfileOverview = () => {
             </div>
 
             <div className="text-center sm:text-left space-y-0.5">
-              <h3 className="text-sm font-bold text-white tracking-wide">{editName || "Asif Hosen"}</h3>
+              <h3 className="text-sm font-bold text-white tracking-wide">
+                {editName || "Asif Hosen"}
+              </h3>
               <p className="text-[10px] text-neutral-400 uppercase tracking-widest font-mono">
-                {hasActiveSubscription ? profile.membershipTier : "Standard Tier"}
+                {hasActiveSubscription
+                  ? profile.membershipTier
+                  : "Standard Tier"}
               </p>
             </div>
           </div>
@@ -342,7 +358,9 @@ const ProfileOverview = () => {
                 <Input
                   type="text"
                   value={editUsername || ""}
-                  onChange={(e) => setEditFields({ editUsername: e.target.value })}
+                  onChange={(e) =>
+                    setEditFields({ editUsername: e.target.value })
+                  }
                   className="bg-neutral-900/30 border-neutral-800 focus-visible:border-red-500/50 focus-visible:ring-1 focus-visible:ring-red-500/50 hover:border-neutral-700 h-10 text-xs text-white pl-9 rounded-xl transition-all"
                   placeholder="username"
                 />
@@ -392,7 +410,7 @@ const ProfileOverview = () => {
             <Button
               onClick={handleSaveDetails}
               disabled={isSavingDetails}
-              className="bg-gradient-to-r from-red-600 to-rose-700 text-white font-extrabold hover:from-red-700 hover:to-rose-800 text-xs px-6 py-4.5 rounded-xl tracking-wider uppercase hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 cursor-pointer"
+              className="bg-linear-to-r from-red-600 to-rose-700 text-white font-extrabold hover:from-red-700 hover:to-rose-800 text-xs px-6 py-4.5 rounded-xl tracking-wider uppercase hover:shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all duration-300 cursor-pointer"
             >
               {isSavingDetails ? "Saving..." : "Save Profile Details"}
             </Button>
@@ -420,7 +438,8 @@ const ProfileOverview = () => {
                 Master Account Password
               </h4>
               <p className="text-[11px] text-neutral-300 font-sans leading-relaxed">
-                Use a strong, cyclic rotated password to protect against token reuse.
+                Use a strong, cyclic rotated password to protect against token
+                reuse.
               </p>
             </div>
             {!showPasswordForm && (
@@ -435,7 +454,10 @@ const ProfileOverview = () => {
           </div>
 
           {showPasswordForm && (
-            <form onSubmit={handleUpdatePassword} className="space-y-4 pt-4 border-t border-neutral-900/60 animate-in fade-in duration-300">
+            <form
+              onSubmit={handleUpdatePassword}
+              className="space-y-4 pt-4 border-t border-neutral-900/60 animate-in fade-in duration-300"
+            >
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* Field: Current Password */}
                 <div className="space-y-1.5">
@@ -552,7 +574,8 @@ const ProfileOverview = () => {
                 Permanent Account Destruction
               </h4>
               <p className="text-[11px] text-neutral-400 font-sans leading-relaxed">
-                Delete your profile data, subscriptions, settings, and watch history records permanently.
+                Delete your profile data, subscriptions, settings, and watch
+                history records permanently.
               </p>
             </div>
             <Button
@@ -580,12 +603,18 @@ const ProfileOverview = () => {
             </div>
 
             <p className="text-xs text-neutral-400 leading-relaxed">
-              This action cannot be undone. All subscription features will terminate immediately and all personal data records will be deleted.
+              This action cannot be undone. All subscription features will
+              terminate immediately and all personal data records will be
+              deleted.
             </p>
 
             <div className="space-y-2">
               <label className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block">
-                Type <span className="text-red-500 font-extrabold font-mono">DELETE</span> in the field below to confirm:
+                Type{" "}
+                <span className="text-red-500 font-extrabold font-mono">
+                  DELETE
+                </span>{" "}
+                in the field below to confirm:
               </label>
               <Input
                 type="text"
