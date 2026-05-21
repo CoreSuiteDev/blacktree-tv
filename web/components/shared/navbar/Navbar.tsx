@@ -21,6 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetTitle,
@@ -80,7 +81,7 @@ export function Navbar() {
           : "bg-transparent border-transparent py-2",
       )}
     >
-      <div className="container mx-auto px-4 md:px-0 overflow-hidden  flex h-16 md:h-20 items-center justify-between relative">
+      <div className="container mx-auto px-4 md:px-6 overflow-hidden flex h-16 md:h-20 items-center justify-between relative">
         {/* LEFT: LOGO */}
         <div
           className={cn(
@@ -135,19 +136,19 @@ export function Navbar() {
         {/* RIGHT: ACTIONS */}
         <div
           className={cn(
-            "flex items-center gap-2 md:gap-4 shrink-0 relative z-130 transition-all duration-500",
+            "flex items-center gap-3 lg:gap-4 shrink-0 relative z-130 transition-all duration-500",
             isSearchOpen
               ? "opacity-0 lg:opacity-100 pointer-events-none lg:pointer-events-auto"
               : "opacity-100",
           )}
         >
           {!isSearchOpen && (
-            <div className="p-0.5 md:p-1 border rounded-full border-white/20 hover:border-primary/50 transition-colors bg-black/10 backdrop-blur-sm">
+            <div className="p-0.5 md:p-1 border rounded-full border-white/20 hover:border-primary/50 transition-all duration-200 hover:scale-105 active:scale-95 bg-black/10 backdrop-blur-sm shadow-sm">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={() => setSearch(true)}
-                className="rounded-full h-8 w-8 md:h-9 md:w-9 cursor-pointer"
+                className="rounded-full h-8 w-8 md:h-9 md:w-9 cursor-pointer hover:bg-transparent"
               >
                 <Search className="h-4 w-4 md:h-5 md:w-5 text-foreground" />
               </Button>
@@ -157,7 +158,7 @@ export function Navbar() {
           {!isLoading && user && user.role?.toLowerCase() === "user" ? (
             <DropdownMenu modal={false}>
               <DropdownMenuTrigger asChild>
-                <button className="flex items-center gap-2 p-0.5 md:p-1 lg:px-3 lg:py-1.5 border border-white/20 lg:border-transparent hover:border-primary/50 lg:hover:border-neutral-800 rounded-full lg:rounded-xl cursor-pointer text-left transition-all duration-200 outline-none select-none bg-black/10 lg:bg-neutral-950/40 backdrop-blur-sm lg:backdrop-blur-none">
+                <button className="flex items-center gap-2 p-0.5 md:p-1 lg:px-3 lg:py-1.5 border border-white/20 lg:border-transparent hover:border-primary/50 lg:hover:border-neutral-800 rounded-full lg:rounded-xl cursor-pointer text-left transition-all duration-200 hover:scale-105 lg:hover:scale-100 active:scale-95 lg:active:scale-100 outline-none select-none bg-black/10 lg:bg-neutral-950/40 backdrop-blur-sm lg:backdrop-blur-none shadow-sm">
                   <div className="hidden lg:grid text-right text-[11px] leading-tight min-w-0 pr-1">
                     <span className="truncate font-semibold text-white">
                       {user?.name || "User"}
@@ -166,7 +167,7 @@ export function Navbar() {
                       {user?.email}
                     </span>
                   </div>
-                  <Avatar className="h-8 w-8 shrink-0 shadow-sm">
+                  <Avatar className="h-8 w-8 md:h-9 md:w-9 shrink-0 shadow-sm">
                     <AvatarImage
                       src={user?.image}
                       alt={user?.name || "User Avatar"}
@@ -180,10 +181,11 @@ export function Navbar() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent
-                className="w-56 rounded-xl bg-neutral-950 border border-neutral-900 text-neutral-200 p-1.5 animate-in fade-in-50 slide-in-from-top-1 shadow-2xl"
+                className="w-58 rounded-xl bg-neutral-950 border border-neutral-900 text-neutral-200 p-1.5 animate-in fade-in-50 slide-in-from-top-4 shadow-2xl"
                 side="bottom"
-                align="end"
-                sideOffset={8}
+                align="center"
+                sideOffset={16}
+                collisionPadding={16}
               >
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-2.5 py-2 text-left text-xs">
@@ -276,7 +278,7 @@ export function Navbar() {
           {/* Mobile and Tablet Menu Trigger Container */}
           <div className="lg:hidden">
             <Sheet open={isMobileMenuOpen} onOpenChange={setMobileMenu}>
-              <div className="p-0.5 md:p-1 border rounded-full border-white/20 hover:border-primary/50 transition-colors bg-black/10 backdrop-blur-sm">
+              <div className="p-0.5 md:p-1 border rounded-full border-white/20 hover:border-primary/50 transition-all duration-200 hover:scale-105 active:scale-95 bg-black/10 backdrop-blur-sm shadow-sm">
                 <SheetTrigger asChild>
                   <Button
                     variant="ghost"
@@ -293,6 +295,7 @@ export function Navbar() {
               </div>
               <SheetContent
                 side="right"
+                showCloseButton={false}
                 className="w-[85vw] p-0 z-150 border-l border-white/10 flex flex-col h-full bg-background"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
@@ -300,31 +303,52 @@ export function Navbar() {
                   Access navigation links and user account settings.
                 </SheetDescription>
 
-                {/* User Profile Header (Mobile) */}
-                {user && user.role?.toLowerCase() === "user" && (
-                  <div className="flex items-center gap-3 z-100000 px-6 py-5 border-b border-white/10 bg-neutral-950/20">
-                    <Avatar className="h-10 w-10 shrink-0 shadow-sm border border-white/10">
-                      <AvatarImage
-                        src={user?.image}
-                        alt={user?.name || "User Avatar"}
-                        className="object-cover"
-                      />
-                      <AvatarFallback className="text-white font-bold text-sm bg-neutral-800">
-                        {user?.name?.slice(0, 2).toUpperCase() ||
-                          user?.email?.slice(0, 2).toUpperCase() ||
-                          "US"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex flex-col min-w-0">
-                      <span className="font-semibold text-white truncate text-sm">
-                        {user?.name || "User"}
-                      </span>
-                      <span className="text-[11px] text-neutral-400 truncate">
-                        {user?.email}
+                {/* Mobile Header Bar */}
+                <div className="flex items-center justify-between px-6 py-5 border-b border-white/10 bg-neutral-950/20 min-h-[80px]">
+                  {user && user.role?.toLowerCase() === "user" ? (
+                    <div className="flex items-center gap-3 min-w-0">
+                      <Avatar className="h-10 w-10 shrink-0 shadow-sm border border-white/10">
+                        <AvatarImage
+                          src={user?.image}
+                          alt={user?.name || "User Avatar"}
+                          className="object-cover"
+                        />
+                        <AvatarFallback className="text-white font-bold text-sm bg-neutral-800">
+                          {user?.name?.slice(0, 2).toUpperCase() ||
+                            user?.email?.slice(0, 2).toUpperCase() ||
+                            "US"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="flex flex-col min-w-0">
+                        <span className="font-semibold text-white truncate text-sm">
+                          {user?.name || "User"}
+                        </span>
+                        <span className="text-[11px] text-neutral-400 truncate">
+                          {user?.email}
+                        </span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="font-semibold text-white text-base">
+                        Menu
                       </span>
                     </div>
-                  </div>
-                )}
+                  )}
+
+                  <SheetClose asChild>
+                    <div className="p-0.5 border rounded-full border-white/20 hover:border-primary/50 transition-all duration-200 hover:scale-105 active:scale-95 bg-black/10 backdrop-blur-sm shadow-sm">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="rounded-full h-8 w-8 cursor-pointer hover:bg-transparent"
+                      >
+                        <X className="h-4 w-4 text-primary" />
+                        <span className="sr-only">Close menu</span>
+                      </Button>
+                    </div>
+                  </SheetClose>
+                </div>
 
                 {/* Nav Links */}
                 <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-1">
@@ -343,47 +367,6 @@ export function Navbar() {
                       {item.label}
                     </Link>
                   ))}
-
-                  {/* Additional Profile Links for Logged in Users */}
-                  {user && user.role?.toLowerCase() === "user" && (
-                    <>
-                      <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider mt-6 mb-2">
-                        My Account
-                      </p>
-                      {[
-                        {
-                          label: "Upgrade to Pro",
-                          href: "/subscription",
-                          icon: <Sparkles size={14} className="text-yellow-500" />,
-                        },
-                        {
-                          label: "Account Overview",
-                          href: "/profile",
-                          icon: <User size={14} />,
-                        },
-                        {
-                          label: "Watch History",
-                          href: "/profile/history",
-                          icon: <History size={14} />,
-                        },
-                      ].map((item) => (
-                        <Link
-                          key={item.label}
-                          href={item.href}
-                          onClick={() => setMobileMenu(false)}
-                          className={cn(
-                            "py-3 flex items-center gap-2.5 text-sm font-medium border-b border-border/40 transition-colors",
-                            pathname === item.href
-                              ? "text-primary font-bold"
-                              : "text-foreground hover:text-primary",
-                          )}
-                        >
-                          {item.icon}
-                          <span className="ml-1">{item.label}</span>
-                        </Link>
-                      ))}
-                    </>
-                  )}
                 </div>
 
                 {/* Drawer Footer Actions */}
@@ -432,7 +415,7 @@ export function Navbar() {
           className={cn(
             // On mobile, it covers the whole row. On desktop (lg), it sits exactly where the nav links were.
             "absolute inset-y-0 z-140 flex items-center justify-center transition-all duration-500",
-            "inset-x-4 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[45%] lg:max-w-[55%]",
+            "inset-x-4 lg:inset-x-auto lg:left-1/2 lg:-translate-x-1/2 lg:w-full lg:max-w-[45%]",
             isSearchOpen
               ? "opacity-100 translate-y-0 pointer-events-auto"
               : "opacity-0 -translate-y-4 pointer-events-none",
