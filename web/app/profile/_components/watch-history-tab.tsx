@@ -76,7 +76,7 @@ const WatchHistoryTab = () => {
     const selectedGradient = gradients[charSum % gradients.length];
     
     return (
-      <div className={`w-full h-full bg-gradient-to-br ${selectedGradient} flex items-center justify-center relative`}>
+      <div className={`w-full h-full bg-linear-to-br ${selectedGradient} flex items-center justify-center relative`}>
         <Film className="text-red-500/20 group-hover:text-red-500/40 transition-all duration-300" size={32} />
         <span className="absolute bottom-2 left-2 text-[8px] uppercase tracking-wider font-extrabold text-neutral-500/80 font-sans group-hover:text-red-500/60 transition-colors">
           Blacktree TV

@@ -183,7 +183,7 @@ const ProfileOverview = () => {
     <div className="w-full space-y-12 animate-in fade-in slide-in-from-bottom-4 duration-500 container mx-auto pb-10">
       {/* HEADER SECTION */}
       <div className="space-y-1.5 pb-2">
-        <h1 className="text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-sans sm:text-4xl">
+        <h1 className="text-3xl font-extrabold tracking-tight bg-linear-to-r from-white via-neutral-100 to-neutral-400 bg-clip-text text-transparent font-sans sm:text-4xl">
           Account Settings
         </h1>
         <p className="text-xs sm:text-sm text-neutral-400 font-sans tracking-wide">
