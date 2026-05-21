@@ -3,7 +3,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Lock, Timer } from "lucide-react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import * as React from "react";
+import { useAuth } from "@/hooks/useAuth";
 import { Controller, useForm, useWatch } from "react-hook-form";
 import { ImSpinner9 } from "react-icons/im";
 import { toast } from "sonner";
@@ -28,8 +30,53 @@ export const VerifyOtpForm = () => {
   const [timeLeft, setTimeLeft] = React.useState(114); // 01:54 in seconds
   const [spinAngle, setSpinAngle] = React.useState(0);
 
-  const handleResend = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const email = searchParams?.get("email") || "";
+  const flow = searchParams?.get("flow") || ""; // 'signup' | 'login' | 'reset-password'
+
+  const {
+    signInVerify,
+    isSigningInVerify,
+    verifyEmailOtp,
+    isVerifyingEmailOtp,
+    verifyResetOtp,
+    isVerifyingResetOtp,
+    signInInitiate,
+    resendOtp,
+  } = useAuth();
+
+  const handleResend = async () => {
     setSpinAngle((prev) => prev + 360);
+    if (!email) {
+      toast.error("Email address is missing");
+      return;
+    }
+
+    if (flow === "login") {
+      try {
+        const stored = sessionStorage.getItem("temp_login_credentials");
+        if (stored) {
+          const { email: storedEmail, password } = JSON.parse(stored);
+          await signInInitiate({ email: storedEmail, password });
+          toast.success("OTP code resent successfully!");
+          setTimeLeft(114);
+        } else {
+          toast.error("Session expired. Please log in again.");
+          router.push("/login");
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    } else if (flow === "signup") {
+      resendOtp({ email, type: "email-verification" }, {
+        onSuccess: () => setTimeLeft(114)
+      });
+    } else if (flow === "reset-password") {
+      resendOtp({ email, type: "forget-password" }, {
+        onSuccess: () => setTimeLeft(114)
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -58,11 +105,34 @@ export const VerifyOtpForm = () => {
     name: "otp",
   });
 
+  const isPending = isSigningInVerify || isVerifyingEmailOtp || isVerifyingResetOtp;
+
   function onSubmit(data: ZTAuthVerifyOtp) {
-    console.log("OTP Verification Values:", data);
-    toast("Verification Successful", {
-      position: "bottom-right",
-    });
+    if (!email) {
+      toast.error("Email address is missing");
+      return;
+    }
+
+    if (flow === "signup") {
+      verifyEmailOtp({ email, otp: data.otp });
+    } else if (flow === "login") {
+      const stored = sessionStorage.getItem("temp_login_credentials");
+      if (stored) {
+        const { email: storedEmail, password, rememberMe } = JSON.parse(stored);
+        signInVerify({ email: storedEmail, password, otp: data.otp, rememberMe }, {
+          onSuccess: () => {
+            sessionStorage.removeItem("temp_login_credentials");
+          }
+        });
+      } else {
+        toast.error("Login session expired. Please sign in again.");
+        router.push("/login");
+      }
+    } else if (flow === "reset-password") {
+      verifyResetOtp({ email, otp: data.otp });
+    } else {
+      toast.error("Invalid verification flow");
+    }
   }
 
   return (
@@ -77,7 +147,7 @@ export const VerifyOtpForm = () => {
           </CardTitle>
           <CardDescription className="text-center text-sm text-zinc-400 max-w-[280px] mx-auto leading-relaxed">
             Enter the 6-digit code sent to <br />
-            <span className="text-zinc-200 font-medium">m***@cinelens.com</span>
+            <span className="text-zinc-200 font-medium">{email || "your email"}</span>
           </CardDescription>
         </CardHeader>
 
@@ -122,10 +192,10 @@ export const VerifyOtpForm = () => {
 
             <Button
               type="submit"
-              disabled={otpValue?.length !== 6}
-              className="h-12 w-full rounded-lg bg-primary text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)] cursor-pointer duration-300 ease-in-out hover:scale-101"
+              disabled={otpValue?.length !== 6 || isPending}
+              className="h-12 w-full rounded-lg bg-primary text-sm font-bold uppercase tracking-wider text-white transition-all hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(229,9,20,0.2)] cursor-pointer duration-300 ease-in-out hover:scale-101 flex items-center justify-center gap-2"
             >
-              Verify & Access
+              {isPending ? "Verifying..." : "Verify & Access"}
             </Button>
           </form>
 

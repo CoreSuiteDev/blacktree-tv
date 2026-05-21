@@ -41,7 +41,7 @@ export const ForgotPasswordForm = () => {
     try {
       await forgotPassword(data);
       toast.success("Verification OTP sent to your email!");
-      router.push(`/reset-password?email=${encodeURIComponent(data.email)}`);
+      router.push(`/verify-otp?email=${encodeURIComponent(data.email)}&flow=reset-password`);
     } catch (err) {
       console.error(err);
     }

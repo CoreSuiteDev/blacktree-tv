@@ -60,11 +60,11 @@ export const useAuth = () => {
   const signUpMutation = useMutation({
     mutationFn: async (payload: ZTAuthRegister) => {
       const { data } = await api.post("/auth/sign-up", payload);
-      return data;
+      return { data, email: payload.email };
     },
-    onSuccess: () => {
-      toast.success("Account created successfully!");
-      router.push("/login");
+    onSuccess: (result) => {
+      toast.success("Account created successfully! Verification OTP sent to your email.");
+      router.push(`/verify-otp?email=${encodeURIComponent(result.email)}&flow=signup`);
     },
     onError: (err: AxiosError<ApiErrorResponse>) => {
       toast.error(err.response?.data?.message || "Registration failed");
@@ -125,6 +125,55 @@ export const useAuth = () => {
     },
   });
 
+  // 9. Verify Email OTP Mutation (for Signup / general email verification)
+  const verifyEmailOtpMutation = useMutation({
+    mutationFn: async (payload: { email: string; otp: string }) => {
+      const { data } = await api.post("/auth/verify-otp", {
+        email: payload.email,
+        code: payload.otp,
+      });
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("Email verified successfully! Please sign in.");
+      router.push("/login");
+    },
+    onError: (err: AxiosError<ApiErrorResponse>) => {
+      toast.error(err.response?.data?.message || "Verification failed");
+    },
+  });
+
+  // 10. Verify Reset OTP Mutation (for Reset Password flow)
+  const verifyResetOtpMutation = useMutation({
+    mutationFn: async (payload: { email: string; otp: string }) => {
+      const { data } = await api.post("/auth/verify-reset-otp", payload);
+      return data;
+    },
+    onSuccess: (_, variables) => {
+      toast.success("OTP verified successfully! Set your new password.");
+      router.push(
+        `/reset-password?email=${encodeURIComponent(variables.email)}&otp=${encodeURIComponent(variables.otp)}`
+      );
+    },
+    onError: (err: AxiosError<ApiErrorResponse>) => {
+      toast.error(err.response?.data?.message || "Invalid or expired OTP");
+    },
+  });
+
+  // 11. Resend OTP Mutation
+  const resendOtpMutation = useMutation({
+    mutationFn: async (payload: { email: string; type: string }) => {
+      const { data } = await api.post("/auth/resend-otp", payload);
+      return data;
+    },
+    onSuccess: () => {
+      toast.success("OTP code resent successfully!");
+    },
+    onError: (err: AxiosError<ApiErrorResponse>) => {
+      toast.error(err.response?.data?.message || "Failed to resend OTP");
+    },
+  });
+
   return {
     user,
     isAuthenticated: !!user,
@@ -148,5 +197,14 @@ export const useAuth = () => {
 
     resetPassword: resetPasswordMutation.mutate,
     isResettingPassword: resetPasswordMutation.isPending,
+
+    verifyEmailOtp: verifyEmailOtpMutation.mutate,
+    isVerifyingEmailOtp: verifyEmailOtpMutation.isPending,
+
+    verifyResetOtp: verifyResetOtpMutation.mutate,
+    isVerifyingResetOtp: verifyResetOtpMutation.isPending,
+
+    resendOtp: resendOtpMutation.mutate,
+    isResendingOtp: resendOtpMutation.isPending,
   };
 };

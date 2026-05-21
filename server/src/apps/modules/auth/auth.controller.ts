@@ -390,6 +390,50 @@ export const verifyEmailOTP = asyncHandler(async (req: Request, res: Response) =
   }
 );
 
+export const verifyResetOtp = asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const { email, otp } = req.body;
+      if (!email || !otp) {
+        return res.status(400).json({
+          success: false,
+          message: "Email and OTP are required",
+        });
+      }
+
+      const verifications = await prisma.verification.findMany({
+        where: {
+          identifier: {
+            in: [email, `forget-password-otp-${email}`],
+          },
+          expiresAt: { gt: new Date() },
+        },
+      });
+
+      const verification = verifications.find(
+        (v) => v.value === otp || v.value.startsWith(`${otp}:`)
+      );
+
+      if (!verification) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid or expired OTP code",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: "OTP code verified successfully",
+      });
+    } catch (error: any) {
+      console.error("Verify reset OTP error:", error);
+      return res.status(500).json({
+        success: false,
+        message: error.message || "Internal server error",
+      });
+    }
+  }
+);
+
 export const loginInitiate = asyncHandler(async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
