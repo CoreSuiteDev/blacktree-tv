@@ -1,9 +1,11 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Controller, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +27,9 @@ import { Input } from "@/components/ui/input";
 import { ZCAuthForgotPassword, ZTAuthForgotPassword } from "@/types/zod/auth";
 
 export const ForgotPasswordForm = () => {
+  const router = useRouter();
+  const { forgotPassword, isForgotPasswordPending } = useAuth();
+
   const form = useForm<ZTAuthForgotPassword>({
     resolver: zodResolver(ZCAuthForgotPassword),
     defaultValues: {
@@ -32,12 +37,15 @@ export const ForgotPasswordForm = () => {
     },
   });
 
-  function onSubmit(data: ZTAuthForgotPassword) {
-    console.log("Forgot Password Form Values:", data);
-    toast("Reset link sent to your email", {
-      position: "bottom-right",
-    });
-  }
+  const onSubmit = async (data: ZTAuthForgotPassword) => {
+    try {
+      await forgotPassword(data);
+      toast.success("Verification OTP sent to your email!");
+      router.push(`/verify-otp?email=${encodeURIComponent(data.email)}&flow=reset-password`);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="w-full flex items-center justify-center px-4">
@@ -88,9 +96,17 @@ export const ForgotPasswordForm = () => {
 
             <Button
               type="submit"
-              className="h-12 md:h-14 w-full rounded-lg bg-primary text-sm md:text-base font-bold text-white transition hover:bg-primary/90 cursor-pointer shadow-lg"
+              disabled={isForgotPasswordPending}
+              className="h-12 md:h-14 w-full rounded-lg bg-primary text-sm md:text-base font-bold text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-101 hover:bg-primary/90 shadow-lg flex items-center justify-center gap-2"
             >
-              Send
+              {isForgotPasswordPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                "Send"
+              )}
             </Button>
           </form>
         </CardContent>
@@ -98,7 +114,7 @@ export const ForgotPasswordForm = () => {
         <CardFooter className="flex justify-center pb-10 pt-4">
           <Link
             href="/login"
-            className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest transition-colors hover:text-white group"
+            className="flex items-center gap-2 text-[10px] md:text-xs font-bold text-zinc-500 uppercase tracking-widest cursor-pointer transition-colors hover:text-white group"
           >
             <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
             Back to Login

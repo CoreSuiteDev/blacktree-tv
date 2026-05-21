@@ -1,10 +1,11 @@
+import { TooltipProvider } from "@/components/ui/tooltip";
 import QueryProvider from "@/providers/query-provider";
 import { ThemeProvider } from "@/providers/theme-provider";
+import "@vidstack/react/player/styles/base.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
-import "@vidstack/react/player/styles/base.css";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -35,7 +36,7 @@ export default function RootLayout({
             enableSystem={false}
             disableTransitionOnChange
           >
-            {children}
+            <TooltipProvider>{children}</TooltipProvider>
             <Toaster />
           </ThemeProvider>
         </QueryProvider>

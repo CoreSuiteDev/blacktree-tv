@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/hooks/useAuth";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -25,11 +26,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth/auth-client";
 import { ZCAuthRegister, ZTAuthRegister } from "@/types/zod/auth";
-import { useRouter } from "next/navigation";
-
 export const RegisterForm = () => {
-  const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
+
+  const { signUp, isSigningUp } = useAuth();
 
   const form = useForm<ZTAuthRegister>({
     resolver: zodResolver(ZCAuthRegister),
@@ -41,29 +41,7 @@ export const RegisterForm = () => {
   });
 
   const onSubmit = async (data: ZTAuthRegister) => {
-    try {
-      const { name, email, password } = data;
-      const { error } = await authClient.signUp.email({
-        name,
-        email,
-        password,
-        callbackURL: "/",
-      });
-
-      if (error) {
-        toast.error(error.message || "Registration failed");
-        return;
-      }
-
-      toast.success("Account created successfully!", {
-        position: "bottom-right",
-      });
-
-      router.push("/");
-    } catch (error) {
-      toast.error("An unexpected error occurred");
-      console.error(error);
-    }
+    signUp(data);
   };
 
   const handleSocialLogin = async (provider: "google" | "facebook") => {
@@ -208,9 +186,17 @@ export const RegisterForm = () => {
 
             <Button
               type="submit"
-              className="mt-2 h-12 w-full rounded-lg bg-primary text-sm font-semibold text-white transition hover:bg-primary/80 cursor-pointer"
+              disabled={isSigningUp}
+              className="mt-2 h-12 w-full rounded-lg bg-primary text-sm font-semibold text-white cursor-pointer transition-all duration-300 ease-in-out hover:scale-101 hover:bg-primary/90 flex items-center justify-center gap-2"
             >
-              Sign Up
+              {isSigningUp ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Creating Account...
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
 
             <div className="relative my-6">
@@ -228,7 +214,7 @@ export const RegisterForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 cursor-pointer"
+                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 cursor-pointer transition-all duration-300 ease-in-out hover:scale-101"
                 onClick={() => handleSocialLogin("google")}
               >
                 <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -254,7 +240,7 @@ export const RegisterForm = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11"
+                className="bg-transparent border-[#FFFFFF1A] hover:bg-white/5 text-white h-11 transition-all duration-300 ease-in-out hover:scale-101"
                 onClick={() => handleSocialLogin("facebook")}
               >
                 <svg className="mr-2 h-4 w-4 fill-white" viewBox="0 0 24 24">

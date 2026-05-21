@@ -16,9 +16,20 @@ export interface PlaylistItem {
   rating: string;
 }
 
+export interface WatchHistoryItem {
+  id: string;
+  title: string;
+  image: string;
+  watchedAt: string;
+  progress: number; // percentage completed
+  duration: string; // e.g. "1h 24m / 2h 10m"
+  year?: number;
+  rating?: string;
+}
+
 export interface UserProfileData {
   name: string;
-  username: string; // Added to match form UI
+  username: string; 
   email: string;
   phone: string;
   avatar: string;
@@ -28,12 +39,13 @@ export interface UserProfileData {
   matureContent: boolean;
   devices: Device[];
   watchlist: PlaylistItem[];
+  watchHistory: WatchHistoryItem[];
 }
 
 interface UserProfileState {
   profile: UserProfileData;
   editName: string;
-  editUsername: string; // Added
+  editUsername: string;
   editEmail: string;
   editPhone: string;
   timezone: string;
@@ -55,6 +67,8 @@ interface UserProfileState {
   savePersonalDetails: () => void;
   revokeDevice: (id: number) => void;
   removeFromWatchlist: (id: string) => void;
+  removeFromWatchHistory: (id: string) => void;
+  clearWatchHistory: () => void;
 }
 
 export const useUserProfileStore = create<UserProfileState>((set) => ({
@@ -73,6 +87,48 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
     matureContent: false,
     devices: [],
     watchlist: [],
+    watchHistory: [
+      {
+        id: "h1",
+        title: "The Midnight Horizon",
+        image: "",
+        watchedAt: "2026-05-20T18:30:00.000Z",
+        progress: 85,
+        duration: "1h 42m / 2h 00m",
+        year: 2025,
+        rating: "8.4",
+      },
+      {
+        id: "h2",
+        title: "Echoes of Eternity",
+        image: "",
+        watchedAt: "2026-05-19T21:15:00.000Z",
+        progress: 100,
+        duration: "1h 35m / 1h 35m",
+        year: 2024,
+        rating: "7.9",
+      },
+      {
+        id: "h3",
+        title: "Shadow Recruit: Legacy",
+        image: "",
+        watchedAt: "2026-05-18T14:20:00.000Z",
+        progress: 40,
+        duration: "48m / 2h 02m",
+        year: 2026,
+        rating: "8.8",
+      },
+      {
+        id: "h4",
+        title: "Cyberpunk 2099: Neon City",
+        image: "",
+        watchedAt: "2026-05-15T22:40:00.000Z",
+        progress: 10,
+        duration: "12m / 1h 55m",
+        year: 2025,
+        rating: "9.2",
+      },
+    ],
   },
   editName: "",
   editUsername: "",
@@ -126,6 +182,22 @@ export const useUserProfileStore = create<UserProfileState>((set) => ({
       profile: {
         ...state.profile,
         watchlist: state.profile.watchlist.filter((item) => item.id !== id),
+      },
+    })),
+
+  removeFromWatchHistory: (id) =>
+    set((state) => ({
+      profile: {
+        ...state.profile,
+        watchHistory: state.profile.watchHistory.filter((item) => item.id !== id),
+      },
+    })),
+
+  clearWatchHistory: () =>
+    set((state) => ({
+      profile: {
+        ...state.profile,
+        watchHistory: [],
       },
     })),
 }));

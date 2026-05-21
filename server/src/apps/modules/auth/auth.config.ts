@@ -2,7 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin, bearer, emailOTP, jwt } from "better-auth/plugins";
 import prisma from "../../../infrastructure/database/connection";
-import { sendOTPEmail } from "./auth.service";
+import { sendOTPEmail } from "../../../infrastructure/email/auth.email";
 
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET as string,

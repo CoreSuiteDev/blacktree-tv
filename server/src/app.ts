@@ -9,7 +9,6 @@ import morgan from "morgan";
 import { toNodeHandler } from "better-auth/node";
 import { errorMiddleware } from "./apps/middleware/error.middleware";
 import { auth } from "./apps/modules/auth/auth.config";
-import authRouter from "./apps/modules/auth/auth.route";
 import config from "./config";
 import routes from "./routes";
 import { AppError } from "./utils/AppError";
