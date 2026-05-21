@@ -18,7 +18,7 @@ export interface PlaylistItem {
 
 export interface UserProfileData {
   name: string;
-  username: string; // Added to match form UI
+  username: string; 
   email: string;
   phone: string;
   avatar: string;
@@ -33,7 +33,7 @@ export interface UserProfileData {
 interface UserProfileState {
   profile: UserProfileData;
   editName: string;
-  editUsername: string; // Added
+  editUsername: string;
   editEmail: string;
   editPhone: string;
   timezone: string;

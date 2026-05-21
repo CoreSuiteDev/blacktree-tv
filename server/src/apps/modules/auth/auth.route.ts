@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import { protect } from "../../middleware/auth.middleware";
 import * as authController from "./auth.controller";
+import prisma from "../../../infrastructure/database/connection";
 
 const authRouter = Router();
 
@@ -21,15 +22,43 @@ authRouter.post("/resend-otp", express.json(), authController.resendOtpCode);
 authRouter.post("/test-email", express.json(), authController.testEmail);
 
 // 3. Get current user (protected)
-authRouter.get("/me", protect, (req, res) => {
+authRouter.get("/me", protect, async (req, res) => {
   try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        image: true,
+        subscription: {
+          where: { status: "ACTIVE" },
+          select: { plan: true },
+          take: 1,
+        },
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
     res.status(200).json({
       success: true,
       message: "Session is valid",
       user: {
-        id: req.user?.id,
-        email: req.user?.email,
-        name: req.user?.name,
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        role: user.role,
+        image: user.image,
+        subscription: user.subscription?.[0] ? { type: user.subscription[0].plan } : null,
       },
     });
   } catch (error: any) {

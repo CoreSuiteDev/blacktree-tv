@@ -19,11 +19,13 @@ import {
 } from "@/components/ui/sheet";
 import { NAVIGATION_ITEMS } from "@/constants";
 import { useNavbar } from "@/store/public/use-navbar-store";
+import { useAuth } from "@/hooks/useAuth";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const user = false;
+  const { user, isLoading, logout } = useAuth();
   const { isSearchOpen, setSearch, isMobileMenuOpen, setMobileMenu } =
     useNavbar();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -145,38 +147,83 @@ export function Navbar() {
             </div>
           )}
 
-          <div className="flex items-center gap-2">
-            <Button
-              onClick={() => router.push("/subscription")}
-              className="px-5 py-5 rounded-lg hover:scale-105 hover:bg-primary/90 duration-300 ease-in-out transition-colors text-white backdrop-blur-sm cursor-pointer"
-            >
-              Subscribe Now
-            </Button>
-            <Button
-              onClick={() => router.push("/login")}
-              className="rounded-lg px-5 py-5 bg-cyan-700 hover:scale-105 duration-300 ease-in-out hover:bg-cyan-800/80 transition-colors text-white backdrop-blur-sm cursor-pointer"
-            >
-              LogIn
-            </Button>
-          </div>
-
-          {user && (
+          {!isLoading && (user && user.role?.toLowerCase() === "user") ? (
             <div className="flex items-center gap-2 md:gap-3 pl-2 border-l border-white/20 ml-1">
               <div className="hidden lg:flex flex-col text-right">
                 <p className="text-xs lg:text-sm font-bold leading-none text-foreground">
-                  Jamal
+                  {user.name}
                 </p>
                 <p className="text-[10px] text-primary font-bold uppercase mt-1">
-                  Premium
+                  {user.subscription?.type || "Standard"}
                 </p>
               </div>
-              <Avatar className="h-8 w-8 md:h-10 md:w-10 border-2 border-primary ring-2 ring-background shadow-sm">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback className="bg-primary/5 text-primary text-xs">
-                  JH
-                </AvatarFallback>
-              </Avatar>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Avatar className="h-8 w-8 md:h-10 md:w-10 border-2 border-primary ring-2 ring-background shadow-sm cursor-pointer hover:opacity-90 transition-opacity">
+                    <AvatarImage src={user.image || "https://github.com/shadcn.png"} />
+                    <AvatarFallback className="bg-primary/5 text-primary text-xs font-bold">
+                      {user.name ? user.name.slice(0, 2).toUpperCase() : "US"}
+                    </AvatarFallback>
+                  </Avatar>
+                </PopoverTrigger>
+                <PopoverContent align="end" className="w-56 mt-2 bg-neutral-950 border border-white/10 text-white p-2 rounded-xl shadow-2xl backdrop-blur-lg">
+                  <div className="px-2 py-1.5 border-b border-white/10 mb-1">
+                    <p className="text-xs font-semibold text-neutral-400">Signed in as</p>
+                    <p className="text-sm font-bold text-white truncate">{user.email}</p>
+                  </div>
+                  <div className="flex flex-col gap-1 mt-1">
+                    <button
+                      onClick={() => router.push("/profile")}
+                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
+                    >
+                      Profile Overview
+                    </button>
+                    <button
+                      onClick={() => router.push("/profile/watchlist")}
+                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
+                    >
+                      My Watchlist
+                    </button>
+                    <button
+                      onClick={() => router.push("/profile/billing")}
+                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
+                    >
+                      Billing & Membership
+                    </button>
+                    <button
+                      onClick={() => router.push("/profile/security")}
+                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
+                    >
+                      Security Settings
+                    </button>
+                    <div className="h-px bg-white/10 my-1" />
+                    <button
+                      onClick={() => logout()}
+                      className="w-full text-left cursor-pointer text-red-500 hover:bg-red-500/10 rounded-lg p-2 text-sm font-semibold transition-colors"
+                    >
+                      Log out
+                    </button>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
+          ) : (
+            !isLoading && (
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => router.push("/subscription")}
+                  className="px-5 py-5 rounded-lg hover:scale-105 hover:bg-primary/90 duration-300 ease-in-out transition-colors text-white backdrop-blur-sm cursor-pointer"
+                >
+                  Subscribe Now
+                </Button>
+                <Button
+                  onClick={() => router.push("/login")}
+                  className="rounded-lg px-5 py-5 bg-cyan-700 hover:scale-105 duration-300 ease-in-out hover:bg-cyan-800/80 transition-colors text-white backdrop-blur-sm cursor-pointer"
+                >
+                  LogIn
+                </Button>
+              </div>
+            )
           )}
 
           {/* Mobile and Tablet Menu Trigger Container */}
@@ -197,28 +244,115 @@ export function Navbar() {
               </SheetTrigger>
               <SheetContent
                 side="right"
-                className="w-[85vw] p-0 z-150 border-l border-white/10"
+                className="w-[85vw] p-0 z-150 border-l border-white/10 flex flex-col h-full bg-background"
               >
                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 <SheetDescription className="sr-only">
                   Access navigation links and user account settings.
                 </SheetDescription>
-                <div className="flex flex-col h-full pt-20 px-6 bg-background">
+                
+                {/* User Profile Header (Mobile) */}
+                {user && user.role?.toLowerCase() === "user" && (
+                  <div className="p-6 border-b border-white/10 pt-16 flex items-center gap-3">
+                    <Avatar className="h-12 w-12 border-2 border-primary">
+                      <AvatarImage src={user.image || "https://github.com/shadcn.png"} />
+                      <AvatarFallback className="bg-primary/5 text-primary text-sm font-bold">
+                        {user.name ? user.name.slice(0, 2).toUpperCase() : "US"}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col min-w-0">
+                      <p className="text-sm font-bold text-white truncate">{user.name}</p>
+                      <p className="text-xs text-neutral-400 truncate">{user.email}</p>
+                      <span className="inline-block self-start text-[9px] bg-primary/20 text-primary font-bold px-2 py-0.5 rounded-full uppercase mt-1">
+                        {user.subscription?.type || "Standard"}
+                      </span>
+                    </div>
+                  </div>
+                )}
+
+                {/* Nav Links */}
+                <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-1">
                   {NAVIGATION_ITEMS.map((item) => (
                     <Link
                       key={item.label}
                       href={item.href}
                       onClick={() => setMobileMenu(false)}
                       className={cn(
-                        "py-4 text-sm font-medium border-b border-border/40 transition-colors",
+                        "py-3 text-sm font-medium border-b border-border/40 transition-colors",
                         pathname === item.href
-                          ? "text-primary font-bold italic"
+                          ? "text-primary font-bold"
                           : "text-foreground hover:text-primary",
                       )}
                     >
                       {item.label}
                     </Link>
                   ))}
+
+                  {/* Additional Profile Links for Logged in Users */}
+                  {user && user.role?.toLowerCase() === "user" && (
+                    <>
+                      <p className="text-[10px] font-bold text-neutral-500 uppercase tracking-wider mt-6 mb-2">
+                        My Account
+                      </p>
+                      {[
+                        { label: "Profile Overview", href: "/profile" },
+                        { label: "Watchlist", href: "/profile/watchlist" },
+                        { label: "Billing & Membership", href: "/profile/billing" },
+                        { label: "Security & Privacy", href: "/profile/security" },
+                      ].map((item) => (
+                        <Link
+                          key={item.label}
+                          href={item.href}
+                          onClick={() => setMobileMenu(false)}
+                          className={cn(
+                            "py-3 text-sm font-medium border-b border-border/40 transition-colors",
+                            pathname === item.href
+                              ? "text-primary font-bold"
+                              : "text-foreground hover:text-primary",
+                          )}
+                        >
+                          {item.label}
+                        </Link>
+                      ))}
+                    </>
+                  )}
+                </div>
+
+                {/* Drawer Footer Actions */}
+                <div className="p-6 border-t border-white/10 bg-background/50 backdrop-blur-md">
+                  {user && user.role?.toLowerCase() === "user" ? (
+                    <Button
+                      onClick={() => {
+                        setMobileMenu(false);
+                        logout();
+                      }}
+                      variant="destructive"
+                      className="w-full py-5 font-semibold text-xs tracking-wider uppercase rounded-xl cursor-pointer"
+                    >
+                      Log Out
+                    </Button>
+                  ) : (
+                    <div className="flex flex-col gap-2">
+                      <Button
+                        onClick={() => {
+                          setMobileMenu(false);
+                          router.push("/subscription");
+                        }}
+                        className="w-full py-5 font-semibold text-white rounded-xl cursor-pointer"
+                      >
+                        Subscribe Now
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setMobileMenu(false);
+                          router.push("/login");
+                        }}
+                        className="w-full py-5 bg-cyan-700 hover:bg-cyan-800 text-white rounded-xl cursor-pointer"
+                      >
+                        LogIn
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

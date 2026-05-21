@@ -1,0 +1,222 @@
+"use client";
+import { useAuth } from "@/hooks/useAuth";
+import { useUserProfileStore } from "@/store/public/use-user-profile-store";
+import { useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+  Sparkles,
+  Bookmark,
+  ShieldCheck,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+
+export function ProfileLayout({ children }: { children: React.ReactNode }) {
+  const { profile } = useUserProfileStore();
+  const { user, isLoading, logout } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isLoading && !user) {
+      router.push("/login");
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || !user) {
+    return (
+      <div className="w-full min-h-screen bg-black flex items-center justify-center font-sans">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-sm text-neutral-500 tracking-wider">
+            Verifying secure session...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="w-full min-h-screen bg-black flex items-center justify-center font-sans">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+          <span className="text-sm text-neutral-500 tracking-wider">
+            Acquiring cloud profile records...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-popover text-white antialiased font-sans selection:bg-primary selection:text-white flex flex-col">
+      {/* Premium Header/Navbar */}
+      <header className="sticky top-0 z-50 flex h-16 shrink-0 items-center bg-black border-b border-neutral-900/80 backdrop-blur-md px-4 sm:px-6 lg:px-12">
+        <div className="flex container mx-auto w-full items-center justify-between">
+          {/* Logo on Left */}
+          <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
+            <div className="relative overflow-hidden  flex items-center justify-center shrink-0 h-10 w-10 ">
+              <Image
+                src="/assets/images/BTTV New Logo2 2.png"
+                alt="BlackTree TV Logo"
+                fill
+                className="object-cover "
+                priority
+              />
+            </div>
+            <span className="font-bold text-base tracking-wider text-white uppercase hidden sm:inline-block">
+              BlackTree TV
+            </span>
+          </Link>
+
+          {/* User Profile Dropdown on Right */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2.5 px-3 py-1.5 hover:bg-neutral-900/50 rounded-xl cursor-pointer text-left transition-all duration-200 outline-none select-none border border-transparent hover:border-neutral-800 bg-neutral-950/40">
+                <div className="hidden sm:grid text-right text-[11px] leading-tight min-w-0 pr-1">
+                  <span className="truncate font-semibold text-white">
+                    {user?.name || "User"}
+                  </span>
+                  <span className="truncate text-[10px] text-neutral-400">
+                    {user?.email}
+                  </span>
+                </div>
+                <Avatar className="h-8 w-8 rounded-lg shrink-0 border border-neutral-800 shadow-sm">
+                  <AvatarImage
+                    src={user?.image}
+                    alt={user?.name || "User Avatar"}
+                  />
+                  <AvatarFallback className="text-white font-bold text-xs bg-neutral-800">
+                    {user?.name?.slice(0, 2).toUpperCase() ||
+                      user?.email?.slice(0, 2).toUpperCase() ||
+                      "US"}
+                  </AvatarFallback>
+                </Avatar>
+                <ChevronsUpDown className="size-3.5 text-neutral-400 shrink-0" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              className="w-56 rounded-xl bg-neutral-950 border border-neutral-900 text-neutral-200 p-1.5 animate-in fade-in-50 slide-in-from-top-1 shadow-2xl"
+              side="bottom"
+              align="end"
+              sideOffset={8}
+            >
+              <DropdownMenuLabel className="p-0 font-normal">
+                <div className="flex items-center gap-2 px-2.5 py-2 text-left text-xs">
+                  <Avatar className="h-8 w-8 rounded-full">
+                    <AvatarImage
+                      src={user?.image}
+                      alt={user?.name || "User Avatar"}
+                      className="border-none object-cover "
+                    />
+                    <AvatarFallback className="rounded-full text-white font-bold text-xs">
+                      {user?.name?.slice(0, 2).toUpperCase() ||
+                        user?.email?.slice(0, 2).toUpperCase() ||
+                        "US"}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="grid flex-1 text-left text-xs leading-tight min-w-0">
+                    <span className="truncate font-semibold text-white">
+                      {user?.name || "User"}
+                    </span>
+                    <span className="truncate text-[10px] text-neutral-400">
+                      {user?.email}
+                    </span>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
+              <DropdownMenuGroup>
+                <DropdownMenuItem className="focus:bg-neutral-900 focus:text-white cursor-pointer gap-2 text-xs py-2.5 px-3 rounded-lg">
+                  <Sparkles size={14} className="text-yellow-500" />
+                  <span>Upgrade to Pro</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
+              <DropdownMenuGroup>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <BadgeCheck size={14} />
+                    <span>Account Overview</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile/watchlist"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <Bookmark size={14} />
+                    <span>My Watchlist</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile/billing"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <CreditCard size={14} />
+                    <span>Billing & Membership</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile/security"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <ShieldCheck size={14} />
+                    <span>Security & Privacy</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    href="/profile/playback"
+                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
+                  >
+                    <Bell size={14} />
+                    <span>Preferences</span>
+                  </Link>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
+              <DropdownMenuItem
+                onClick={() => logout()}
+                className="focus:bg-red-500/10 focus:text-red-500 text-red-500 gap-2 cursor-pointer text-xs py-2.5 px-3 rounded-lg"
+              >
+                <LogOut size={14} />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      </header>
+
+      {/* Main Content Area */}
+      <main className="flex-1 pt-6 md:pt-10 overflow-y-auto custom-scrollbar">
+        <div className="w-full container mx-auto px-4 md:px-0 border-neutral-900/60 rounded-xl shadow-sm min-h-[500px]">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+export default ProfileLayout;

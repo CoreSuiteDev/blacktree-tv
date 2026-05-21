@@ -7,7 +7,6 @@ import BillingTab from "./billing-tab";
 import PlaybackTab from "./playback-tab";
 import ProfileOverview from "./profile-overview-tab";
 import SecurityTab from "./security-tab";
-import { UserProfileSidebar } from "./user-profile-sidebar";
 import WatchlistTab from "./watchlist-tab";
 
 const UserProfileDetails = () => {
@@ -45,7 +44,6 @@ const UserProfileDetails = () => {
         {/* Master Screen Component Split Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
           {/* COLUMN 1: INTERACTIVE NAVIGATION HUB (Called from separation component) */}
-          <UserProfileSidebar />
 
           {/* COLUMN 2: DYNAMIC LAYOUT DISPLAY FIELD */}
           <div className="lg:col-span-9">
