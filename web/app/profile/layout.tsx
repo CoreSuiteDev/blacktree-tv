@@ -15,14 +15,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  BadgeCheck,
-  Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
   Sparkles,
-  Bookmark,
-  ShieldCheck,
+  User,
+  History,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -71,12 +68,12 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
         <div className="flex container mx-auto w-full items-center justify-between">
           {/* Logo on Left */}
           <Link href="/" className="flex items-center gap-3 hover:opacity-90 transition-opacity">
-            <div className="relative overflow-hidden  flex items-center justify-center shrink-0 h-10 w-10 ">
+            <div className="relative overflow-hidden flex items-center justify-center shrink-0 h-10 w-10">
               <Image
                 src="/assets/images/BTTV New Logo2 2.png"
                 alt="BlackTree TV Logo"
                 fill
-                className="object-cover "
+                className="object-cover"
                 priority
               />
             </div>
@@ -97,7 +94,7 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                     {user?.email}
                   </span>
                 </div>
-                <Avatar className="h-8 w-8 rounded-lg shrink-0 border border-neutral-800 shadow-sm">
+                <Avatar className="h-8 w-8 shrink-0 shadow-sm">
                   <AvatarImage
                     src={user?.image}
                     alt={user?.name || "User Avatar"}
@@ -123,7 +120,7 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                     <AvatarImage
                       src={user?.image}
                       alt={user?.name || "User Avatar"}
-                      className="border-none object-cover "
+                      className="border-none object-cover"
                     />
                     <AvatarFallback className="rounded-full text-white font-bold text-xs">
                       {user?.name?.slice(0, 2).toUpperCase() ||
@@ -155,46 +152,20 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
                     href="/profile"
                     className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
                   >
-                    <BadgeCheck size={14} />
+                    <User size={14} />
                     <span>Account Overview</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                   <Link
-                    href="/profile/watchlist"
+                    href="/profile/history"
                     className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
                   >
-                    <Bookmark size={14} />
-                    <span>My Watchlist</span>
+                    <History size={14} />
+                    <span>Watch History</span>
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/profile/billing"
-                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
-                  >
-                    <CreditCard size={14} />
-                    <span>Billing & Membership</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/profile/security"
-                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
-                  >
-                    <ShieldCheck size={14} />
-                    <span>Security & Privacy</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link
-                    href="/profile/playback"
-                    className="flex items-center gap-2 focus:bg-neutral-900 focus:text-white cursor-pointer w-full text-xs py-2.5 px-3 rounded-lg"
-                  >
-                    <Bell size={14} />
-                    <span>Preferences</span>
-                  </Link>
-                </DropdownMenuItem>
+
               </DropdownMenuGroup>
               <DropdownMenuSeparator className="bg-neutral-900 my-1.5" />
               <DropdownMenuItem
@@ -210,8 +181,9 @@ export function ProfileLayout({ children }: { children: React.ReactNode }) {
       </header>
 
       {/* Main Content Area */}
-      <main className="flex-1 pt-6 md:pt-10 overflow-y-auto custom-scrollbar">
+      <main className="flex-1 pt-6 md:pt-10 overflow-y-auto custom-scrollbar pb-16">
         <div className="w-full container mx-auto px-4 md:px-0 border-neutral-900/60 rounded-xl shadow-sm min-h-[500px]">
+
           {children}
         </div>
       </main>

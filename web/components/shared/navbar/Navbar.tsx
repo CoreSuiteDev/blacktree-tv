@@ -179,23 +179,12 @@ export function Navbar() {
                       Profile Overview
                     </button>
                     <button
-                      onClick={() => router.push("/profile/watchlist")}
+                      onClick={() => router.push("/profile/history")}
                       className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
                     >
-                      My Watchlist
+                      Watch History
                     </button>
-                    <button
-                      onClick={() => router.push("/profile/billing")}
-                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
-                    >
-                      Billing & Membership
-                    </button>
-                    <button
-                      onClick={() => router.push("/profile/security")}
-                      className="w-full text-left cursor-pointer hover:bg-white/10 rounded-lg p-2 text-sm font-medium transition-colors text-neutral-200 hover:text-white"
-                    >
-                      Security Settings
-                    </button>
+
                     <div className="h-px bg-white/10 my-1" />
                     <button
                       onClick={() => logout()}
@@ -296,9 +285,7 @@ export function Navbar() {
                       </p>
                       {[
                         { label: "Profile Overview", href: "/profile" },
-                        { label: "Watchlist", href: "/profile/watchlist" },
-                        { label: "Billing & Membership", href: "/profile/billing" },
-                        { label: "Security & Privacy", href: "/profile/security" },
+                        { label: "Watch History", href: "/profile/history" },
                       ].map((item) => (
                         <Link
                           key={item.label}
