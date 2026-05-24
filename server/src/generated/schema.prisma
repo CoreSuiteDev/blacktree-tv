@@ -645,8 +645,9 @@ model UserRoleMapping {
 }
 
 generator client {
-  provider = "prisma-client-js"
-  output   = "../../src/generated"
+  provider      = "prisma-client-js"
+  output        = "../../src/generated"
+  compilerBuild = "small"
 }
 
 datasource db {
