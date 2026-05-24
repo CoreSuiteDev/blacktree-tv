@@ -103,10 +103,10 @@ jobs:
             # Pull the latest changes from Git
             git pull origin ${{ github.ref_name }}
             
-            # Build and deploy the Docker containers in detached mode
-            docker compose up --build -d
+            # Build and deploy the Docker containers in detached mode using production compose file
+            docker compose -f docker-compose.prod.yml up --build -d
             
             # Deploy database schema migrations
-            docker compose exec -T server bun run prisma migrate deploy
+            docker compose -f docker-compose.prod.yml exec -T server bunx prisma migrate deploy
             
             echo "🎉 Deployment successful!"
