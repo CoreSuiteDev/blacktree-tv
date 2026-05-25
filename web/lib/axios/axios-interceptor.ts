@@ -53,7 +53,7 @@ axiosInstance.interceptors.response.use(
 
       try {
         await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" ? window.location.origin + "/api" : "http://localhost:5000/api")}/auth/refresh-token`,
+          `${process.env.NEXT_PUBLIC_API_URL || (typeof window !== "undefined" ? window.location.origin + "/api" : (process.env.BACKEND_URL ? process.env.BACKEND_URL + "/api" : "http://localhost:5000/api"))}/auth/refresh-token`,
           {},
           { withCredentials: true }
         );
