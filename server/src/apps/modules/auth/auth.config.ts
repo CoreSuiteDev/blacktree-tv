@@ -3,18 +3,19 @@ import { prismaAdapter } from "better-auth/adapters/prisma";
 import { admin, bearer, emailOTP, jwt } from "better-auth/plugins";
 import prisma from "../../../infrastructure/database/connection";
 import { sendOTPEmail } from "../../../infrastructure/email/auth.email";
+import config from "../../../config";
 
 export const auth = betterAuth({
-  secret: process.env.BETTER_AUTH_SECRET as string,
+  secret: config.betterAuth.secret,
   database: prismaAdapter(prisma, {
     provider: "postgresql",
   }),
 
-  baseURL: process.env.BETTER_AUTH_URL || "http://localhost:5000/api/auth",
+  baseURL: config.betterAuth.url,
   trustedOrigins: [
     "http://localhost:3000",
     "http://localhost",
-    ...(process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : []),
+    ...(config.cors.origin === "*" ? [] : config.cors.origin),
   ],
 
   emailAndPassword: {
@@ -23,8 +24,8 @@ export const auth = betterAuth({
 
   socialProviders: {
     google: {
-      clientId: process.env.AUTH_GOOGLE_ID || "",
-      clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
+      clientId: config.betterAuth.google.clientId || "",
+      clientSecret: config.betterAuth.google.clientSecret || "",
     },
   },
 
