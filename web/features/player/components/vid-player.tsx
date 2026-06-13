@@ -646,10 +646,17 @@ const VidPlayer = () => {
       autoPlay
       muted={isMuted}
       volume={volume}
-      fullscreenOrientation="portrait"
       onOrientationChange={undefined}
       onEnded={handleEnded}
       onCanPlay={handleCanPlay}
+      keyShortcuts={{
+        togglePaused: {
+          keys: ["k", "Space"],
+          onKeyDown({ event }) {
+            event.preventDefault();
+          },
+        },
+      }}
       className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-fullscreen:rounded-none data-fullscreen:aspect-auto data-fullscreen:h-full transition-all duration-300"
     >
       <MediaProvider>
