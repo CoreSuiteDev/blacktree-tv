@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  transpilePackages: ["@radix-ui/react-slot", "@vidstack/react"],
   images: {
     remotePatterns: [
       {

@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import {
   AirPlayButton,
   CaptionButton,
@@ -7,6 +9,7 @@ import {
   FullscreenButton,
   GoogleCastButton,
   MediaPlayer,
+  MediaPlayerInstance,
   MediaProvider,
   Menu,
   MuteButton,
@@ -45,9 +48,11 @@ import {
   Volume2,
   VolumeOff,
 } from "lucide-react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useRef } from "react";
 import { usePlayerStore } from "../store/player.store";
 
-const CinematicControls = () => {
+const CinematicControls = ({ title }: { title?: string }) => {
   const { isChatOpen, toggleChat } = usePlayerStore();
   const canAirPlay = useMediaState("canAirPlay");
   const canGoogleCast = useMediaState("canGoogleCast");
@@ -61,11 +66,8 @@ const CinematicControls = () => {
       {/* Middle Section: Typography */}
       <div className="flex flex-col gap-1 md:gap-2 items-start max-w-2xl pointer-events-none select-none">
         <h1 className="text-white text-lg md:text-2xl font-medium tracking-tighter uppercase leading-none">
-          BEYOND THE STORY
+          {title || "BEYOND THE STORY"}
         </h1>
-        <h2 className="text-white/90 text-xs md:text-base font-normal tracking-tight">
-          Episode 4: Finding Home
-        </h2>
       </div>
       {/* Bottom Section: Controls */}
       <div className="flex justify-between items-end w-full pointer-events-auto">
@@ -97,23 +99,23 @@ const CinematicControls = () => {
         <div className="flex items-center gap-2 md:gap-6">
           <div className="flex items-center gap-1.5 md:gap-4 text-white/70">
             {canAirPlay && (
-              <AirPlayButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <AirPlayButton className="aria-hidden:hidden hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
                 <Airplay className="w-5 h-5" />
               </AirPlayButton>
             )}
             {canGoogleCast && (
-              <GoogleCastButton className="hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <GoogleCastButton className="aria-hidden:hidden hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
                 <Cast className="w-5 h-5" />
               </GoogleCastButton>
             )}
-            <CaptionButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+            <CaptionButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <CaptionsOff className="w-5 h-5 md:w-6 md:h-6 hidden group-data-active:block" />
               <Captions className="w-5 h-5 md:w-6 md:h-6 group-data-active:hidden" />
             </CaptionButton>
-            <PIPButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+            <PIPButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <PictureInPicture className="w-5 h-5 md:w-6 md:h-6" />
             </PIPButton>
-            <FullscreenButton className="group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+            <FullscreenButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <Maximize className="w-4 h-4 md:w-5 md:h-5 group-data-active:hidden" />
               <Minimize className="w-4 h-4 md:w-5 md:h-5 hidden group-data-active:block" />
             </FullscreenButton>
@@ -183,12 +185,12 @@ function CaptionsSubmenu() {
           className="w-full flex flex-col"
           value={options.selectedValue}
         >
-          {options.map(({ label, value, select }) => (
+          {options.map(({ label, value, select }, index) => (
             <Menu.Radio
               className={radioClassName}
               value={value}
               onSelect={select}
-              key={value}
+              key={`${value}-${index}`}
             >
               <RadioButtonIcon className={radioIconClassName} />
               <RadioButtonSelectedIcon className={radioSelectedIconClassName} />
@@ -227,12 +229,12 @@ function SpeedSubmenu() {
           className="w-full flex flex-col"
           value={options.selectedValue}
         >
-          {options.map(({ label, value, select }) => (
+          {options.map(({ label, value, select }, index) => (
             <Menu.Radio
               className={radioClassName}
               value={value}
               onSelect={select}
-              key={value}
+              key={`${value}-${index}`}
             >
               <RadioButtonIcon className={radioIconClassName} />
               <RadioButtonSelectedIcon className={radioSelectedIconClassName} />
@@ -265,12 +267,12 @@ function QualitySubmenu() {
           className="w-full flex flex-col"
           value={options.selectedValue}
         >
-          {options.map(({ label, value, bitrateText, select }) => (
+          {options.map(({ label, value, bitrateText, select }, index) => (
             <Menu.Radio
               className={radioClassName}
               value={value}
               onSelect={select}
-              key={value}
+              key={`${value}-${index}`}
             >
               <RadioButtonIcon className={radioIconClassName} />
               <RadioButtonSelectedIcon className={radioSelectedIconClassName} />
@@ -315,25 +317,346 @@ function SubmenuButton({
   );
 }
 
+const getStreamUrl = (video: any) => {
+  if (!video) return "";
+  const provider = video.provider?.toLowerCase();
+  const url = video.videoUrl || "";
+
+  if (provider === "youtube") {
+    // If the videoUrl is just the 11-character video ID, use 'youtube/VIDEO_ID' for Vidstack
+    if (url.length === 11 && !url.includes("/")) {
+      return `youtube/${url}`;
+    }
+    return url;
+  }
+
+  if (provider === "cloudflare") {
+    if (url.includes("cloudflarestream.com") && url.endsWith("/watch")) {
+      return url.replace(/\/watch$/, "/manifest/video.m3u8");
+    }
+    return url;
+  }
+
+  return url;
+};
+
+const getPosterUrl = (video: any) => {
+  if (!video) return undefined;
+  const provider = video.provider?.toLowerCase();
+  const url = video.videoUrl || "";
+
+  if (provider === "youtube") {
+    let videoId = url;
+    if (url.includes("/")) {
+      const regExp =
+        /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+      const match = url.match(regExp);
+      videoId = match && match[2] && match[2].length === 11 ? match[2] : url;
+    }
+    // hqdefault.jpg is guaranteed to exist for all YouTube videos, preventing 404 logs
+    return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  }
+
+  return undefined;
+};
+
 const VidPlayer = () => {
-  const { isChatOpen } = usePlayerStore();
+  const {
+    isChatOpen,
+    activeVideo,
+    setActiveVideo,
+    isMuted,
+    volume,
+    setMuted,
+    setVolume,
+  } = usePlayerStore();
+  const searchParams = useSearchParams();
+  const videoId = searchParams.get("v") || searchParams.get("video");
+
+  const playerInstanceRef = useRef<MediaPlayerInstance | null>(null);
+  const unsubscribeRef = useRef<(() => void) | null>(null);
+  const clockOffsetRef = useRef<number>(0);
+  const initialSeekDone = useRef(false);
+
+  const onPlayerRef = (instance: MediaPlayerInstance | null) => {
+    playerInstanceRef.current = instance;
+    if (unsubscribeRef.current) {
+      unsubscribeRef.current();
+      unsubscribeRef.current = null;
+    }
+
+    if (instance) {
+      unsubscribeRef.current = instance.subscribe(
+        ({ volume: newVolume, muted: newMuted }) => {
+          const store = usePlayerStore.getState();
+          if (store.volume !== newVolume) {
+            store.setVolume(newVolume);
+          }
+          if (store.isMuted !== newMuted) {
+            store.setMuted(newMuted);
+          }
+        },
+      );
+    }
+  };
+
+  // Fetch videos from the API
+  const { data, isLoading } = useQuery({
+    queryKey: ["videos"],
+    queryFn: async () => {
+      const res = await fetch("/api/video?limit=100");
+      if (!res.ok) throw new Error("Failed to fetch videos");
+      return res.json();
+    },
+    staleTime: 1000 * 60 * 5, // Cache videos for 5 minutes
+    refetchOnWindowFocus: false, // Prevent refetching when window is refocused
+  });
+
+  const videos = data?.data || [];
+
+  // Set clock offset when data loads from server to account for local clock differences
+  useEffect(() => {
+    if (data?.serverTime) {
+      clockOffsetRef.current = data.serverTime - Date.now();
+    }
+  }, [data]);
+
+  // Update active video in store based on synchronized epoch time when videos load
+  useEffect(() => {
+    if (videos.length > 0 && !activeVideo) {
+      const totalDuration = videos.reduce(
+        (acc: number, v: any) => acc + (v.size || 0),
+        0,
+      );
+      if (totalDuration > 0) {
+        const syncNow = Math.floor(
+          (Date.now() + clockOffsetRef.current) / 1000,
+        );
+        const cycleOffset = syncNow % totalDuration;
+
+        let accumulatedTime = 0;
+        let expectedVideo = videos[0];
+
+        for (const video of videos) {
+          const duration = video.size || 0;
+          if (
+            cycleOffset >= accumulatedTime &&
+            cycleOffset < accumulatedTime + duration
+          ) {
+            expectedVideo = video;
+            break;
+          }
+          accumulatedTime += duration;
+        }
+
+        setActiveVideo(expectedVideo);
+        // Silently sync the URL as well
+        const newUrl = `${window.location.pathname}?v=${expectedVideo.id}`;
+        window.history.replaceState(
+          { ...window.history.state, as: newUrl, url: newUrl },
+          "",
+          newUrl,
+        );
+      } else {
+        setActiveVideo(videos[0]);
+      }
+    }
+  }, [videos, activeVideo, setActiveVideo]);
+
+  // Reset initial seek state when activeVideo changes
+  useEffect(() => {
+    initialSeekDone.current = false;
+  }, [activeVideo?.id]);
+
+  const syncPlayback = () => {
+    if (!playerInstanceRef.current || videos.length === 0) return;
+
+    const totalDuration = videos.reduce(
+      (acc: number, v: any) => acc + (v.size || 0),
+      0,
+    );
+    if (totalDuration === 0) return;
+
+    const syncNow = Math.floor((Date.now() + clockOffsetRef.current) / 1000);
+    const cycleOffset = syncNow % totalDuration;
+
+    let accumulatedTime = 0;
+    let expectedVideo = videos[0];
+    let expectedSeekOffset = 0;
+
+    for (const video of videos) {
+      const duration = video.size || 0;
+      if (
+        cycleOffset >= accumulatedTime &&
+        cycleOffset < accumulatedTime + duration
+      ) {
+        expectedVideo = video;
+        expectedSeekOffset = cycleOffset - accumulatedTime;
+        break;
+      }
+      accumulatedTime += duration;
+    }
+
+    // 1. If expected video is different from the current active video, transition to it
+    if (activeVideo && expectedVideo.id !== activeVideo.id) {
+      console.log(
+        "Sync: Switching video to stay in sync with broadcast:",
+        expectedVideo.title,
+      );
+      setActiveVideo(expectedVideo);
+      // Update address bar silently
+      const newUrl = `${window.location.pathname}?v=${expectedVideo.id}`;
+      window.history.replaceState(
+        { ...window.history.state, as: newUrl, url: newUrl },
+        "",
+        newUrl,
+      );
+      initialSeekDone.current = false; // Trigger seek when new video becomes ready
+      return;
+    }
+
+    // Only perform drift checking/seeking if initial sync seek has completed
+    if (!initialSeekDone.current) return;
+
+    // 2. If it's the correct video, check if playback position is in sync (within 3 seconds threshold)
+    const currentPlayerTime = playerInstanceRef.current.currentTime;
+    const timeDifference = Math.abs(currentPlayerTime - expectedSeekOffset);
+
+    if (timeDifference > 3) {
+      console.log(
+        `Sync: Player is out of sync by ${timeDifference.toFixed(1)}s. Seeking to ${expectedSeekOffset.toFixed(1)}s.`,
+      );
+      playerInstanceRef.current.currentTime = expectedSeekOffset;
+    }
+  };
+
+  // Run periodic self-healing sync check
+  useEffect(() => {
+    if (videos.length === 0 || !activeVideo) return;
+
+    // Run initial sync check immediately
+    syncPlayback();
+
+    const interval = setInterval(() => {
+      syncPlayback();
+    }, 10000); // Check sync every 10 seconds
+
+    return () => clearInterval(interval);
+  }, [videos, activeVideo]);
+
+  // Handle video ending to play the next one (continuous stream)
+  const handleEnded = () => {
+    if (videos.length > 0 && activeVideo) {
+      const currentIndex = videos.findIndex(
+        (v: any) => v.id === activeVideo.id,
+      );
+      const nextIndex = (currentIndex + 1) % videos.length; // Loop back to the first video
+      const nextVideo = videos[nextIndex];
+
+      if (nextVideo) {
+        // 1. Instantly update Zustand store to change the player source and meta in-place (no remount/reload)
+        setActiveVideo(nextVideo);
+
+        // 2. Silently update the address bar URL without triggering Next.js router re-rendering
+        const newUrl = `${window.location.pathname}?v=${nextVideo.id}`;
+        window.history.replaceState(
+          { ...window.history.state, as: newUrl, url: newUrl },
+          "",
+          newUrl,
+        );
+      }
+    }
+  };
+
+  // Perform synchronized seek as soon as the media can play
+  const handleCanPlay = () => {
+    if (
+      !initialSeekDone.current &&
+      playerInstanceRef.current &&
+      videos.length > 0
+    ) {
+      const totalDuration = videos.reduce(
+        (acc: number, v: any) => acc + (v.size || 0),
+        0,
+      );
+      if (totalDuration > 0) {
+        const syncNow = Math.floor(
+          (Date.now() + clockOffsetRef.current) / 1000,
+        );
+        const cycleOffset = syncNow % totalDuration;
+
+        let accumulatedTime = 0;
+        let expectedSeekOffset = 0;
+
+        for (const video of videos) {
+          const duration = video.size || 0;
+          if (
+            cycleOffset >= accumulatedTime &&
+            cycleOffset < accumulatedTime + duration
+          ) {
+            expectedSeekOffset = cycleOffset - accumulatedTime;
+            break;
+          }
+          accumulatedTime += duration;
+        }
+
+        // Only seek if the expected seek offset is valid and within the video duration
+        if (
+          expectedSeekOffset > 0 &&
+          expectedSeekOffset < (activeVideo?.size || Infinity)
+        ) {
+          console.log("CanPlay Sync: Initial seek to:", expectedSeekOffset);
+          playerInstanceRef.current.currentTime = expectedSeekOffset;
+        }
+      }
+      initialSeekDone.current = true;
+    }
+  };
+
+  // Loading state
+  if (isLoading || !activeVideo) {
+    return (
+      <div className="w-full aspect-video bg-zinc-950 flex items-center justify-center rounded-xl border border-white/5">
+        <div className="flex flex-col items-center gap-3">
+          <Spinner.Root className="text-indigo-500 animate-spin" size={40}>
+            <Spinner.Track className="opacity-25" width={4} />
+            <Spinner.TrackFill className="opacity-75" width={4} />
+          </Spinner.Root>
+          <span className="text-xs text-zinc-500 font-medium">
+            Loading player...
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  const videoSrc = getStreamUrl(activeVideo);
+  const videoTitle = activeVideo.title;
+  const posterSrc = getPosterUrl(activeVideo);
+
   return (
     <MediaPlayer
-      title="Beyond The Story"
-      src="https://files.vidstack.io/sprite-fight/hls/stream.m3u8"
+      ref={onPlayerRef}
+      title={videoTitle}
+      src={videoSrc}
       crossOrigin="anonymous"
       playsInline
       logLevel="silent"
-      streamType="live"
       viewType="video"
       autoPlay
-      muted
+      muted={isMuted}
+      volume={volume}
       fullscreenOrientation="portrait"
       onOrientationChange={undefined}
+      onEnded={handleEnded}
+      onCanPlay={handleCanPlay}
       className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-fullscreen:rounded-none data-fullscreen:aspect-auto data-fullscreen:h-full transition-all duration-300"
     >
       <MediaProvider>
-        <Poster className="absolute inset-0 w-full h-full object-cover opacity-50" />
+        <Poster
+          src={posterSrc}
+          className="absolute inset-0 w-full h-full object-cover opacity-0 data-visible:opacity-100 transition-opacity duration-300"
+        />
       </MediaProvider>
 
       {/* Permanent Overlay: Always Visible */}
@@ -352,7 +675,7 @@ const VidPlayer = () => {
         </div>
       </div>
 
-      <CinematicControls />
+      <CinematicControls title={activeVideo.title} />
 
       <BufferingIndicator />
     </MediaPlayer>

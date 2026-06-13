@@ -12,7 +12,11 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FilterBar } from "./live-filterbar";
 
-import VidPlayer from "@/features/player/components/vid-player";
+import dynamic from "next/dynamic";
+
+const VidPlayer = dynamic(() => import("@/features/player/components/vid-player"), {
+  ssr: false,
+});
 
 // Stores
 import { useHeroStore } from "@/store/public/use-hero-store";
