@@ -643,6 +643,7 @@ const VidPlayer = () => {
       playsInline
       logLevel="silent"
       viewType="video"
+      streamType="live"
       autoPlay
       muted={isMuted}
       volume={volume}
@@ -659,6 +660,8 @@ const VidPlayer = () => {
             event.preventDefault();
           },
         },
+        seekBackward: [],
+        seekForward: [],
       }}
       className="w-full aspect-video bg-black overflow-hidden rounded-xl shadow-2xl group/player data-fullscreen:rounded-none data-fullscreen:aspect-auto data-fullscreen:h-full transition-all duration-300"
     >
