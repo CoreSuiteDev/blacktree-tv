@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { ModeToggle } from "@/components/shared/navbar/theme-toggle";
 import { LayoutDashboard, Film, Users, Settings, UserCog, ShieldCheck } from "lucide-react";
 
 const sidebarLinks = [
@@ -50,7 +49,6 @@ export default function DashboardLayout({
             <h2 className="text-sm font-semibold text-zinc-500 uppercase tracking-wider">Control Panel</h2>
           </div>
           <div className="flex items-center gap-4">
-            <ModeToggle />
             <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-xs font-bold text-primary">
               AD
             </div>

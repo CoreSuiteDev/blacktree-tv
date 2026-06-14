@@ -25,14 +25,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.variable} antialiased`}
+      className={`${poppins.variable} dark antialiased`}
       suppressHydrationWarning
     >
       <body>
         <QueryProvider>
           <ThemeProvider
             attribute="class"
-            defaultTheme="dark"
+            forcedTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
           >

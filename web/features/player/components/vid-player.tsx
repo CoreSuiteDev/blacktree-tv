@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   AirPlayButton,
   CaptionButton,
+  Captions,
   Controls,
   FullscreenButton,
   GoogleCastButton,
@@ -13,7 +14,6 @@ import {
   MediaProvider,
   Menu,
   MuteButton,
-  PIPButton,
   Poster,
   Spinner,
   VolumeSlider,
@@ -31,9 +31,10 @@ import {
 import "@vidstack/react/player/styles/default/layouts/audio.css";
 import "@vidstack/react/player/styles/default/layouts/video.css";
 import "@vidstack/react/player/styles/default/theme.css";
+import "@vidstack/react/player/styles/default/captions.css";
 import {
   Airplay,
-  Captions,
+  Captions as CaptionsIcon,
   CaptionsOff,
   Cast,
   Gauge,
@@ -54,8 +55,6 @@ import { usePlayerStore } from "../store/player.store";
 
 const CinematicControls = ({ title }: { title?: string }) => {
   const { isChatOpen, toggleChat } = usePlayerStore();
-  const canAirPlay = useMediaState("canAirPlay");
-  const canGoogleCast = useMediaState("canGoogleCast");
 
   return (
     <Controls.Root
@@ -98,23 +97,16 @@ const CinematicControls = ({ title }: { title?: string }) => {
         {/* Right Action Group */}
         <div className="flex items-center gap-2 md:gap-6">
           <div className="flex items-center gap-1.5 md:gap-4 text-white/70">
-            {canAirPlay && (
-              <AirPlayButton className="aria-hidden:hidden hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
-                <Airplay className="w-5 h-5" />
-              </AirPlayButton>
-            )}
-            {canGoogleCast && (
-              <GoogleCastButton className="aria-hidden:hidden hidden md:inline-flex group ring-sky-400 relative h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
-                <Cast className="w-5 h-5" />
-              </GoogleCastButton>
-            )}
+            <AirPlayButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <Airplay className="w-5 h-5" />
+            </AirPlayButton>
+            <GoogleCastButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
+              <Cast className="w-5 h-5" />
+            </GoogleCastButton>
             <CaptionButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <CaptionsOff className="w-5 h-5 md:w-6 md:h-6 hidden group-data-active:block" />
-              <Captions className="w-5 h-5 md:w-6 md:h-6 group-data-active:hidden" />
+              <CaptionsIcon className="w-5 h-5 md:w-6 md:h-6 group-data-active:hidden" />
             </CaptionButton>
-            <PIPButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
-              <PictureInPicture className="w-5 h-5 md:w-6 md:h-6" />
-            </PIPButton>
             <FullscreenButton className="aria-hidden:hidden group ring-sky-400 relative inline-flex h-8 w-8 md:h-10 md:w-10 cursor-pointer items-center justify-center rounded-md outline-none ring-inset hover:bg-white/20 data-focus:ring-4 data-active:text-indigo-400">
               <Maximize className="w-4 h-4 md:w-5 md:h-5 group-data-active:hidden" />
               <Minimize className="w-4 h-4 md:w-5 md:h-5 hidden group-data-active:block" />
@@ -388,6 +380,9 @@ const VidPlayer = () => {
     if (instance) {
       unsubscribeRef.current = instance.subscribe(
         ({ volume: newVolume, muted: newMuted }) => {
+          // Ignore state updates from the player during source transitions to prevent overwriting stored preference
+          if (!initialSeekDone.current) return;
+
           const store = usePlayerStore.getState();
           if (store.volume !== newVolume) {
             store.setVolume(newVolume);
@@ -575,6 +570,11 @@ const VidPlayer = () => {
       playerInstanceRef.current &&
       videos.length > 0
     ) {
+      // Restore muted and volume states from the store to prevent default/autoplay resets
+      const store = usePlayerStore.getState();
+      playerInstanceRef.current.muted = store.isMuted;
+      playerInstanceRef.current.volume = store.volume;
+
       const totalDuration = videos.reduce(
         (acc: number, v: any) => acc + (v.size || 0),
         0,
@@ -646,6 +646,9 @@ const VidPlayer = () => {
       autoPlay
       muted={isMuted}
       volume={volume}
+      googleCast={{
+        receiverApplicationId: "CC1AD845",
+      }}
       onOrientationChange={undefined}
       onEnded={handleEnded}
       onCanPlay={handleCanPlay}
@@ -665,6 +668,8 @@ const VidPlayer = () => {
           className="absolute inset-0 w-full h-full object-cover opacity-0 data-visible:opacity-100 transition-opacity duration-300"
         />
       </MediaProvider>
+
+      <Captions className="vds-captions media-captions absolute inset-0 z-50 pointer-events-none" />
 
       {/* Permanent Overlay: Always Visible */}
       <div

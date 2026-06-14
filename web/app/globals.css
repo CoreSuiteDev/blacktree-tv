@@ -199,3 +199,24 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Shift captions up when player controls are visible to prevent overlap */
+media-player[data-controls] .media-captions {
+  bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  media-player[data-controls] .media-captions {
+    bottom: 112px;
+  }
+}
+
+@media (min-width: 1024px) {
+  media-player[data-controls] .media-captions {
+    bottom: 144px;
+  }
+}
+
+.media-captions {
+  transition: bottom 0.3s ease !important;
+}
