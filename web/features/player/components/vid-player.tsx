@@ -5,7 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 import {
   AirPlayButton,
   CaptionButton,
-  Captions,
+  useActiveTextCues,
+  useActiveTextTrack,
   Controls,
   FullscreenButton,
   GoogleCastButton,
@@ -403,13 +404,12 @@ const VidPlayer = () => {
       if (!res.ok) throw new Error("Failed to fetch videos");
       return res.json();
     },
-    staleTime: 1000 * 60 * 5, // Cache videos for 5 minutes
-    refetchOnWindowFocus: false, // Prevent refetching when window is refocused
+    staleTime: 1000 * 60 * 5, 
+    refetchOnWindowFocus: false, 
   });
 
   const videos = data?.data || [];
 
-  // Set clock offset when data loads from server to account for local clock differences
   useEffect(() => {
     if (data?.serverTime) {
       clockOffsetRef.current = data.serverTime - Date.now();
@@ -458,9 +458,16 @@ const VidPlayer = () => {
     }
   }, [videos, activeVideo, setActiveVideo]);
 
-  // Reset initial seek state when activeVideo changes
+  // Reset initial seek state and clear existing text tracks when activeVideo changes
   useEffect(() => {
     initialSeekDone.current = false;
+    if (playerInstanceRef.current) {
+      try {
+        playerInstanceRef.current.textTracks.clear();
+      } catch (err) {
+        console.warn("Failed to clear text tracks on video change:", err);
+      }
+    }
   }, [activeVideo?.id]);
 
   const syncPlayback = () => {
@@ -653,6 +660,15 @@ const VidPlayer = () => {
       onOrientationChange={undefined}
       onEnded={handleEnded}
       onCanPlay={handleCanPlay}
+      onLoadStart={() => {
+        if (playerInstanceRef.current) {
+          try {
+            playerInstanceRef.current.textTracks.clear();
+          } catch (err) {
+            console.warn("Failed to clear text tracks on load start:", err);
+          }
+        }
+      }}
       keyShortcuts={{
         togglePaused: {
           keys: ["k", "Space"],
@@ -672,7 +688,7 @@ const VidPlayer = () => {
         />
       </MediaProvider>
 
-      <Captions className="vds-captions media-captions absolute inset-0 z-50 pointer-events-none" />
+      <CustomCaptions />
 
       {/* Permanent Overlay: Always Visible */}
       <div
@@ -709,6 +725,41 @@ function BufferingIndicator() {
         <Spinner.Track className="opacity-25" width={8} />
         <Spinner.TrackFill className="opacity-75" width={8} />
       </Spinner.Root>
+    </div>
+  );
+}
+
+function CustomCaptions() {
+  const activeCaptions = useActiveTextTrack("captions");
+  const activeSubtitles = useActiveTextTrack("subtitles");
+  const track = activeCaptions || activeSubtitles;
+  const cues = useActiveTextCues(track);
+
+  if (!cues || cues.length === 0) return null;
+
+  // De-duplicate cues by their text content
+  const uniqueCues: string[] = [];
+  for (const cue of cues) {
+    const text = cue.text.replace(/<[^>]*>/g, "").trim();
+    if (text && !uniqueCues.includes(text)) {
+      uniqueCues.push(text);
+    }
+  }
+
+  if (uniqueCues.length === 0) return null;
+
+  return (
+    <div className="media-captions absolute inset-x-0 bottom-6 z-50 pointer-events-none flex flex-col items-center px-4">
+      <div className="flex flex-col gap-2 items-center max-w-2xl text-center">
+        {uniqueCues.map((text, idx) => (
+          <span
+            key={idx}
+            className="bg-black/80 text-white font-sans text-sm md:text-base lg:text-lg font-medium px-4 py-1.5 rounded shadow-lg whitespace-pre-line border border-white/5"
+          >
+            {text}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }
